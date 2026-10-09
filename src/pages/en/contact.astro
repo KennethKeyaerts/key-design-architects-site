@@ -1,0 +1,55 @@
+---
+import FloatingDoodles from '../../components/FloatingDoodles.astro';
+import Layout from '../../layouts/Layout.astro';
+import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../../components/DoodleIcon.astro';
+import ContactForm from '../../components/ContactForm';
+---
+
+<Layout
+  title="Contact | Key-Design Architects"
+  description="Get in touch with Kenneth Keyaerts of Key-Design Architects for a no-obligation introductory conversation about your building or renovation project."
+  path="/en/contact"
+  lang="en"
+  altLangPath="/contact"
+  breadcrumbs={[{ name: 'Contact', url: '/en/contact' }]}
+>
+  <section class="relative overflow-hidden py-12 sm:py-14 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="b" />
+    <div class="container-page grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-2 reveal">
+        <DoodleIcon name="contact" animate class="w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">Personal Approach</span>
+        <h1 class="text-4xl font-bold text-earth-dark mt-2">Let's discuss your project</h1>
+        <div class="mt-5 space-y-3 text-earth-muted leading-relaxed">
+          <p>No impersonal booking calendars or empty time slots. Kenneth believes that high-quality architecture starts with a genuine, in-depth face-to-face conversation.</p>
+          <p>Fill in the form, call directly, or send an email. We'll plan a date together that suits us both. You'll always receive a personal reply from Kenneth within 24 hours.</p>
+        </div>
+
+        <div class="mt-8 card-cartoon p-6 space-y-4">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted">Direct Email</p>
+            <a href="mailto:kennethkeyaerts@icloud.com" class="text-terracotta font-bold">
+              kennethkeyaerts@icloud.com
+            </a>
+          </div>
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted">Office & Service Area</p>
+            <p class="text-earth-dark font-bold">2500 Lier, Antwerp Province, Belgium</p>
+          </div>
+        </div>
+
+        <p class="mt-6 text-[11px] text-earth-muted leading-relaxed border-t-2 border-earth-dark/15 pt-5">
+          Key-Design Architects · Member of the Order of Architects Belgium (Registration no. A912091) · VAT BE 1037.744.107
+        </p>
+      </div>
+
+      <div class="lg:col-span-3 reveal" style="transition-delay:0.1s;">
+        <div class="card-cartoon overflow-hidden">
+          <ContactForm client:load lang="en" />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

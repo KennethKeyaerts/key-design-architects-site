@@ -1,0 +1,116 @@
+---
+import Logo from './Logo.astro';
+
+interface Props {
+  hasHero?: boolean;
+  lang?: 'nl' | 'en';
+  altLangPath?: string;
+}
+const { hasHero = false, lang = 'nl', altLangPath = '/' } = Astro.props;
+---
+
+<!--
+  Deliberately minimal: logo + a clearly labelled menu trigger, nothing else
+  competing for attention. All navigation lives in the slide-in panel
+  (MobileMenu.astro) at every screen size.
+
+  hasHero (homepage only): the header floats transparently over the hero
+  photo/video at the very top of the page. Scrolling down hides it entirely.
+  Past the hero, instead of bringing back a full solid bar (which read as an
+  odd, disconnected "beam" reappearing over arbitrary content), a single
+  small floating menu button takes over, positioned near the back-to-top
+  button, so there's always a way to open navigation without a jarring full
+  header materialising over whatever the visitor happens to be looking at.
+-->
+<header
+  id="site-header"
+  class={hasHero
+    ? 'header-hero fixed top-0 inset-x-0 z-40 bg-transparent transition-transform duration-300'
+    : 'sticky top-0 z-40 bg-sand-light/95 backdrop-blur-md border-b-2 border-earth-dark'}
+>
+  <div class="container-page flex items-center justify-between py-3 sm:py-4">
+    <a href={lang === 'en' ? '/en/' : '/'} aria-label={lang === 'en' ? 'Go to the Key-Design Architects homepage' : 'Naar de homepagina van Key-Design Architects'} class="flex items-center">
+      <Logo tone={hasHero ? 'light' : 'dark'} size="md" />
+    </a>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={altLangPath}
+        aria-label={lang === 'en' ? 'Bekijk deze pagina in het Nederlands' : 'View this page in English'}
+        class="notranslate hidden sm:inline-flex py-2 px-4 bg-orangePastel text-earth-dark text-xs font-bold rounded-full border-2 border-earth-dark shadow-[3px_3px_0_0_#1C1917] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0_0_#1C1917] transition-all"
+      >
+        {lang === 'en' ? 'NL' : 'EN'}
+      </a>
+      <a
+        href={altLangPath}
+        aria-label={lang === 'en' ? 'Bekijk deze pagina in het Nederlands' : 'View this page in English'}
+        class="notranslate sm:hidden py-1.5 px-3 bg-orangePastel text-earth-dark text-[11px] font-bold rounded-full border-2 border-earth-dark shadow-[2px_2px_0_0_#1C1917]"
+      >
+        {lang === 'en' ? 'NL' : 'EN'}
+      </a>
+
+      <button
+        id="hamburger"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="flex items-center gap-2 py-2.5 px-4 bg-white text-earth-dark text-xs font-bold uppercase tracking-wider rounded-full border-2 border-earth-dark shadow-[3px_3px_0_0_#1C1917] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0_0_#1C1917] transition-all"
+      >
+        <span class="flex flex-col gap-[3px]">
+          <span class="block w-4 h-[2px] bg-earth-dark"></span>
+          <span class="block w-4 h-[2px] bg-earth-dark"></span>
+          <span class="block w-4 h-[2px] bg-earth-dark"></span>
+        </span>
+        <span class="hidden sm:inline">Menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!--
+  Compact floating trigger, shown on every page once scrolled down a little,
+  not just the homepage. Sits above the back-to-top button (which only
+  appears further down, at 500px) so they never overlap. On non-hero pages
+  the full header already sits solid at the top, so this still only takes
+  over once it's hidden on scroll, keeping navigation reachable everywhere
+  without a header "beam" reappearing over arbitrary content.
+-->
+<button
+  id="floating-menu-btn"
+  aria-label="Menu"
+  aria-controls="mobile-menu"
+  class="fixed bottom-24 right-6 z-40 w-14 h-14 rounded-full bg-white border-2 border-earth-dark shadow-[3px_3px_0_0_#1C1917] flex items-center justify-center text-earth-dark opacity-0 translate-y-2 pointer-events-none transition-all duration-300"
+>
+  <span class="flex flex-col gap-[3px]">
+    <span class="block w-5 h-[2px] bg-earth-dark"></span>
+    <span class="block w-5 h-[2px] bg-earth-dark"></span>
+    <span class="block w-5 h-[2px] bg-earth-dark"></span>
+  </span>
+</button>
+
+<style>
+  #site-header.hidden-on-scroll {
+    transform: translateY(-140%);
+  }
+  #floating-menu-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+  const floatingBtn = document.getElementById('floating-menu-btn');
+  const SCROLL_THRESHOLD = 100; // px: within this range from the top, keep the full header visible
+
+  function updateHeaderState() {
+    if (!header) return;
+    const y = window.scrollY;
+    const past = y >= SCROLL_THRESHOLD;
+    header.classList.toggle('hidden-on-scroll', past);
+    floatingBtn?.classList.toggle('visible', past);
+  }
+  window.addEventListener('scroll', updateHeaderState, { passive: true });
+  updateHeaderState();
+</script>

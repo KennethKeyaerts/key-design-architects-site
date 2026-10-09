@@ -1,0 +1,105 @@
+---
+import FloatingDoodles from '../components/FloatingDoodles.astro';
+import Layout from '../layouts/Layout.astro';
+import DoodleIcon from '../components/DoodleIcon.astro';
+import ArchitecturalMotifs from '../components/ArchitecturalMotifs.astro';
+import { s } from '../lib/data';
+
+const ORDE_URL = 'https://vind.architect.be/kenneth-keyaerts/A912091';
+---
+
+<Layout
+  title="Over Kenneth Keyaerts | Key-Design Architects"
+  description="Maak kennis met Kenneth Keyaerts, erkend architect (Orde van Architecten België, Stamnummer A912091), actief in Lier, Antwerpen en de Kempen."
+  path="/over-ons"
+  altLangPath="/en/over-ons"
+  breadcrumbs={[{ name: 'Over Kenneth', url: '/over-ons' }]}
+>
+  <section class="relative overflow-hidden py-12 sm:py-14 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="a" />
+    <div class="container-page grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-10 items-start">
+      <div class="reveal">
+        <DoodleIcon name="kenneth" animate class="w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">{s('aboutCategory', 'Uw Architect')}</span>
+        <h1 class="text-4xl font-bold text-earth-dark mt-2">{s('aboutTitle', 'Kenneth Keyaerts')}</h1>
+        <p class="mt-2 text-sm text-earth-muted font-bold flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5l8-3z"/></svg>
+          {s('aboutSubBadge', 'Wettelijk Erkend bij de Belgische Orde van Architecten')}
+        </p>
+        <div class="mt-6 space-y-4 text-earth-muted leading-relaxed">
+          <p>{s('aboutBio1', 'Bouwen of verbouwen is een van de meest ingrijpende beslissingen die u neemt: uw budget, uw tijd en uw toekomst staan op het spel. Dat vraagt om een architect die grondig onderzoekt wat mogelijk is, voor er getekend wordt.')}</p>
+          <p>{s('aboutBio2', 'Bij Key-Design geloof ik dat een ontwerp pas goed is als het getoetst is aan de werkelijkheid: de regelgeving, het budget en wat een aannemer er later mee moet doen. Die aanpak gebruik ik voor elk project, van een gerichte uitbreiding tot een volledige nieuwbouw.')}</p>
+          <p>{s('aboutBio3', 'Als geregistreerd architect bij de Orde van Architecten begeleid ik u van de eerste schets tot de sleuteloverdracht: de bouwaanvraag, de vergelijking van aannemers, de wekelijkse werfcontrole. Eén vast aanspreekpunt voor het hele traject.')}</p>
+        </div>
+
+        {s('aboutCoFounderTitle') && (
+          <div class="mt-6 p-5 card-cartoon bg-white">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Visualisatie & Renders</span>
+            <p class="mt-1 text-sm text-earth-muted leading-relaxed">{s('aboutCoFounderText')}</p>
+          </div>
+        )}
+
+        <div class="mt-6 card-cartoon p-5 inline-flex items-center gap-4">
+          <div class="badge-cartoon w-14 h-14 shrink-0 flex items-center justify-center font-bold text-earth-dark">KK</div>
+          <div>
+            <p class="font-bold text-earth-dark">{s('aboutTrustName', 'Kenneth Keyaerts')}</p>
+            <p class="text-xs text-earth-muted">{s('aboutTrustTitle', 'Hoofdarchitect & Oprichter Key-Design Architects')}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.15s;">
+        <div class="relative">
+          <figure class="rounded-3xl overflow-hidden border-2 border-earth-dark shadow-[6px_6px_0_0_#1C1917] aspect-[3/4] max-h-[560px] bg-sand-medium mx-auto lg:mx-0">
+            <img src="/images/brand/kenneth-portrait.jpg" alt="Kenneth Keyaerts, erkend architect bij Key-Design Architects" class="w-full h-full object-cover" width="800" height="1000" />
+          </figure>
+          <a
+            href={ORDE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="badge-cartoon absolute -bottom-4 right-4 sm:right-8 py-2 px-4 text-xs font-bold text-earth-dark hover:underline"
+          >
+            {s('aboutRegBadge', 'Stamnummer: A912091')}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={2} />
+    <div class="container-page">
+      <div class="reveal max-w-2xl mb-10 text-center mx-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">{s('trajectoryCategory', 'Het Traject')}</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-earth-dark mt-2">{s('trajectoryTitle', 'Samenwerken is heel eenvoudig')}</h2>
+        <div class="w-14 h-0.5 bg-terracotta mx-auto mt-4"></div>
+        <p class="mt-4 text-earth-muted">{s('trajectorySubtitle', 'We willen dat u zich vanaf het allereerste contact op uw gemak voelt. Daarom hanteren we een heldere en laagdrempelige werkwijze, zonder ingewikkelde vaktermen of onnodige drempels.')}</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {[
+          [s('trajectoryStep1Title', 'De Kennismaking'), s('trajectoryStep1Text', 'Helemaal gratis en vrijblijvend. We drinken een kop koffie op uw bouwgrond of bij u thuis, of plannen een korte videocall. We bespreken uw dromen, behoeften en de haalbaarheid.')],
+          [s('trajectoryStep2Title', 'Het Voorontwerp'), s('trajectoryStep2Text', 'Kenneth vertaalt uw ideeën in sfeervolle plannen en moodboards. Met behulp van de bezonnings- en massastudie ziet u direct hoe de zon door uw toekomstige woning stroomt.')],
+          [s('trajectoryStep3Title', 'Bouw & Oplevering'), s('trajectoryStep3Text', 'Wij regelen de volledige bouwaanvraag, vergelijken aannemers en controleren wekelijks de werf. U hoeft enkel toe te kijken hoe uw droomhuis werkelijkheid wordt tot aan de sleuteloverdracht.')],
+        ].map(([title, text], i) => (
+          <div class="card-cartoon reveal p-6" style={`transition-delay:${i * 0.1}s`}>
+            <div class="badge-cartoon w-10 h-10 flex items-center justify-center font-bold text-earth-dark mb-4">{i + 1}</div>
+            <h3 class="font-bold text-lg text-earth-dark mb-2">{title}</h3>
+            <p class="text-sm text-earth-muted leading-relaxed">{text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={3} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">Overtuigd? Bespreek uw project vrijblijvend met Kenneth.</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">Een eerste kennismaking is gratis en verplicht u tot niets.</p>
+      <a href="/contact" class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
+        Bespreek uw project met Kenneth →
+      </a>
+    </div>
+  </section>
+</Layout>

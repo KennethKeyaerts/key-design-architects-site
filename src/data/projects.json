@@ -1,0 +1,214 @@
+[
+  {
+    "id": "proj_lookstraat_lier",
+    "specs": {
+      "Ruimtebeleving": "Open plan living met dakvenster & patiotuin",
+      "Maatwerk": "Bespoke eiken dressoir en maatwerk kasten",
+      "Zonoriëntatie": "Zuid-West (optimale daglichtinval)",
+      "Verlichting": "Geïntegreerd warm indirect licht & designpendels"
+    },
+    "image": "/images/projects/proj_lookstraat_lier_main.webp",
+    "area": "120 m²",
+    "order": 0,
+    "concept": "Maximale daglichttoetreding via een centraal daklicht en naadloze overgang naar de groene patiotuin, verrijkt met tactiele, natuurlijke materialen en rustgevende aardetinten.",
+    "title": "Woning Lookstraat",
+    "quote": "De overvloedige lichtinval via het dakvenster en het warme contact met de binnentuin maken deze leefruimte tot een rustgevende oase.",
+    "year": "2026",
+    "images": [
+      "/images/projects/proj_lookstraat_lier_img0.webp"
+    ],
+    "category": "renovatie",
+    "description": "Een warme, hedendaagse totaalrenovatie met doordachte lichtinval in Lier. Een royale leef- en eetruimte met tactiele leemstucwanden, op maat gemaakte eikenhouten elementen en een architecturaal dakvenster dat de zon diep in de woning brengt met een rustgevende doorkijk naar de omsloten binnentuin.",
+    "location": "Lier, Prov. Antwerpen",
+    "video": "/uploads/clip_1_2__1___1___1__mp4_1787066697589.mp4",
+    "timeline": [
+      {
+        "phase": "Fase 1",
+        "description": "Analyse van de bestaande ruimtes, bezonningsstudie en positionering van het centrale dakvenster.",
+        "title": "Voorontwerp & Lichtstudie",
+        "date": "2025",
+        "id": "step_ls_1",
+        "images": [
+          "/slides/lookstraat_living.jpg"
+        ]
+      },
+      {
+        "id": "step_ls_2",
+        "images": [
+          "/slides/lookstraat_living.jpg"
+        ],
+        "phase": "Fase 2",
+        "title": "3D Visualisatie door Through Renders",
+        "description": "Fotorealistische 3D renders en verfijnde materiaalkeuze voor leefruimte en binnentuin.",
+        "date": "2026"
+      },
+      {
+        "title": "Realisatie & Maatwerkafwerking",
+        "images": [
+          "/slides/lookstraat_living.jpg"
+        ],
+        "description": "Plaatsing van het dakvenster, leemstucwerk, eiken vloer en maatwerk kasten.",
+        "id": "step_ls_3",
+        "phase": "Fase 3",
+        "date": "2026"
+      }
+    ],
+    "materials": [
+      "Warme leemstuc & zandkleurige kalkpleister",
+      "Natuurlijk eiken parket & maatwerk meubilair",
+      "Slanke aluminium raamprofielen naar de patio",
+      "Architecturale pendelarmaturen & linnen textiel"
+    ],
+    "starred": true,
+    "en": {
+      "location": "Lier, Antwerp Province",
+      "description": "A warm, contemporary full renovation with carefully considered daylight in Lier. A generous living and dining space with tactile clay-plaster walls, bespoke oak elements, and an architectural roof light that brings the sun deep into the home, with a calming view of the enclosed courtyard garden.",
+      "concept": "Maximum daylight through a central roof light and a seamless transition to the green patio garden, enriched with tactile, natural materials and calming earth tones.",
+      "materials": [
+        "Warm clay plaster & sand-coloured lime plaster",
+        "Natural oak parquet & bespoke furniture",
+        "Slim aluminium window profiles facing the patio",
+        "Architectural pendant lights & linen textiles"
+      ],
+      "specs": {
+        "Spatial experience": "Open-plan living with roof light & patio garden",
+        "Custom work": "Bespoke oak sideboard and fitted cabinets",
+        "Sun orientation": "South-West (optimal daylight)",
+        "Lighting": "Integrated warm indirect light & designer pendants"
+      },
+      "quote": "The abundant daylight from the roof light and the warm connection to the courtyard garden make this living space a calming oasis.",
+      "timeline": [
+        {
+          "phase": "Phase 1",
+          "date": "2025",
+          "title": "Preliminary Design & Daylight Study",
+          "description": "Analysis of the existing spaces, sunlight study, and positioning of the central roof light."
+        },
+        {
+          "phase": "Phase 2",
+          "date": "2026",
+          "title": "3D Visualisation by Through Renders",
+          "description": "Photorealistic 3D renders and refined material selection for the living space and courtyard garden."
+        },
+        {
+          "phase": "Phase 3",
+          "date": "2026",
+          "title": "Realisation & Custom Finishing",
+          "description": "Installation of the roof light, clay plasterwork, oak flooring, and bespoke cabinetry."
+        }
+      ]
+    }
+  },
+  {
+    "id": "proj_herbestemming_herenhuizen",
+    "title": "Kwartier XIV",
+    "category": "nieuwbouw",
+    "location": "Hansbekedorp, Deinze",
+    "year": "2026",
+    "area": "14 woonunits",
+    "description": "Een haalbaarheidsstudie voor de voormalige jongensschool in Hansbekedorp, Deinze: onderzoek naar wat mogelijk is binnen de geldende bouwvoorschriften voor deze site. Het resultaat is een voorstel voor 14 woonunits met de nodige parkeerplaatsen, meer groen en meer ademruimte voor de site en de buurt, met behoud van het bestaande straatbeeld en respect voor de bestaande architectuur.",
+    "concept": "Het uitgangspunt van deze studie is respect voor de omgeving: nieuwe architectuur voegt zich naar het bestaande straatbeeld van Hansbekedorp, in plaats van zich ertegen af te zetten. Het bestaande schoolgebouw blijft zoveel mogelijk behouden; de nieuwe woonvolumes voegen zich er organisch naast en achter. Extra groen en een gedeelde buitenruimte geven de veertien woonunits, en de buurt, meer ademruimte.",
+    "materials": [
+      "Baksteen in dialoog met het bestaande schoolgebouw",
+      "Extensief groendak op de nieuwbouwvolumes",
+      "Waterpartij & inheemse beplanting in de gedeelde tuin",
+      "Rode voordeuren als herkenbaar accent per woonunit"
+    ],
+    "specs": {
+      "Type studie": "Haalbaarheidsstudie",
+      "Programma": "14 woonunits + bijhorende parking",
+      "Voormalige functie": "Jongensschool",
+      "Ingreep op straatbeeld": "Minimaal, met behoud van de bestaande architectuur",
+      "Groen": "Uitbreiding van gedeelde, groene buitenruimte"
+    },
+    "image": "/images/projects/kwartier14_01_straatbeeld.jpg",
+    "images": [
+      "/images/projects/kwartier14_01_straatbeeld.jpg",
+      "/images/projects/kwartier14_02_nieuwbouw.jpg",
+      "/images/projects/kwartier14_03_tuin.jpg",
+      "/images/projects/kwartier14_04_avond.jpg",
+      "/images/projects/kwartier14_05_keuken.jpg",
+      "/images/projects/kwartier14_06_living.jpg"
+    ],
+    "starred": false,
+    "order": 1,
+    "statusNote": "Dit is een haalbaarheidsstudie: een eigen onderzoek naar wat mogelijk is binnen de geldende bouwvoorschriften voor deze site, geen gerealiseerd of in aanbesteding zijnd project en niet uitgevoerd in opdracht van een klant. De studie toont hoe ik een site analyseer en een haalbaar voorstel uitwerk, van eerste onderzoek tot een samenhangend ruimtelijk concept.",
+    "en": {
+      "location": "Hansbekedorp, Deinze",
+      "area": "14 residential units",
+      "description": "A feasibility study for the former boys' school in Hansbekedorp, Deinze: research into what is possible within the applicable building regulations for this site. The result is a proposal for 14 residential units with the necessary parking, more greenery and more breathing space for the site and the neighbourhood, while preserving the existing streetscape and respecting the existing architecture.",
+      "concept": "The starting point of this study is respect for the surroundings: new architecture adapts to the existing streetscape of Hansbekedorp rather than standing against it. The existing school building is retained as far as possible; the new residential volumes sit organically beside and behind it. Extra greenery and a shared outdoor space give the fourteen units, and the neighbourhood, more room to breathe.",
+      "materials": [
+        "Brick in dialogue with the existing school building",
+        "Extensive green roof on the new-build volumes",
+        "Water feature & native planting in the shared garden",
+        "Red front doors as a recognisable accent for each unit"
+      ],
+      "specs": {
+        "Type of study": "Feasibility study",
+        "Programme": "14 residential units + associated parking",
+        "Former function": "Boys' school",
+        "Impact on streetscape": "Minimal, preserving the existing architecture",
+        "Greenery": "Expansion of shared green outdoor space"
+      },
+      "statusNote": "This is a feasibility study: an independent investigation into what is possible within the applicable building regulations for this site. It is not a realised or tendered project, and was not carried out on behalf of a client. The study shows how I analyse a site and develop a feasible proposal, from initial research to a coherent spatial concept."
+    }
+  },
+  {
+    "id": "proj_vandalis_watergroep",
+    "title": "Vandalis Watergroep",
+    "category": "renovatie",
+    "location": "Vlaanderen (locatie niet gepubliceerd om privacyredenen)",
+    "year": "2023",
+    "area": "±825 m²",
+    "description": "Een semi-publiek infrastructuurgebouw voor een Vlaamse watermaatschappij, met een totaalrenovatie van ongeveer 825 m² waarbij kritische installaties tijdens de werken beschermd moesten blijven. De klantnaam wordt om privacyredenen niet vermeld.",
+    "concept": "De uitdaging bij dit project lag niet bij het ontwerp, maar bij de uitvoering: hoe voer je een ingrijpende totaalrenovatie uit rond installaties die te allen tijde operationeel en beschermd moeten blijven. Dat vroeg om een strak opgevolgd aanbestedings- en uitvoeringsdossier, nauwkeurige detaillering en een planning die geen ruimte liet voor verrassingen op de werf.",
+    "specs": {
+      "Ontwerp": "Archilogic (Wijsch Architecten)",
+      "Rol Kenneth Keyaerts": "Aanbestedings- & uitvoeringsdossier",
+      "Taken": "Lastenboek, meetstaten, detaillering, planning, werfvergaderingen, werfverslagen, wekelijkse werfopvolging",
+      "Bijzonderheid": "Bescherming van kritische installaties tijdens de volledige uitvoering"
+    },
+    "image": "/images/projects/vandalis_interieur.jpg",
+    "images": [
+      "/images/projects/vandalis_interieur.jpg"
+    ],
+    "starred": false,
+    "order": 2,
+    "attributionNote": "Dit project werd ontworpen door Archilogic (Wijsch Architecten), het is geen ontwerp van Key-Design. Kenneth Keyaerts werkte hieraan mee tijdens zijn tewerkstelling bij Archilogic, in een uitvoerende rol. De getoonde afbeelding is een sfeerbeeld ter illustratie en geen weergave van het werkelijke gebouw of de effectieve locatie; de klantnaam is om privacyredenen niet gepubliceerd.",
+    "en": {
+      "location": "Flanders (location withheld for privacy reasons)",
+      "description": "A semi-public infrastructure building for a Flemish water company, with a full renovation of approximately 825 m² during which critical installations had to remain protected. The client's name is not disclosed for privacy reasons.",
+      "concept": "The challenge on this project lay not in the design, but in the execution: how do you carry out a far-reaching full renovation around installations that must remain operational and protected at all times? That demanded a tightly managed tender and execution file, precise detailing, and a schedule that left no room for surprises on site.",
+      "specs": {
+        "Design": "Archilogic (Wijsch Architecten)",
+        "Kenneth Keyaerts' role": "Tender & execution file",
+        "Tasks": "Specifications, bills of quantities, detailing, scheduling, site meetings, site reports, weekly site follow-up",
+        "Special feature": "Protection of critical installations throughout the entire execution"
+      },
+      "attributionNote": "This project was designed by Archilogic (Wijsch Architecten); it is not a Key-Design design. Kenneth Keyaerts contributed to it during his employment at Archilogic, in an executive role. The image shown is an illustrative impression and not a depiction of the actual building or location; the client's name is withheld for privacy reasons."
+    }
+  },
+  {
+    "id": "proj_kalyssa",
+    "title": "Kalyssa",
+    "category": "nieuwbouw",
+    "location": "Locatie vertrouwelijk",
+    "year": "2026",
+    "area": "Details volgen",
+    "description": "Een project in ontwikkeling. Om vertrouwelijkheidsredenen tijdens de lopende fase worden hier nog geen details of scherpe beelden getoond.",
+    "image": "/images/projects/proj_kalyssa_main.jpg",
+    "images": [
+      "/images/projects/proj_kalyssa_main.jpg"
+    ],
+    "starred": false,
+    "order": 3,
+    "statusNote": "Dit project bevindt zich momenteel in ontwikkeling. In afwachting van de gepaste vrijgave door de opdrachtgever tonen we voorlopig enkel een vervaagde impressie, zonder projectnaam-gevoelige details. Meer informatie volgt zodra het project dat toelaat.",
+    "en": {
+      "location": "Location confidential",
+      "area": "Details to follow",
+      "description": "A project in development. For confidentiality reasons during the ongoing phase, no details or sharp images are shown here yet.",
+      "statusNote": "This project is currently in development. Pending appropriate release by the client, we are for now only showing a blurred impression, without name-sensitive project details. More information will follow as soon as the project allows."
+    }
+  }
+]

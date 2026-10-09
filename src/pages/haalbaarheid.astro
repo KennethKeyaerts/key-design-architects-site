@@ -1,0 +1,44 @@
+---
+import FloatingDoodles from '../components/FloatingDoodles.astro';
+import Layout from '../layouts/Layout.astro';
+import ArchitecturalMotifs from '../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../components/DoodleIcon.astro';
+import { s, siteSettings } from '../lib/data';
+import FeasibilityAssessor from '../components/FeasibilityAssessor';
+
+// Only pass the calculator the fields it actually needs (construction rates
+// and budget-split percentages), not the full settings object, so nothing
+// unrelated (like contact details) ends up in the page's client-side data.
+const calculatorSettings = Object.fromEntries(
+  Object.entries(siteSettings).filter(([key]) => key.startsWith('feasibility_') || key.startsWith('budget_'))
+);
+---
+
+<Layout
+  title="Haalbaarheidscheck | Key-Design Architects"
+  description="Bereken indicatief de bouwkost voor uw nieuwbouw-, renovatie- of interieurproject. Architectenereloon en studiekosten zijn hierin niet inbegrepen."
+  path="/haalbaarheid"
+  altLangPath="/en/haalbaarheid"
+  breadcrumbs={[{ name: 'Haalbaarheid', url: '/haalbaarheid' }]}
+>
+  <section class="relative overflow-hidden py-12 sm:py-14 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="c" />
+    <div class="container-page">
+      <div class="reveal max-w-2xl mb-8">
+        <DoodleIcon name="haalbaarheid" animate class="w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">{s('feasibilityCategory', 'Transparant vanaf dag één')}</span>
+        <h1 class="text-4xl font-bold text-earth-dark mt-2">{s('feasibilityTitle', 'Schat zelf je budget en traject')}</h1>
+        <p class="mt-4 text-earth-muted leading-relaxed">{s('feasibilitySubtitle')}</p>
+      </div>
+
+      <div class="reveal max-w-3xl">
+        <FeasibilityAssessor client:load settings={calculatorSettings} />
+      </div>
+
+      <p class="reveal max-w-3xl mt-6 text-sm text-earth-muted">
+        Deze check is één stap in het traject. <a href="/aanpak" class="text-terracotta font-bold hover:underline">Bekijk hoe het volledige traject verloopt, van idee tot sleuteloverdracht →</a>
+      </p>
+    </div>
+  </section>
+</Layout>

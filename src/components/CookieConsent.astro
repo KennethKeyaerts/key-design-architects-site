@@ -1,0 +1,162 @@
+---
+interface Props {
+  lang?: 'nl' | 'en';
+}
+const { lang = 'nl' } = Astro.props;
+const en = lang === 'en';
+---
+
+<div
+  id="cookie-banner"
+  class="hidden fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-50 bg-earth-dark text-stone-100 p-4 sm:p-5 rounded-2xl border border-stone-700 shadow-2xl"
+>
+  <div class="flex items-start gap-3">
+    <div class="hidden sm:flex w-9 h-9 rounded-xl bg-terracotta/20 border border-terracotta/30 items-center justify-center shrink-0 mt-0.5 text-terracotta text-xs font-bold">
+      i
+    </div>
+    <div class="space-y-1.5 text-xs font-light leading-relaxed">
+      <h4 class="font-serif font-bold text-sm text-white">{en ? 'Privacy & Functional Storage' : 'Privacy & Functionele Opslag'}</h4>
+      <p class="text-stone-300 text-[11px]">
+        {en
+          ? 'We only use necessary, functional storage to process your requests. No marketing trackers.'
+          : 'Wij gebruiken uitsluitend noodzakelijke, functionele opslag om uw aanvragen te verwerken. Geen marketing-trackers.'}
+      </p>
+      <div class="flex items-center gap-2 pt-2">
+        <button
+          id="cookie-accept"
+          class="py-2 px-4 bg-terracotta hover:bg-terracotta-dark text-white text-[10px] font-bold uppercase tracking-wider rounded-lg transition-colors"
+        >
+          {en ? 'Agree & Continue' : 'Akkoord & Doorgaan'}
+        </button>
+        <button
+          id="cookie-details"
+          class="py-2 px-3 bg-stone-800 hover:bg-stone-700 text-stone-300 text-[10px] font-medium rounded-lg transition-colors"
+        >
+          {en ? 'Details & Policy' : 'Details & Beleid'}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  id="privacy-modal"
+  class="hidden fixed inset-0 z-[100] items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto"
+>
+  <div class="bg-sand-light text-earth-dark w-full max-w-2xl rounded-3xl border border-sand-dark/40 shadow-2xl overflow-hidden my-8">
+    <div class="p-6 sm:p-8 bg-white border-b border-sand-dark/30 flex items-center justify-between">
+      <div>
+        <h3 class="text-xl font-serif font-bold">{en ? 'Privacy & Cookie Policy (GDPR)' : 'Privacy & Cookie Beleid (AVG / GDPR)'}</h3>
+        <p class="text-xs text-stone-500 font-light">Key-Design Architects • Kenneth Keyaerts ({en ? 'Registration no.' : 'Stamnummer'} A912091)</p>
+      </div>
+      <button id="privacy-close" class="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-full" aria-label={en ? 'Close' : 'Sluiten'}>✕</button>
+    </div>
+    <div class="p-6 sm:p-8 space-y-5 text-xs text-stone-600 font-light leading-relaxed max-h-[60vh] overflow-y-auto">
+      {en ? (
+        <>
+          <section>
+            <h4 class="font-serif font-bold text-sm text-earth-dark mb-1">1. Processing of Personal Data</h4>
+            <p>
+              When you submit information through our contact form or the feasibility check, we only process: your name,
+              email address, phone number, and the project information you provide yourself.
+            </p>
+          </section>
+          <section>
+            <h4 class="font-serif font-bold text-sm text-earth-dark mb-1">2. Purposes & Confidentiality</h4>
+            <p>
+              Your data is used exclusively to contact you personally about your request. Kenneth Keyaerts handles
+              every request under the confidentiality obligations of the Order of Architects' code of conduct. Your
+              data is never sold or shared with third parties.
+            </p>
+          </section>
+          <section>
+            <h4 class="font-serif font-bold text-sm text-earth-dark mb-1">3. Storage</h4>
+            <p>
+              Submitted forms are stored securely in a protected database, accessible only to Kenneth through a
+              personal, password-protected login.
+            </p>
+          </section>
+          <section>
+            <h4 class="font-serif font-bold text-sm text-earth-dark mb-1">4. Your Rights</h4>
+            <p>
+              You have the right, at any time and free of charge, to access, correct, or delete your data. To do so,
+              send a request to
+              <a href="mailto:kennethkeyaerts@icloud.com" class="text-terracotta">kennethkeyaerts@icloud.com</a>.
+            </p>
+          </section>
+        </>
+      ) : (
+        <>
+          <section>
+            <h4 class="font-serif font-bold text-sm text-earth-dark mb-1">1. Verwerking van Persoonsgegevens</h4>
+            <p>
+              Wanneer u via ons contactformulier of de haalbaarheidscheck gegevens invult, verwerken wij enkel: uw naam,
+              e-mailadres, telefoonnummer, en de projectinformatie die u zelf meegeeft.
+            </p>
+          </section>
+          <section>
+            <h4 class="font-serif font-bold text-sm text-earth-dark mb-1">2. Doeleinden & Vertrouwelijkheid</h4>
+            <p>
+              Uw gegevens worden uitsluitend gebruikt om persoonlijk contact op te nemen over uw aanvraag. Kenneth
+              Keyaerts behandelt elke aanvraag met de deontologische geheimhoudingsplicht van de Orde van Architecten.
+              Uw gegevens worden nooit verkocht of gedeeld met derden.
+            </p>
+          </section>
+          <section>
+            <h4 class="font-serif font-bold text-sm text-earth-dark mb-1">3. Opslag</h4>
+            <p>
+              Ingevulde formulieren worden veilig opgeslagen in een beveiligde database, enkel toegankelijk voor Kenneth
+              via een persoonlijke, met wachtwoord beveiligde login.
+            </p>
+          </section>
+          <section>
+            <h4 class="font-serif font-bold text-sm text-earth-dark mb-1">4. Uw Rechten</h4>
+            <p>
+              U heeft op elk moment recht op kosteloze inzage, correctie of verwijdering van uw gegevens. Stuur hiervoor
+              een verzoek naar
+              <a href="mailto:kennethkeyaerts@icloud.com" class="text-terracotta">kennethkeyaerts@icloud.com</a>.
+            </p>
+          </section>
+        </>
+      )}
+    </div>
+    <div class="p-6 bg-white border-t border-sand-dark/30 flex items-center justify-between">
+      <span class="text-[10px] text-stone-400">
+        {en ? 'Last updated: ' : 'Laatst bijgewerkt: '}
+        {new Date().toLocaleDateString(en ? 'en-GB' : 'nl-BE', { year: 'numeric', month: 'long' })}
+      </span>
+      <button id="privacy-accept-close" class="py-3 px-6 bg-terracotta hover:bg-terracotta-dark text-white text-xs font-bold rounded-xl transition-colors">
+        {en ? 'Understood & Close' : 'Begrepen & Sluiten'}
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'key_design_cookie_consent';
+  const banner = document.getElementById('cookie-banner');
+  const modal = document.getElementById('privacy-modal');
+
+  if (!localStorage.getItem(KEY)) {
+    banner?.classList.remove('hidden');
+  }
+
+  function accept() {
+    localStorage.setItem(KEY, 'accepted_' + new Date().toISOString());
+    banner?.classList.add('hidden');
+  }
+  function openModal() {
+    modal?.classList.remove('hidden');
+    modal?.classList.add('flex');
+  }
+  function closeModal() {
+    modal?.classList.add('hidden');
+    modal?.classList.remove('flex');
+  }
+
+  document.getElementById('cookie-accept')?.addEventListener('click', accept);
+  document.getElementById('cookie-details')?.addEventListener('click', openModal);
+  document.getElementById('privacy-close')?.addEventListener('click', closeModal);
+  document.getElementById('privacy-accept-close')?.addEventListener('click', () => { accept(); closeModal(); });
+  document.getElementById('footer-cookie-link')?.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+</script>

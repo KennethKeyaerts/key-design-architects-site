@@ -1,0 +1,175 @@
+---
+import FloatingDoodles from '../../components/FloatingDoodles.astro';
+import Img from '../../components/Img.astro';
+import Layout from '../../layouts/Layout.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../../components/DoodleIcon.astro';
+import { getProjectBySlug } from '../../lib/data';
+
+const residentialProject = getProjectBySlug('woning-lookstraat');
+const developmentProject = getProjectBySlug('kwartier-xiv');
+const introImage = developmentProject?.images?.[3] ?? developmentProject?.images?.[0] ?? developmentProject?.image;
+---
+
+<Layout
+  title="Key-Design Architects | Kenneth Keyaerts - Licensed Architect Lier & Antwerp"
+  description="Exclusive residential architecture, full renovations, new-build villas, interiors and 3D visualisations by licensed architect Kenneth Keyaerts. Active in Lier, Antwerp and the Kempen region."
+  path="/en/"
+  hasHero
+  lang="en"
+  altLangPath="/"
+>
+  <HeroSection lang="en" />
+
+  <!-- THE PRACTICE: one firm introduction, photography-led, no boxes -->
+  <section id="vision" class="relative overflow-hidden py-20 sm:py-28 bg-white isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="a" />
+    <div class="container-page">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+        <div class="reveal lg:col-span-7">
+          <div class="flex items-center gap-3">
+            <DoodleIcon name="aanpak" animate class="w-9 h-9 text-terracotta shrink-0" />
+            <span class="text-xs font-bold uppercase tracking-wider text-terracotta">The Practice</span>
+          </div>
+          <h2 class="mt-6 text-3xl sm:text-5xl font-bold leading-[1.18] text-earth-dark max-w-2xl">We don't start with objections. We start with investigation.</h2>
+        </div>
+        <div class="reveal lg:col-span-5 space-y-5 text-earth-muted leading-relaxed lg:pt-14" style="transition-delay:0.1s;">
+          <p>Key-Design Architects is the practice of Kenneth Keyaerts, licensed architect in Lier. We work for private clients who want to renovate or build their home, and for developers who want to bring a site to its full value.</p>
+          <p>Every design is tested against reality: the regulations, the budget, and what a contractor will later have to do with it. One consistent architect follows your project, from the first idea to the handover of the keys.</p>
+          <a href="/en/aanpak" class="inline-block pt-2 text-sm font-bold text-terracotta hover:text-terracotta-dark">Discover our approach →</a>
+        </div>
+      </div>
+
+      {introImage && (
+        <figure class="reveal mt-16 sm:mt-20 rounded-2xl overflow-hidden bg-sand-medium aspect-[4/3] sm:aspect-[16/8]">
+          <Img parallax src={introImage} alt={developmentProject?.title || 'Key-Design Architects'} class="w-full h-full object-cover" width="1600" height="800" sizes="100vw" />
+        </figure>
+      )}
+
+      <div class="mt-16 sm:mt-20 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 md:divide-x md:divide-earth-dark/15">
+        {[
+          ['haalbaarheid', 'Investigation', 'First the site, the rules and the budget. Only then the design.'],
+          ['kenneth', 'One point of contact', 'The architect who draws is also the architect who follows through.'],
+          ['projecten', 'Worry-free execution', 'Technique and budget are monitored as closely as the design.'],
+        ].map(([icon, title, text], i) => (
+          <div class="reveal md:px-10 first:md:pl-0 last:md:pr-0" style={`transition-delay:${i * 0.1}s`}>
+            <DoodleIcon name={icon as any} animate class="w-14 h-14 -ml-1.5 text-terracotta" />
+            <h3 class="mt-5 text-xl font-bold text-earth-dark">{title}</h3>
+            <p class="mt-2 text-sm text-earth-muted leading-relaxed max-w-xs">{text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- KENNETH TEASER -->
+  <section class="relative overflow-hidden py-14 bg-white isolate">
+    <FloatingDoodles seed={2} />
+    <ArchitecturalMotifs variant="b" />
+    <div class="container-page">
+      <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
+        <img
+          src="/images/brand/kenneth-portrait.jpg"
+          alt="Kenneth Keyaerts, licensed architect at Key-Design Architects"
+          class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-earth-dark shrink-0"
+          width="128"
+          height="128"
+        />
+        <div class="flex-1 text-center sm:text-left">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Your Architect</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-earth-dark mt-1">Kenneth Keyaerts</h2>
+          <p class="mt-2 text-sm text-earth-muted leading-relaxed max-w-lg">
+            Licensed architect with the Order of Architects, your consistent point of contact from the first sketch to the handover of the keys.
+          </p>
+        </div>
+        <a href="/en/over-ons" class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider shrink-0">
+          Meet Kenneth →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO HIGHLIGHTS -->
+  <section class="py-14 bg-sand-light relative overflow-hidden isolate">
+    <FloatingDoodles seed={3} />
+    <div class="container-page">
+      <div class="reveal mb-8 max-w-2xl">
+        <div class="flex items-center gap-3">
+          <DoodleIcon name="projecten" animate class="w-9 h-9 text-terracotta shrink-0" />
+          <span class="text-xs font-bold uppercase tracking-wider text-terracotta">Realisations & Concepts</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-earth-dark mt-3">Selected Projects</h2>
+        <p class="mt-3 text-earth-muted leading-relaxed">
+          From a personal renovation to a full-scale property development: Key-Design guides both with the same thoroughness.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {residentialProject && (
+          <a href={`/en/portfolio/${residentialProject.slug}`} class="card-cartoon portfolio-grid-item reveal block overflow-hidden group">
+            <div class="aspect-[16/10] overflow-hidden bg-sand-medium border-b-2 border-earth-dark relative">
+              <Img src={residentialProject.image} alt={residentialProject.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width="800" height="500" sizes="(min-width:1024px) 50vw, 100vw" />
+              <span class="badge-cartoon absolute top-4 left-4 py-1.5 px-3.5 text-[10px] font-bold uppercase tracking-wider">For private clients</span>
+            </div>
+            <div class="p-6">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-terracotta">Renovation</span>
+              <h3 class="font-bold text-xl text-earth-dark mt-1">{residentialProject.title}</h3>
+              <p class="text-xs text-earth-muted mt-1">{residentialProject.location} · {residentialProject.year}</p>
+              <p class="mt-3 text-sm text-earth-muted leading-relaxed">Your own home, from first idea to a renovation that holds up to the smallest detail.</p>
+              <span class="inline-block mt-4 text-sm font-bold text-terracotta group-hover:text-terracotta-dark">View this renovation →</span>
+            </div>
+          </a>
+        )}
+        {developmentProject && (
+          <a href={`/en/portfolio/${developmentProject.slug}`} class="card-cartoon portfolio-grid-item reveal block overflow-hidden group" style="transition-delay:0.08s">
+            <div class="aspect-[16/10] overflow-hidden bg-sand-medium border-b-2 border-earth-dark relative">
+              <Img src={developmentProject.image} alt={developmentProject.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width="800" height="500" sizes="(min-width:1024px) 50vw, 100vw" />
+              <span class="py-1.5 px-3.5 text-[10px] font-bold uppercase tracking-wider rounded-full border-2 border-earth-dark bg-earth-dark text-white absolute top-4 left-4 shadow-[3px_3px_0_0_#1C1917]">For developers & real estate</span>
+            </div>
+            <div class="p-6">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-terracotta">New-build</span>
+              <h3 class="font-bold text-xl text-earth-dark mt-1">{developmentProject.title}</h3>
+              <p class="text-xs text-earth-muted mt-1">{developmentProject.location}</p>
+              <p class="mt-3 text-sm text-earth-muted leading-relaxed">Feasibility, spatial yield and architectural added value for your real estate project.</p>
+              <span class="inline-block mt-4 text-sm font-bold text-terracotta group-hover:text-terracotta-dark">Discover this development →</span>
+            </div>
+          </a>
+        )}
+      </div>
+      <div class="reveal text-center mt-8">
+        <a href="/en/portfolio" class="text-sm font-bold text-terracotta hover:text-terracotta-dark">View all projects →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- THROUGH RENDERS TEASER -->
+  <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
+    <FloatingDoodles seed={4} />
+    <div class="container-page">
+      <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+        <img src="/images/brand/logo-through-renders-full.jpg" alt="Through Renders" class="h-24 w-auto rounded-xl border-2 border-earth-dark shrink-0" width="64" height="96" />
+        <div class="flex-1">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Our Visualisation Partner</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-earth-dark mt-1">Photorealistic 3D Renders by Through Renders</h2>
+          <p class="mt-2 text-sm text-earth-muted leading-relaxed max-w-xl">Curious how your design will look in reality? Every breathtaking 3D visualisation on this website was produced by our sister company Through Renders, co-founded by Kenneth Keyaerts and Thomas Desmet. They take architectural renders to an exceptional, photorealistic level.</p>
+        </div>
+        <a href="https://www.throughrenders.be" target="_blank" rel="noopener noreferrer" class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider shrink-0">
+          Visit Through Renders →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-14 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={5} />
+    <div class="container-page text-center reveal">
+      <h2 class="text-3xl sm:text-4xl font-bold">Ready to discuss your project, no strings attached?</h2>
+      <p class="mt-4 text-stone-300 max-w-xl mx-auto">Get in touch with Kenneth directly for a clear, no-obligation introductory conversation.</p>
+      <a href="/en/contact" class="btn-cartoon-primary inline-block mt-8 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
+        Discuss Your Project with Kenneth
+      </a>
+    </div>
+  </section>
+</Layout>

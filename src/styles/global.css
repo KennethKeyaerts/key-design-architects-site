@@ -1,0 +1,299 @@
+@import '@fontsource-variable/league-spartan';
+@import '@fontsource-variable/inter';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  [id] { scroll-margin-top: 5rem; }
+  :focus-visible { outline: 2px solid #C86A4B; outline-offset: 3px; border-radius: 4px; }
+  .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 100; background: #4E342E; color: #fff; padding: .6rem 1rem; border-radius: .6rem; font-weight: 700; transition: top .2s; }
+  .skip-link:focus { top: 1rem; }
+  body {
+    @apply bg-sand-light text-earth-dark antialiased font-sans;
+  }
+  body { font-feature-settings: 'ss01', 'cv11'; line-height: 1.7; letter-spacing: 0.005em; }
+  p, li { text-wrap: pretty; }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  h1 { text-transform: uppercase; letter-spacing: 0.005em; font-weight: 800; line-height: 1.02; }
+  h2 { letter-spacing: -0.01em; }
+  /* Small labels (eyebrows, badges, buttons) read as architectural signage:
+     spaced capitals in the display face. */
+  .uppercase { font-family: 'League Spartan Variable', 'League Spartan', Inter, sans-serif; }
+  .btn-cartoon-primary, .btn-cartoon { font-family: 'League Spartan Variable', Inter, sans-serif; }
+}
+
+/*
+  A very subtle paper grain over the whole site: flat single-tone
+  backgrounds (however nicely spaced) read as cold/digital at a glance.
+  A faint noise texture is a common trick in premium print-inspired
+  branding to make the same layout feel warmer and more considered, without
+  adding any actual visual clutter or competing for attention with content.
+  Pure CSS, no image request, negligible performance cost.
+*/
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+@media (prefers-color-scheme: dark) {
+  body::before { mix-blend-mode: overlay; }
+}
+
+@layer utilities {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
+  }
+}
+
+/*
+  Cartoon design system: thick black border + hard offset shadow, matching
+  the brand's original playful-but-professional style (see reference
+  screenshots: rounded cards, 2px black outline, solid offset shadow rather
+  than a soft blur). Reused across cards, buttons and badges site-wide.
+*/
+.card-cartoon {
+  background: white;
+  border: 2px solid #1C1917;
+  border-radius: 1.5rem;
+  box-shadow: 5px 5px 0 0 #1C1917;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-cartoon:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 0 #1C1917;
+}
+.badge-cartoon {
+  background: #FBD4B4;
+  border: 2px solid #1C1917;
+  border-radius: 9999px;
+  box-shadow: 3px 3px 0 0 #1C1917;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+a.badge-cartoon:hover, button.badge-cartoon:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #1C1917;
+}
+.btn-cartoon-primary {
+  background: #C86A4B;
+  color: white;
+  border: 2px solid #1C1917;
+  border-radius: 9999px;
+  box-shadow: 4px 4px 0 0 #1C1917;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-cartoon-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 #1C1917;
+}
+.btn-cartoon-secondary {
+  background: white;
+  color: #1C1917;
+  border: 2px solid #1C1917;
+  border-radius: 9999px;
+  box-shadow: 4px 4px 0 0 #1C1917;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-cartoon-secondary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 #1C1917;
+}
+
+/* Portfolio card hover: cartoon-style lift with a bigger offset shadow */
+.portfolio-grid-item {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.portfolio-grid-item:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 0 #1C1917;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #FAF5F0; }
+::-webkit-scrollbar-thumb { background: #E6D5C3; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #D48C6F; }
+
+/*
+  Scroll-reveal: content is already in the HTML (no loading screen, no
+  render-blocking JS needed to see it) — this is a pure progressive-enhancement
+  fade-in. If JS is disabled or hasn't run yet, .reveal is fully visible by
+  default via the :not(.js-ready) fallback below, so nothing is ever hidden
+  from a crawler or a slow connection.
+*/
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+html.js-ready .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.js-ready .reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+/* Accessibility: respect the visitor's reduced-motion preference by skipping
+   the fade/slide entirely, content is already fully visible either way. */
+@media (prefers-reduced-motion: reduce) {
+  html.js-ready .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .card-cartoon, .btn-cartoon-primary, .btn-cartoon-secondary, .badge-cartoon, .portfolio-grid-item {
+    transition: none;
+  }
+  .line-draw :is(path, circle, rect) {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+}
+
+/*
+  Doodle icons draw themselves in on scroll, like a pen sketching them.
+  Every shape is normalised to length 1 (see DoodleIcon.astro), so one rule
+  draws any icon; the "1 2" dash pattern avoids the stray dot that round
+  line caps leave behind at the start of a hidden stroke.
+*/
+.line-draw :is(path, circle, rect) {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.js-ready .line-draw.in-view :is(path, circle, rect) {
+  stroke-dashoffset: 0;
+}
+html:not(.js-ready) .line-draw :is(path, circle, rect) {
+  stroke-dashoffset: 0;
+}
+
+@media print {
+  header, footer, .no-print { display: none !important; }
+}
+
+/* ---------- Motion layer ---------- */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { animation: marquee 38s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+@keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.12) translate3d(-1%, -1%, 0); } }
+.hero-kenburns { animation: kenburns 14s ease-out infinite alternate; will-change: transform; }
+
+@keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+.wiggle { transform-origin: 50% 70%; animation: wiggle 5s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+.bob { animation: bob 3.2s ease-in-out infinite; }
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.spin-slow { animation: spin-slow 28s linear infinite; }
+@keyframes twinkle { 0%,100% { opacity: .25; transform: scale(.85) rotate(0); } 50% { opacity: .9; transform: scale(1.1) rotate(20deg); } }
+.twinkle { animation: twinkle 3.6s ease-in-out infinite; }
+
+/* Hero entrance: eyebrow, headline lines and button rise in one after another. */
+@keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+.hero-rise > * { opacity: 0; animation: rise .9s cubic-bezier(.16,1,.3,1) forwards; }
+.hero-rise > *:nth-child(1) { animation-delay: .15s; }
+.hero-rise > *:nth-child(2) { animation-delay: .4s; }
+.hero-rise > *:nth-child(3) { animation-delay: .65s; }
+
+/* Images unveil like a sliding drawing sheet; plain on no-JS. */
+html.js-ready .img-wipe { opacity: 0; transform: scale(1.05); transition: opacity 1s ease, transform 1.4s cubic-bezier(.16,1,.3,1); }
+html.js-ready .img-wipe.in-view { opacity: 1; transform: none; }
+
+/* Hand-drawn wavy underline that draws itself under every section title. */
+main h2:not(.no-scribble)::after {
+  content: ''; display: block; height: 10px; width: 0; margin-top: .7rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='10' viewBox='0 0 120 10'%3E%3Cpath d='M2 6 C14 1 22 9 34 5 S56 2 68 6 S92 9 118 3' fill='none' stroke='%23C86A4B' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") left center / 120px 10px no-repeat;
+  transition: width 1s cubic-bezier(.16,1,.3,1) .25s;
+}
+main h2.in-view::after { width: 120px; }
+main .text-center:not([class*='sm:text-left']) h2::after, main h2.text-center::after { margin-inline: auto; background-position: center; }
+html:not(.js-ready) .axis-line { transform: scaleY(1); }
+html:not(.js-ready) main h2::after { width: 120px; }
+
+/* Cards lift and their doodles perk up on hover. */
+.card-cartoon:hover .line-draw, .card-cartoon:hover svg { transform: rotate(-6deg) scale(1.08); }
+.card-cartoon svg { transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+
+/* Scroll cue in the hero */
+.scroll-cue { animation: bob 2.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track, .hero-kenburns, .wiggle, .bob, .spin-slow, .twinkle, .scroll-cue { animation: none !important; }
+  .hero-rise > * { opacity: 1; animation: none; }
+  html.js-ready .img-wipe { opacity: 1; transform: none; transition: none; }
+  main h2::after { width: 120px; transition: none; }
+}
+@media (hover: none) { .card-cartoon:hover .line-draw, .card-cartoon:hover svg { transform: none; } }
+
+/* ---------- Architectural motion, round two ---------- */
+#scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: #C86A4B; transform-origin: 0 50%; transform: scaleX(0); z-index: 60; pointer-events: none; }
+
+/* Faint drafting grid that drifts very slowly behind every section */
+.blueprint-grid {
+  background-image: linear-gradient(rgba(200,106,75,.10) 1px, transparent 1px), linear-gradient(90deg, rgba(200,106,75,.10) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(ellipse at 50% 40%, #000 0%, transparent 75%);
+  animation: grid-drift 40s linear infinite;
+}
+@keyframes grid-drift { to { background-position: 56px 56px; } }
+
+/* Hero construction lines draw in once, then breathe */
+.hero-lines path, .hero-tick path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-line 2.4s cubic-bezier(.16,1,.3,1) .6s forwards; }
+.hero-lines path:nth-child(2) { animation-delay: .8s; } .hero-lines path:nth-child(3) { animation-delay: 1s; } .hero-lines path:nth-child(4) { animation-delay: 1.2s; }
+@keyframes draw-line { to { stroke-dashoffset: 0; } }
+
+/* Axis and annotations animate in with their section */
+.axis-line { transform-origin: top; transform: scaleY(0); transition: transform 1.6s cubic-bezier(.16,1,.3,1) .3s; }
+.axis.in-view .axis-line { transform: scaleY(1); }
+.scale-bar { animation: scale-grow 6s ease-in-out infinite alternate; transform-origin: left; }
+@keyframes scale-grow { from { transform: scaleX(.55); } to { transform: scaleX(1); } }
+.north { animation: north-swing 7s ease-in-out infinite; transform-origin: 50% 60%; }
+@keyframes north-swing { 0%,100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+
+/* Staggered reveal for siblings in grids and lists */
+.grid > .reveal:nth-child(2), .grid > .reveal:nth-child(2) { transition-delay: .12s; }
+.grid > .reveal:nth-child(3) { transition-delay: .24s; }
+.grid > .reveal:nth-child(4) { transition-delay: .36s; }
+
+/* Buttons: a light sweep, like sunlight crossing a facade */
+.btn-cartoon-primary { position: relative; overflow: hidden; }
+.btn-cartoon-primary::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.35) 50%, transparent 65%); transform: translateX(-120%); }
+.btn-cartoon-primary:hover::after { transform: translateX(120%); transition: transform .8s ease; }
+
+/* Link arrows nudge forward */
+main a:hover > .arrow, main a.group:hover .arrow { transform: translateX(4px); }
+
+/* Whole page settles in */
+main { animation: page-in .7s ease both; }
+@keyframes page-in { from { opacity: 0; } to { opacity: 1; } }
+
+[data-parallax] { will-change: translate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .blueprint-grid, .scale-bar, .north, main { animation: none !important; }
+  .hero-lines path, .hero-tick path { animation: none; stroke-dashoffset: 0; }
+  .axis-line { transform: none; transition: none; }
+  #scroll-progress { display: none; }
+}
+
+/* Hero photo focal point, chosen in /beheerder (Hero > Positie van de foto) */
+.hero-img { object-position: var(--fp, 50% 50%); }
+@media (max-width: 639px) { .hero-img { object-position: var(--fpm, var(--fp, 60% 50%)); } }

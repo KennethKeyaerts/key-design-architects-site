@@ -1,0 +1,93 @@
+---
+import FloatingDoodles from '../../components/FloatingDoodles.astro';
+import Img from '../../components/Img.astro';
+import Layout from '../../layouts/Layout.astro';
+import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../../components/DoodleIcon.astro';
+import { projects } from '../../lib/data';
+
+const CATEGORY_LABELS: Record<string, string> = {
+  nieuwbouw: 'New-build',
+  renovatie: 'Full Renovation',
+  interieur: 'Interior & Custom Work',
+};
+const categories = Object.keys(CATEGORY_LABELS);
+const t = (p: any, key: string) => p.en?.[key] ?? p[key];
+---
+
+<Layout
+  title="Projects & Realisations | Key-Design Architects"
+  description="Discover the realised and ongoing architecture projects of Key-Design Architects: new-build villas, full renovations and interior projects in Lier, Antwerp and the Kempen region."
+  path="/en/portfolio"
+  lang="en"
+  altLangPath="/portfolio"
+  breadcrumbs={[{ name: 'Projects', url: '/en/portfolio' }]}
+>
+  <section class="relative overflow-hidden py-12 sm:py-14 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="a" />
+    <div class="container-page">
+      <div class="reveal max-w-2xl mb-8">
+        <DoodleIcon name="projecten" animate class="w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">Realisations & Concepts</span>
+        <h1 class="text-4xl font-bold text-earth-dark mt-2">Selected Projects</h1>
+        <p class="mt-4 text-earth-muted leading-relaxed">An overview of realised and ongoing designs, where aesthetics, technique, and budget go hand in hand.</p>
+      </div>
+
+      <div class="reveal flex flex-wrap gap-2.5 mb-8" id="portfolio-filters">
+        <button data-filter="alle" class="portfolio-filter-btn active py-2 px-4 rounded-full border-2 border-earth-dark text-xs font-bold uppercase tracking-wider transition-colors">
+          All projects
+        </button>
+        {categories.map((cat) => (
+          <button data-filter={cat} class="portfolio-filter-btn py-2 px-4 rounded-full border-2 border-earth-dark text-xs font-bold uppercase tracking-wider transition-colors">
+            {CATEGORY_LABELS[cat]}
+          </button>
+        ))}
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
+        {projects.map((p) => (
+          <a href={`/en/portfolio/${p.slug}`} data-category={p.category} class="portfolio-card card-cartoon portfolio-grid-item reveal block overflow-hidden">
+            <div class="aspect-[4/3] overflow-hidden bg-sand-medium border-b-2 border-earth-dark">
+              <Img src={p.image} alt={p.title} class="w-full h-full object-cover" width="600" height="450" sizes="(min-width:1024px) 50vw, 100vw" />
+            </div>
+            <div class="p-5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-terracotta">{CATEGORY_LABELS[p.category] || p.category}</span>
+              <h2 class="font-bold text-lg text-earth-dark mt-1">{p.title}</h2>
+              <p class="text-xs text-earth-muted mt-1">{t(p, 'location')} · {p.year} · {t(p, 'area')}</p>
+              <p class="text-sm text-earth-muted mt-3 line-clamp-2">{t(p, 'description')}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="hidden text-earth-muted mt-6" id="portfolio-empty-state">No projects in this category at the moment.</p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .portfolio-filter-btn { background: white; color: #4E342E; }
+  .portfolio-filter-btn.active { background: #C86A4B; color: white; }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.portfolio-filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.portfolio-card');
+  const emptyState = document.getElementById('portfolio-empty-state');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const match = filter === 'alle' || card.dataset.category === filter;
+        card.style.display = match ? '' : 'none';
+        if (match) visibleCount++;
+      });
+      emptyState?.classList.toggle('hidden', visibleCount > 0);
+    });
+  });
+</script>

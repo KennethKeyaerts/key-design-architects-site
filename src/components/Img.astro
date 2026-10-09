@@ -1,0 +1,37 @@
+---
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+// Responsive, high-quality image. For files under /images/hq/ it emits a
+// srcset of webp widths (640 to 2400) so phones fetch small files and large
+// screens get crisp ones; anything else renders as a plain <img>.
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+  sizes?: string;
+  eager?: boolean;
+  priority?: boolean;
+  width?: number;
+  height?: number;
+  style?: string;
+  parallax?: boolean;
+}
+const { src, alt, class: cls = '', sizes = '100vw', eager = false, priority = false, width, height, style, parallax = false } = Astro.props;
+const m = /^\/images\/((?:hq|hero|projects)\/.+)\.(?:jpe?g|png|webp)$/i.exec(src || '');
+const widths = [640, 1024, 1600, 2400].filter((w) => !m || existsSync(path.join(process.cwd(), 'public', 'images', `${m[1]}-${w}.webp`)));
+const srcset = m ? widths.map((w) => `/images/${m[1]}-${w}.webp ${w}w`).join(', ') : undefined;
+---
+<img
+  src={src}
+  srcset={srcset}
+  sizes={srcset ? sizes : undefined}
+  alt={alt}
+  class={`${cls} ${eager ? '' : 'img-wipe'}`}
+  style={parallax ? `scale:1.12;${style ?? ''}` : style}
+  data-parallax={parallax ? '' : undefined}
+  width={width}
+  height={height}
+  loading={eager ? 'eager' : 'lazy'}
+  decoding={eager ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : undefined}
+/>

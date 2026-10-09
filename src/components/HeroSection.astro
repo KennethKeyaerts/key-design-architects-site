@@ -1,0 +1,171 @@
+---
+import Img from './Img.astro';
+import { s, getHeroConfig } from '../lib/data';
+
+interface Props {
+  lang?: 'nl' | 'en';
+}
+const { lang = 'nl' } = Astro.props;
+const en = lang === 'en';
+
+const hero = getHeroConfig();
+
+// Each slide can point at the project it shows (projectSlug). Without one,
+// the button falls back to the project overview, so it never goes nowhere.
+const base = en ? '/en/portfolio' : '/portfolio';
+const localSlides = hero.slides.map((sl: any) => ({
+  ...sl,
+  title: en && sl?.titleEn ? sl.titleEn : sl?.title,
+  href: sl?.projectSlug ? `${base}/${sl.projectSlug}` : base,
+}));
+const firstSlide = localSlides[0];
+
+// The headline is two short statements: show them as two clearly separated
+// lines instead of one tightly packed block.
+const title = en ? 'No project too small. No idea too big.' : s('heroTitle', 'Geen project te klein. Geen idee te groot.');
+const [line1, ...restLines] = title.split(/(?<=[.!?])\s+/);
+const line2 = restLines.join(' ');
+const buttonLabel = en ? 'View this project' : 'Bekijk dit project';
+---
+
+<section class="relative overflow-hidden h-[92vh] min-h-[560px] max-h-[900px] flex items-end text-white">
+  {hero.mode === 'video' ? (
+    <>
+      {hero.videoDesktop && (
+        <video
+          class="hidden sm:block absolute inset-0 w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster={firstSlide?.image}
+          aria-hidden="true"
+        >
+          <source src={hero.videoDesktop} type="video/mp4" />
+        </video>
+      )}
+      {hero.videoMobile && (
+        <video
+          class="sm:hidden absolute inset-0 w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster={firstSlide?.image}
+          aria-hidden="true"
+        >
+          <source src={hero.videoMobile} type="video/mp4" />
+        </video>
+      )}
+    </>
+  ) : (
+    <div id="hero-slideshow" class="absolute inset-0">
+      {localSlides.map((slide, i) => (
+        <div
+          class="hero-slide absolute inset-0 transition-opacity duration-[1500ms] ease-in-out"
+          style={`opacity:${i === 0 ? 1 : 0}`}
+          data-index={i}
+        >
+          <Img
+            src={slide.image}
+            alt={slide.title || 'Key-Design Architects project'}
+            class="w-full h-full object-cover hero-kenburns hero-img"
+            eager={i === 0}
+            priority={i === 0}
+            style={`--fp:${slide.focusX ?? 50}% ${slide.focusY ?? 50}%;--fpm:${slide.focusMobileX ?? slide.focusX ?? 60}% ${slide.focusMobileY ?? slide.focusY ?? 50}%`}
+            sizes="100vw"
+            width={1920}
+            height={1080}
+          />
+        </div>
+      ))}
+    </div>
+  )}
+
+  <!-- Light overlay: the photography leads, the gradient only gives the
+       headline enough contrast at the bottom. -->
+  <div class="absolute inset-0 bg-gradient-to-t from-earth-dark/80 via-earth-dark/10 to-transparent pointer-events-none"></div>
+  <!-- Soft scrim behind the transparent header so the logo and menu button
+       stay legible whatever the photo looks like at the very top. -->
+  <div class="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-earth-dark/50 to-transparent pointer-events-none"></div>
+
+  <!-- Construction lines drawing themselves over the photo, like a plan being set out -->
+  <svg class="hero-lines absolute inset-0 w-full h-full pointer-events-none text-white/35 hidden sm:block" viewBox="0 0 1000 600" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" aria-hidden="true">
+    <path pathLength="1" d="M333 0 V600" /><path pathLength="1" d="M666 0 V600" /><path pathLength="1" d="M0 200 H1000" /><path pathLength="1" d="M0 400 H1000" />
+  </svg>
+  <svg class="absolute top-28 left-10 w-6 h-6 text-white/60 hidden lg:block hero-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path pathLength="1" d="M12 0 V24 M0 12 H24" /></svg>
+  <!-- Decorative sketch marks and scroll cue -->
+  <svg class="absolute top-28 right-[8%] w-10 h-10 text-white/70 twinkle hidden sm:block" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M16 4 C16 11 21 16 28 16 C21 16 16 21 16 28 C16 21 11 16 4 16 C11 16 16 11 16 4 Z" /></svg>
+  <svg class="absolute top-[38%] right-[18%] w-6 h-6 text-white/60 twinkle hidden md:block" style="animation-delay:1.4s" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M16 4 C16 11 21 16 28 16 C21 16 16 21 16 28 C16 21 11 16 4 16 C11 16 16 11 16 4 Z" /></svg>
+  <a href="#visie" aria-label={en ? 'Scroll down' : 'Scroll naar beneden'} class="scroll-cue absolute bottom-5 right-5 sm:right-10 z-10 flex flex-col items-center gap-1 text-white/85 hover:text-white">
+    <span class="hidden sm:block text-[10px] font-bold uppercase tracking-[0.25em] [writing-mode:vertical-rl]">{en ? 'Scroll' : 'Ontdek'}</span>
+    <svg class="w-6 h-9" viewBox="0 0 24 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="4" y="2" width="16" height="26" rx="8" /><path d="M12 8 V13" /><path d="M7 31 L12 35 L17 31" /></svg>
+  </a>
+
+  <div class="container-page relative pb-12 sm:pb-16">
+    <div class="hero-rise max-w-3xl">
+      <h1 class="font-bold tracking-tight text-4xl sm:text-6xl lg:text-7xl leading-[1.05]">
+        <span class="block">{line1}</span>
+        {line2 && <span class="block mt-4 sm:mt-6 lg:mt-8">{line2}</span>}
+      </h1>
+      <div class="mt-9 sm:mt-12">
+        <a
+          id="hero-project-link"
+          href={firstSlide?.href || base}
+          class="btn-cartoon-primary inline-block text-center py-3.5 px-8 text-sm font-bold uppercase tracking-wider"
+        >
+          {buttonLabel} →
+        </a>
+      </div>
+    </div>
+
+    {hero.mode === 'slides' && localSlides.length > 1 && (
+      <div class="mt-12 sm:mt-14 flex items-center gap-4">
+        <div class="flex gap-1.5" id="hero-slide-dots">
+          {localSlides.map((_, i) => (
+            <button
+              class="hero-dot w-1.5 h-1.5 rounded-full bg-white/40 transition-all"
+              data-goto={i}
+              aria-label={en ? `Go to image ${i + 1}` : `Ga naar beeld ${i + 1}`}
+            ></button>
+          ))}
+        </div>
+        {firstSlide?.title && (
+          <p class="text-xs text-stone-300" id="hero-slide-caption">
+            {firstSlide.title}{firstSlide.location ? ` · ${firstSlide.location}` : ''}
+          </p>
+        )}
+      </div>
+    )}
+  </div>
+</section>
+
+{hero.mode === 'slides' && localSlides.length > 1 && (
+  <script define:vars={{ slides: localSlides }}>
+    let current = 0;
+    const slideEls = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+    const caption = document.getElementById('hero-slide-caption');
+    const projectLink = document.getElementById('hero-project-link');
+
+    function show(i) {
+      slideEls.forEach((el, idx) => (el.style.opacity = idx === i ? '1' : '0'));
+      dots.forEach((d, idx) => d.classList.toggle('bg-white', idx === i));
+      dots.forEach((d, idx) => d.classList.toggle('bg-white/40', idx !== i));
+      if (caption && slides[i]) {
+        caption.textContent = [slides[i].title, slides[i].location].filter(Boolean).join(' · ');
+      }
+      if (projectLink && slides[i]?.href) projectLink.setAttribute('href', slides[i].href);
+      current = i;
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => show(Number(dot.dataset.goto)));
+    });
+
+    setInterval(() => show((current + 1) % slideEls.length), 6000);
+    show(0);
+  </script>
+)}

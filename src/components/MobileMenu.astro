@@ -1,0 +1,142 @@
+---
+import { s } from '../lib/data';
+import DoodleIcon from './DoodleIcon.astro';
+import Logo from './Logo.astro';
+
+interface Props {
+  lang?: 'nl' | 'en';
+  altLangPath?: string;
+}
+const { lang = 'nl', altLangPath = '/' } = Astro.props;
+
+// Icon keys are language-independent; labels switch per language below.
+const navIconNames = ['ontdek', 'aanpak', 'projecten', 'haalbaarheid', 'regularisatie', 'kenneth', 'contact'];
+
+const navItemsNl = [
+  ['01', 'Ontdek', '/'],
+  ['02', s('navApproach', 'Aanpak'), '/aanpak'],
+  ['03', s('navProjects', 'Projecten'), '/portfolio'],
+  ['04', s('navFeasibility', 'Haalbaarheid'), '/haalbaarheid'],
+  ['05', s('navRegularisatie', 'Regularisatie'), '/regularisatie'],
+  ['06', s('navAbout', 'Over Kenneth'), '/over-ons'],
+  ['07', 'Contact', '/contact'],
+];
+const navItemsEn = [
+  ['01', 'Discover', '/en/'],
+  ['02', 'Approach', '/en/aanpak'],
+  ['03', 'Projects', '/en/portfolio'],
+  ['04', 'Feasibility', '/en/haalbaarheid'],
+  ['05', 'Regularisation', '/en/regularisatie'],
+  ['06', 'About Kenneth', '/en/over-ons'],
+  ['07', 'Contact', '/en/contact'],
+];
+const navItems = lang === 'en' ? navItemsEn : navItemsNl;
+---
+
+<!--
+  A right-side sliding panel rather than a full-screen takeover: the hero
+  photo/video stays partly visible through the dimmed backdrop, closer in
+  spirit to Archilogic's restraint, but styled in Key-Design's own cartoon
+  language and with a clearly-labelled trigger (see Header.astro) rather
+  than an easy-to-miss icon.
+-->
+<div
+  id="menu-backdrop"
+  class="fixed inset-0 z-40 bg-earth-dark/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+  aria-hidden="true"
+></div>
+
+<div
+  id="mobile-menu"
+  class="mobile-menu fixed inset-y-0 right-0 z-50 w-full sm:w-[440px] bg-earth-dark text-white translate-x-full transition-transform duration-300 ease-out shadow-2xl"
+  role="dialog"
+  aria-modal="true"
+  aria-label={lang === 'en' ? 'Navigation menu' : 'Navigatiemenu'}
+  aria-hidden="true"
+>
+  <div class="flex flex-col h-full p-6 sm:p-10 overflow-y-auto">
+    <div class="flex items-center justify-between">
+      <Logo tone="light" size="sm" />
+      <button
+        id="menu-close"
+        aria-label={lang === 'en' ? 'Close menu' : 'Sluit menu'}
+        class="w-11 h-11 rounded-full border-2 border-white/40 flex items-center justify-center text-white/80 hover:border-white hover:text-white transition-colors shrink-0"
+      >
+        ✕
+      </button>
+    </div>
+
+    <nav class="flex flex-col mt-10" aria-label={lang === 'en' ? 'Main navigation' : 'Hoofdnavigatie'}>
+      {navItems.map(([num, label, href], i) => (
+        <a
+          href={href}
+          style={`--i:${i}`}
+          class="menu-link group flex items-center gap-5 py-3.5 border-b border-white/10 hover:border-terracotta-soft transition-colors"
+        >
+          <DoodleIcon
+            name={(navIconNames[i] || 'contact') as any}
+            class="nav-icon shrink-0 w-9 h-9 sm:w-10 sm:h-10 text-terracotta-soft group-hover:text-white transition-colors"
+          />
+          <span class="text-2xl sm:text-3xl font-bold group-hover:text-terracotta-soft transition-colors">{label}</span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="mt-8">
+      <a href={lang === 'en' ? '/en/contact' : '/contact'} class="btn-cartoon-primary inline-block py-3 px-7 text-xs font-bold uppercase tracking-wider">
+        {lang === 'en' ? 'Start Your Project' : s('navContactBtn', 'Start Projectverkenning')}
+      </a>
+    </div>
+
+    <div class="mt-auto pt-8 border-t border-white/10 text-sm text-white/50">
+      <p>KEY-DESIGN ARCHITECTS</p>
+      <a href="mailto:kennethkeyaerts@icloud.com" class="text-terracotta-soft">kennethkeyaerts@icloud.com</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mobile-menu.open {
+    transform: translateX(0);
+  }
+  #menu-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* The doodles are the menu's only markers, so they get a little life:
+     each one sketches itself in, one after the other, when the panel opens,
+     then gives a single confident wiggle on hover. */
+  .mobile-menu :global(.nav-icon) :global(path),
+  .mobile-menu :global(.nav-icon) :global(circle),
+  .mobile-menu :global(.nav-icon) :global(rect) {
+    stroke-dasharray: 1 2;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--i, 0) * 70ms + 200ms);
+  }
+  .mobile-menu.open :global(.nav-icon) :global(path),
+  .mobile-menu.open :global(.nav-icon) :global(circle),
+  .mobile-menu.open :global(.nav-icon) :global(rect) {
+    stroke-dashoffset: 0;
+  }
+  @keyframes nav-icon-wiggle {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    30% { transform: rotate(-10deg) scale(1.12); }
+    65% { transform: rotate(8deg) scale(1.12); }
+  }
+  .menu-link:hover :global(.nav-icon) {
+    animation: nav-icon-wiggle 0.5s ease-in-out;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu :global(.nav-icon) :global(path),
+    .mobile-menu :global(.nav-icon) :global(circle),
+    .mobile-menu :global(.nav-icon) :global(rect) {
+      stroke-dashoffset: 0;
+      transition: none;
+    }
+    .menu-link:hover :global(.nav-icon) {
+      animation: none;
+    }
+  }
+</style>

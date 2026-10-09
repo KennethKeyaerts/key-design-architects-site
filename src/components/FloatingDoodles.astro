@@ -1,0 +1,44 @@
+---
+import DoodleIcon from './DoodleIcon.astro';
+interface Props { seed?: number; }
+const { seed = 0 } = Astro.props;
+const sets = [
+  [['crane','top-8 right-[5%] w-16 sm:w-24','bob'],['sparkle','bottom-10 left-[4%] w-8 sm:w-12','twinkle'],['pencil','top-1/2 left-[2%] w-10 sm:w-14 hidden md:block','wiggle']],
+  [['projecten','bottom-8 right-[4%] w-16 sm:w-24','bob'],['ruler','top-10 left-[3%] w-12 sm:w-16','wiggle'],['sparkle','top-1/3 right-[3%] w-6 sm:w-9','twinkle']],
+  [['window','top-6 left-[5%] w-14 sm:w-20','bob'],['tree','bottom-6 right-[6%] w-14 sm:w-20','wiggle'],['sparkle','top-1/2 right-[1%] w-8 sm:w-10 hidden md:block','twinkle']],
+  [['key','top-10 right-[4%] w-14 sm:w-20','wiggle'],['stairs','bottom-8 left-[3%] w-14 sm:w-20','bob'],['sun','top-1/3 left-[2%] w-10 sm:w-14 hidden md:block','spin-slow']],
+];
+const items = sets[seed % sets.length];
+const axis = ['A','B','C','D','E','F'][seed % 6];
+const variant = seed % 4;
+---
+<div class="pointer-events-none absolute inset-0 z-[-1] overflow-hidden" aria-hidden="true">
+  <div class="blueprint-grid absolute inset-0"></div>
+
+  <!-- Structural grid axis: a bubble with a letter and a dashed line, as on a floor plan -->
+  <div class="axis absolute top-0 left-[12%] hidden md:flex flex-col items-center text-terracotta/50">
+    <svg class="line-draw w-9 h-9" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="16" cy="16" r="12" /></svg>
+    <span class="absolute top-[9px] text-[11px] font-bold font-display">{axis}</span>
+    <span class="axis-line block w-px h-[40vh] max-h-[420px] border-l border-dashed border-current opacity-60"></span>
+  </div>
+
+  <!-- Annotation in the corner: scale bar, north arrow, level mark or section cut -->
+  <div class="annot absolute bottom-4 right-5 sm:right-10 text-terracotta/60 text-[10px] font-bold uppercase tracking-[0.2em] font-display flex items-center gap-3">
+    {variant === 0 && (<>
+      <span class="scale-bar block h-[6px] w-24 border-x border-b border-current"></span><span>1 : 50</span>
+    </>)}
+    {variant === 1 && (<>
+      <svg class="north w-7 h-7" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="16" cy="18" r="10" /><path d="M16 4 L20 18 L16 15 L12 18 Z" /></svg><span>N</span>
+    </>)}
+    {variant === 2 && (<>
+      <svg class="w-6 h-5" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 18 H28 M16 18 L10 8 H22 Z" /></svg><span>± 0,00</span>
+    </>)}
+    {variant === 3 && (<>
+      <svg class="w-8 h-5" viewBox="0 0 40 20" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 10 H38 M2 4 V16 M38 4 V16" /></svg><span>A - A</span>
+    </>)}
+  </div>
+
+  {items.map(([icon, pos, anim], idx) => (
+    <DoodleIcon name={icon as any} animate class={`absolute ${pos} ${idx > 0 ? 'max-xl:hidden' : 'max-md:!top-3 max-md:!right-3 max-md:!left-auto max-md:!bottom-auto max-md:!w-10'} aspect-square text-terracotta/30 ${anim}`} />
+  ))}
+</div>

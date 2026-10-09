@@ -1,0 +1,95 @@
+---
+import FloatingDoodles from '../components/FloatingDoodles.astro';
+import Layout from '../layouts/Layout.astro';
+import ArchitecturalMotifs from '../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../components/DoodleIcon.astro';
+import { s } from '../lib/data';
+---
+
+<Layout
+  title="Regularisatie van bouwwerken zonder vergunning | Key-Design Architects"
+  description="Veranda, aanbouw, terrasoverkapping of verbouwing zonder correcte vergunning? Key-Design onderzoekt of en hoe regularisatie mogelijk is, en begeleidt het volledige dossier."
+  path="/regularisatie"
+  altLangPath="/en/regularisatie"
+  breadcrumbs={[{ name: 'Regularisatie', url: '/regularisatie' }]}
+>
+  <!-- INTRO -->
+  <section class="relative overflow-hidden py-14 sm:py-16 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="c" />
+    <div class="container-page max-w-2xl">
+      <DoodleIcon name="regularisatie" animate class="reveal w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+      <span class="reveal text-xs font-bold uppercase tracking-wider text-terracotta">Regularisatie</span>
+      <h1 class="reveal text-4xl sm:text-5xl font-bold text-earth-dark mt-2 leading-[1.1]">
+        {s('regularPageTitle', 'Niet elke bouwwerk staat op papier zoals het er staat')}
+      </h1>
+      <p class="reveal text-lg text-earth-muted mt-5 leading-relaxed" style="transition-delay:0.1s;">
+        {s('regularPageIntro', 'Een veranda, een aanbouw, een terrasoverkapping of een verbouwing zonder volledige vergunning komt vaker voor dan u denkt, zeker bij oudere woningen. Wij onderzoeken of en hoe regularisatie mogelijk is, en begeleiden het volledige dossier.')}
+      </p>
+    </div>
+  </section>
+
+  <!-- WHEN THIS APPLIES -->
+  <section class="py-12 bg-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={2} />
+    <div class="container-page max-w-2xl">
+      <h2 class="text-2xl font-bold text-earth-dark mb-4">{s('regularWhenTitle', 'Herkenbaar?')}</h2>
+      <ul class="space-y-2.5 text-earth-muted">
+        {[
+          s('regularWhen1', 'U kocht een woning met een aanbouw of veranda waarvan u niet zeker bent of ze vergund is'),
+          s('regularWhen2', 'Een vorige eigenaar bouwde iets zonder (volledige) vergunningsaanvraag'),
+          s('regularWhen3', 'U wilt verkopen of verbouwen, en de bestaande toestand klopt niet met de vergunde plannen'),
+          s('regularWhen4', 'U kreeg een opmerking van de gemeente of een landmeter over een niet-vergunde constructie'),
+        ].filter(Boolean).map((item) => (
+          <li class="flex items-start gap-2.5">
+            <span class="text-terracotta font-bold mt-0.5">•</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- APPROACH: three steps, kept slim -->
+  <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
+    <FloatingDoodles seed={3} />
+    <div class="container-page max-w-2xl">
+      <h2 class="text-2xl font-bold text-earth-dark mb-6">{s('regularApproachTitle', 'Onze aanpak')}</h2>
+      <ol class="space-y-6">
+        <li class="flex gap-4">
+          <span class="badge-cartoon w-10 h-10 shrink-0 flex items-center justify-center font-bold text-earth-dark text-sm">01</span>
+          <div>
+            <h3 class="font-bold text-earth-dark">{s('regularStep1Title', 'Situatie in kaart brengen')}</h3>
+            <p class="text-sm text-earth-muted mt-1 leading-relaxed">{s('regularStep1Text', 'We vergelijken de bestaande toestand met de vergunde plannen en het geldende stedenbouwkundig kader.')}</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <span class="badge-cartoon w-10 h-10 shrink-0 flex items-center justify-center font-bold text-earth-dark text-sm">02</span>
+          <div>
+            <h3 class="font-bold text-earth-dark">{s('regularStep2Title', 'Haalbaarheid van regularisatie onderzoeken')}</h3>
+            <p class="text-sm text-earth-muted mt-1 leading-relaxed">{s('regularStep2Text', 'Niet elke afwijking is regulariseerbaar. We geven u eerlijk advies over wat wel en niet mogelijk is, voor er kosten gemaakt worden.')}</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <span class="badge-cartoon w-10 h-10 shrink-0 flex items-center justify-center font-bold text-earth-dark text-sm">03</span>
+          <div>
+            <h3 class="font-bold text-earth-dark">{s('regularStep3Title', 'Dossier samenstellen en indienen')}</h3>
+            <p class="text-sm text-earth-muted mt-1 leading-relaxed">{s('regularStep3Text', 'We stellen de regularisatieaanvraag samen en volgen de procedure bij de gemeente op tot een beslissing.')}</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- CLOSING CTA -->
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={4} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">{s('regularCtaTitle', 'Twijfelt u over de vergunde toestand van uw woning?')}</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">{s('regularCtaText', 'Een eerste inschatting kost u niets, en helpt u meteen verder.')}</p>
+      <a href="/contact?type=Regularisatie" class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
+        {s('regularCtaBtn', 'Bespreek uw situatie met Kenneth')} →
+      </a>
+    </div>
+  </section>
+</Layout>

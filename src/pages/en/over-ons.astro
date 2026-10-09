@@ -1,0 +1,103 @@
+---
+import FloatingDoodles from '../../components/FloatingDoodles.astro';
+import Layout from '../../layouts/Layout.astro';
+import DoodleIcon from '../../components/DoodleIcon.astro';
+import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
+
+const ORDE_URL = 'https://vind.architect.be/kenneth-keyaerts/A912091';
+---
+
+<Layout
+  title="About Kenneth Keyaerts | Key-Design Architects"
+  description="Meet Kenneth Keyaerts, licensed architect (Order of Architects Belgium, registration no. A912091), active in Lier, Antwerp and the Kempen region."
+  path="/en/over-ons"
+  lang="en"
+  altLangPath="/over-ons"
+  breadcrumbs={[{ name: 'About Kenneth', url: '/en/over-ons' }]}
+>
+  <section class="relative overflow-hidden py-12 sm:py-14 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="a" />
+    <div class="container-page grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-10 items-start">
+      <div class="reveal">
+        <DoodleIcon name="kenneth" animate class="w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">Your Architect</span>
+        <h1 class="text-4xl font-bold text-earth-dark mt-2">Kenneth Keyaerts</h1>
+        <p class="mt-2 text-sm text-earth-muted font-bold flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5l8-3z"/></svg>
+          Legally recognised by the Belgian Order of Architects
+        </p>
+        <div class="mt-6 space-y-4 text-earth-muted leading-relaxed">
+          <p>Building or renovating is one of the most far-reaching decisions you will make: your budget, your time, and your future are at stake. That calls for an architect who thoroughly investigates what is possible, before anything is drawn.</p>
+          <p>At Key-Design, I believe a design is only good once it has been tested against reality: the regulations, the budget, and what a contractor will later have to do with it. I apply this approach to every project, from a targeted extension to a complete new build.</p>
+          <p>As a registered architect with the Order of Architects, I guide you from the first sketch to the handover of the keys: the permit application, the comparison of contractors, the weekly site inspections. One consistent point of contact for the entire journey.</p>
+        </div>
+
+        <div class="mt-6 p-5 card-cartoon bg-white">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Visualisation & Renders</span>
+          <p class="mt-1 text-sm text-earth-muted leading-relaxed">Besides Key-Design Architects, Kenneth is also co-founder of Through Renders, a visualisation studio founded together with partner Thomas Desmet that turns your dream into photorealistic 3D images.</p>
+        </div>
+
+        <div class="mt-6 card-cartoon p-5 inline-flex items-center gap-4">
+          <div class="badge-cartoon w-14 h-14 shrink-0 flex items-center justify-center font-bold text-earth-dark">KK</div>
+          <div>
+            <p class="font-bold text-earth-dark">Kenneth Keyaerts</p>
+            <p class="text-xs text-earth-muted">Lead Architect & Founder of Key-Design Architects</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.15s;">
+        <div class="relative">
+          <figure class="rounded-3xl overflow-hidden border-2 border-earth-dark shadow-[6px_6px_0_0_#1C1917] aspect-[3/4] max-h-[560px] bg-sand-medium mx-auto lg:mx-0">
+            <img src="/images/brand/kenneth-portrait.jpg" alt="Kenneth Keyaerts, licensed architect at Key-Design Architects" class="w-full h-full object-cover" width="800" height="1000" />
+          </figure>
+          <a
+            href={ORDE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="badge-cartoon absolute -bottom-4 right-4 sm:right-8 py-2 px-4 text-xs font-bold text-earth-dark hover:underline"
+          >
+            Registration no.: A912091
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={2} />
+    <div class="container-page">
+      <div class="reveal max-w-2xl mb-10 text-center mx-auto">
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">The Journey</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-earth-dark mt-2">Working together is simple</h2>
+        <div class="w-14 h-0.5 bg-terracotta mx-auto mt-4"></div>
+        <p class="mt-4 text-earth-muted">We want you to feel at ease from the very first contact. That's why we use a clear, approachable way of working, without complicated jargon or unnecessary hurdles.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {[
+          ['The Introduction', "Completely free and without obligation. We have a coffee on your building plot or at your home, or schedule a short video call. We discuss your dreams, needs, and the feasibility."],
+          ['The Preliminary Design', "Kenneth translates your ideas into atmospheric plans and mood boards. With the help of the sunlight and massing study, you see right away how the sun will flow through your future home."],
+          ['Build & Handover', "We handle the entire permit application, compare contractors, and inspect the site weekly. You simply watch your dream home become reality, right up to the handover of the keys."],
+        ].map(([title, text], i) => (
+          <div class="card-cartoon reveal p-6" style={`transition-delay:${i * 0.1}s`}>
+            <div class="badge-cartoon w-10 h-10 flex items-center justify-center font-bold text-earth-dark mb-4">{i + 1}</div>
+            <h3 class="font-bold text-lg text-earth-dark mb-2">{title}</h3>
+            <p class="text-sm text-earth-muted leading-relaxed">{text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={3} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">Convinced? Discuss your project with Kenneth, no strings attached.</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">A first introduction is free and commits you to nothing.</p>
+      <a href="/en/contact" class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
+        Discuss your project with Kenneth →
+      </a>
+    </div>
+  </section>
+</Layout>

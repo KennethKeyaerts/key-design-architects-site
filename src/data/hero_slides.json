@@ -1,0 +1,46 @@
+[
+  {
+    "id": "seed_hero_1",
+    "image": "/images/projects/kwartier14_01_straatbeeld.jpg",
+    "title": "Behoud van het bestaande straatbeeld",
+    "location": "Hansbekedorp, Deinze",
+    "year": "2026",
+    "description": "De voormalige jongensschool blijft het gezicht naar de straat.",
+    "order": 0,
+    "titleEn": "Preserving the existing streetscape",
+    "projectSlug": "kwartier-xiv"
+  },
+  {
+    "id": "seed_hero_2",
+    "image": "/images/projects/kwartier14_02_nieuwbouw.jpg",
+    "title": "Veertien woonunits rond een gedeeld erf",
+    "location": "Hansbekedorp, Deinze",
+    "year": "2026",
+    "description": "Nieuwe architectuur die zich voegt naar de bestaande omgeving.",
+    "order": 1,
+    "titleEn": "Fourteen homes around a shared courtyard",
+    "projectSlug": "kwartier-xiv"
+  },
+  {
+    "id": "seed_hero_3",
+    "image": "/images/projects/kwartier14_03_tuin.jpg",
+    "title": "Meer groen en ademruimte voor de buurt",
+    "location": "Hansbekedorp, Deinze",
+    "year": "2026",
+    "description": "Een gedeelde tuin met waterpartij, gras en zitplekken.",
+    "order": 2,
+    "titleEn": "More greenery and breathing space for the neighbourhood",
+    "projectSlug": "kwartier-xiv"
+  },
+  {
+    "id": "seed_hero_4",
+    "image": "/images/projects/kwartier14_04_avond.jpg",
+    "title": "Samen leven in de gedeelde buitenruimte",
+    "location": "Hansbekedorp, Deinze",
+    "year": "2026",
+    "description": "Een intieme, sfeervolle plek voor de bewoners in de avond.",
+    "order": 3,
+    "titleEn": "Living together in the shared outdoor space",
+    "projectSlug": "kwartier-xiv"
+  }
+]

@@ -1,0 +1,95 @@
+---
+import FloatingDoodles from '../../components/FloatingDoodles.astro';
+import Layout from '../../layouts/Layout.astro';
+import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../../components/DoodleIcon.astro';
+---
+
+<Layout
+  title="Regularisation of Unpermitted Structures | Key-Design Architects"
+  description="Veranda, extension, terrace roof, or renovation without a correct permit? Key-Design investigates whether and how regularisation is possible, and guides the complete application."
+  path="/en/regularisatie"
+  lang="en"
+  altLangPath="/regularisatie"
+  breadcrumbs={[{ name: 'Regularisation', url: '/en/regularisatie' }]}
+>
+  <!-- INTRO -->
+  <section class="relative overflow-hidden py-14 sm:py-16 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="c" />
+    <div class="container-page max-w-2xl">
+      <DoodleIcon name="regularisatie" animate class="reveal w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+      <span class="reveal text-xs font-bold uppercase tracking-wider text-terracotta">Regularisation</span>
+      <h1 class="reveal text-4xl sm:text-5xl font-bold text-earth-dark mt-2 leading-[1.1]">
+        Not every structure matches what's on paper
+      </h1>
+      <p class="reveal text-lg text-earth-muted mt-5 leading-relaxed" style="transition-delay:0.1s;">
+        A veranda, an extension, a terrace roof, or a renovation without a full permit is more common than you'd think, especially with older homes. We investigate whether and how regularisation is possible, and guide the entire application.
+      </p>
+    </div>
+  </section>
+
+  <!-- WHEN THIS APPLIES -->
+  <section class="py-12 bg-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={2} />
+    <div class="container-page max-w-2xl">
+      <h2 class="text-2xl font-bold text-earth-dark mb-4">Does this sound familiar?</h2>
+      <ul class="space-y-2.5 text-earth-muted">
+        {[
+          "You bought a home with an extension or veranda and you're not sure whether it was permitted",
+          'A previous owner built something without a (complete) permit application',
+          "You want to sell or renovate, and the existing situation doesn't match the permitted plans",
+          'You received a notice from the municipality or a surveyor about an unpermitted structure',
+        ].map((item) => (
+          <li class="flex items-start gap-2.5">
+            <span class="text-terracotta font-bold mt-0.5">•</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
+    <FloatingDoodles seed={3} />
+    <div class="container-page max-w-2xl">
+      <h2 class="text-2xl font-bold text-earth-dark mb-6">Our approach</h2>
+      <ol class="space-y-6">
+        <li class="flex gap-4">
+          <span class="badge-cartoon w-10 h-10 shrink-0 flex items-center justify-center font-bold text-earth-dark text-sm">01</span>
+          <div>
+            <h3 class="font-bold text-earth-dark">Mapping out the situation</h3>
+            <p class="text-sm text-earth-muted mt-1 leading-relaxed">We compare the existing situation with the permitted plans and the applicable planning framework.</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <span class="badge-cartoon w-10 h-10 shrink-0 flex items-center justify-center font-bold text-earth-dark text-sm">02</span>
+          <div>
+            <h3 class="font-bold text-earth-dark">Investigating the feasibility of regularisation</h3>
+            <p class="text-sm text-earth-muted mt-1 leading-relaxed">Not every deviation can be regularised. We give you honest advice on what is and isn't possible, before any costs are incurred.</p>
+          </div>
+        </li>
+        <li class="flex gap-4">
+          <span class="badge-cartoon w-10 h-10 shrink-0 flex items-center justify-center font-bold text-earth-dark text-sm">03</span>
+          <div>
+            <h3 class="font-bold text-earth-dark">Compiling and submitting the application</h3>
+            <p class="text-sm text-earth-muted mt-1 leading-relaxed">We compile the regularisation application and follow up on the procedure with the municipality until a decision is reached.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- CLOSING CTA -->
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={4} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">Unsure about the permitted status of your home?</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">An initial assessment costs you nothing, and gets you moving forward right away.</p>
+      <a href="/en/contact?type=Regularisation" class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
+        Discuss your situation with Kenneth →
+      </a>
+    </div>
+  </section>
+</Layout>

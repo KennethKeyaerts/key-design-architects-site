@@ -1,0 +1,226 @@
+---
+import FloatingDoodles from '../../components/FloatingDoodles.astro';
+import Layout from '../../layouts/Layout.astro';
+import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../../components/DoodleIcon.astro';
+import { getProjectBySlug } from '../../lib/data';
+
+interface Stage {
+  n: number;
+  title: string;
+  question: string;
+  happens: string;
+  role: string;
+  client: string;
+  outcome: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+}
+
+const stages: Stage[] = [
+  {
+    n: 1, title: 'Idea', question: 'I have an idea, but no plan. Where do I start?',
+    happens: 'We map out your situation: your plot or home, your ambitions, your way of living, and what truly matters to you.',
+    role: 'We listen, ask the right questions, and translate what you tell us into what needs to be investigated next.',
+    client: "You don't need to bring a plan, a drawing, or any technical jargon. A plot, a home, or simply a question is enough.",
+    outcome: 'A clear picture of what the next step should be.',
+  },
+  {
+    n: 2, title: 'Feasibility', question: "What's actually possible here, really?",
+    happens: 'Before anything is drawn, we investigate what is possible on your plot or in your property: in planning, technical, and financial terms.',
+    role: 'We analyse the planning context, the existing situation, orientation, and the buildable envelope.',
+    client: 'You gain insight into both the opportunities and the constraints, before investing heavily in a design.',
+    outcome: 'Clarity on what is feasible, and an initial budget direction.',
+    ctaLabel: 'Explore the feasibility check', ctaUrl: '/en/haalbaarheid',
+  },
+  {
+    n: 3, title: 'Design', question: 'How does this become good architecture?',
+    happens: 'Your wishes, the site, regulations, and budget are translated into an architectural concept.',
+    role: 'We work on spatial layout, circulation, daylight, privacy, and the relationship between indoors and outdoors.',
+    client: 'Not a collection of loose drawings, but a coherent idea where every choice has a reason.',
+    outcome: 'A design that works, both architecturally and practically.',
+  },
+  {
+    n: 4, title: 'Permitting', question: 'How do I get through the regulations?',
+    happens: 'The design is further developed within the applicable planning framework and prepared for submission.',
+    role: 'We compile the permit application, submit it, and follow up on the procedure, including any required revisions.',
+    client: "You don't have to figure this out alone. We guide the process and keep you informed.",
+    outcome: 'A correctly submitted application, and an architect who follows the procedure on your behalf.',
+  },
+  {
+    n: 5, title: 'Technical Development', question: 'How does the beautiful idea become a buildable building?',
+    happens: 'The design is developed into a technical file: construction drawings, details, materials, and specifications.',
+    role: 'We work together with engineers and specialists, and document technical decisions in a clear bill of quantities.',
+    client: 'A fully developed technical file lets you compare contractor quotes objectively.',
+    outcome: 'A file that can actually be built from, not loose sketches.',
+  },
+  {
+    n: 6, title: 'Realisation', question: 'How does the design become reality?',
+    happens: 'Construction begins. The design is carried out step by step by the contractor and the team.',
+    role: 'We regularly follow up on-site, monitor quality and design intent, and help resolve unforeseen issues.',
+    client: "You stay involved without having to manage the site yourself.",
+    outcome: 'Visibility into progress, and an architect who stays involved to the end.',
+  },
+  {
+    n: 7, title: 'Completion', question: 'When is it really finished?',
+    happens: 'The works are inspected and the final details completed until the project is ready for use.',
+    role: 'We carry out the final inspection and guide you through the handover of the keys.',
+    client: 'The drawings, decisions, and details come together as a finished place to live or work.',
+    outcome: 'A completed project, and an architect who stayed with you the whole way.',
+    ctaLabel: 'View a realised project', ctaUrl: '/en/portfolio/woning-lookstraat',
+  },
+];
+
+const entryPoints = [
+  { label: 'I have a plot', url: '/en/haalbaarheid' },
+  { label: 'I have an existing home', url: '/en/haalbaarheid' },
+  { label: 'I want to extend or renovate', url: '/en/haalbaarheid' },
+  { label: 'I have an idea, but no plan', url: '/en/contact' },
+  { label: "I'm not sure yet", url: '/en/contact' },
+];
+
+const featuredProject = getProjectBySlug('woning-lookstraat');
+---
+
+<Layout
+  title="From Idea to Realisation | Key-Design Architects"
+  description="How does an architectural journey at Key-Design unfold, from first idea to the handover of the keys? Discover every step: feasibility, design, permitting, technical development, realisation and completion."
+  path="/en/aanpak"
+  lang="en"
+  altLangPath="/aanpak"
+  breadcrumbs={[{ name: 'Approach', url: '/en/aanpak' }]}
+>
+  <!-- INTRO -->
+  <section class="relative overflow-hidden py-14 sm:py-16 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="b" />
+    <div class="container-page max-w-3xl">
+      <DoodleIcon name="aanpak" animate class="reveal w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+      <span class="reveal text-xs font-bold uppercase tracking-wider text-terracotta">From idea to realisation</span>
+      <h1 class="reveal text-4xl sm:text-5xl font-bold text-earth-dark mt-2 leading-[1.1]">You have an idea. What now?</h1>
+      <p class="reveal text-lg text-earth-muted mt-5 leading-relaxed" style="transition-delay:0.1s;">
+        You don't need to arrive with a finished plan. One conversation is often enough to understand what needs to be investigated, and what the next step should be.
+      </p>
+    </div>
+  </section>
+
+  <!-- REASSURANCE -->
+  <section class="py-10 bg-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={2} />
+    <div class="container-page">
+      <div class="reveal max-w-3xl border-l-4 border-terracotta pl-6 py-1">
+        <h2 class="font-bold text-xl text-earth-dark">You don't have to have it all figured out yet</h2>
+        <p class="mt-2 text-sm text-earth-muted leading-relaxed">
+          Whether you only have a plot, are torn between renovating or building new, have no plans at all, don't know what's possible, or simply don't know which service you need: the first step is a conversation, not a file.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTRY POINTS -->
+  <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
+    <FloatingDoodles seed={3} />
+    <div class="container-page">
+      <h2 class="reveal text-2xl sm:text-3xl font-bold text-earth-dark mb-6">Where are you right now?</h2>
+      <div class="flex flex-wrap gap-3">
+        {entryPoints.map((e, i) => (
+          <a
+            href={e.url}
+            class="reveal inline-flex items-center gap-2 py-2.5 px-5 rounded-full border-2 border-earth-dark bg-white text-sm font-bold text-earth-dark hover:bg-earth-dark hover:text-white transition-colors"
+            style={`transition-delay:${i * 0.05}s`}
+          >
+            {e.label} <span class="text-terracotta">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- THE JOURNEY -->
+  <section class="py-14 sm:py-16 bg-white relative overflow-hidden isolate" aria-label="The seven steps of the architectural journey">
+    <FloatingDoodles seed={4} />
+    <div class="container-page">
+      <div class="reveal max-w-2xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">The journey</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-earth-dark mt-2">From first idea to the handover of the keys</h2>
+        <p class="mt-3 text-earth-muted leading-relaxed">Seven steps, always with the same thoroughness, always with Kenneth as your consistent point of contact.</p>
+      </div>
+
+      <ol class="max-w-3xl ml-7 sm:ml-8 lg:ml-0">
+        {stages.map((stage, i) => (
+          <li
+            id={`step-${stage.n}`}
+            class={`relative pl-16 sm:pl-20 scroll-mt-24 reveal ${i < stages.length - 1 ? 'pb-12 border-l-2 border-sand-dark/70' : 'pb-0'}`}
+            style={`transition-delay:${Math.min(i * 0.05, 0.3)}s`}
+          >
+            <div class="badge-cartoon absolute -left-[27px] sm:-left-[31px] top-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center font-bold text-earth-dark text-lg bg-white">
+              {String(stage.n).padStart(2, '0')}
+            </div>
+            <h3 class="font-bold text-xl sm:text-2xl text-earth-dark">{stage.title}</h3>
+            <p class="mt-1 text-sm sm:text-base text-terracotta font-medium italic">{stage.question}</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-1.5">What happens</p>
+                <p class="text-sm text-earth-muted leading-relaxed">{stage.happens}</p>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-1.5">Key-Design's role</p>
+                <p class="text-sm text-earth-muted leading-relaxed">{stage.role}</p>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-1.5">What you get</p>
+                <p class="text-sm text-earth-muted leading-relaxed">{stage.outcome}</p>
+              </div>
+            </div>
+
+            <p class="mt-4 text-xs text-earth-muted italic">{stage.client}</p>
+
+            {stage.n === 4 && (
+              <p class="mt-4 text-sm text-earth-muted">
+                Also have a structure without a correct permit? <a href="/en/regularisatie" class="text-terracotta font-bold hover:underline">Discover our approach to regularisation →</a>
+              </p>
+            )}
+
+            {stage.ctaLabel && stage.ctaUrl && (
+              <a href={stage.ctaUrl} class="btn-cartoon-secondary inline-flex items-center gap-1.5 mt-5 py-2.5 px-5 text-xs font-bold uppercase tracking-wider">
+                {stage.ctaLabel} →
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- LINK TO PROJECTS -->
+  {featuredProject && (
+    <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
+    <FloatingDoodles seed={5} />
+      <div class="container-page">
+        <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
+          <div class="flex-1">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Every project starts with a question</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-earth-dark mt-1">Here's how this approach translates into a real project</h2>
+            <p class="mt-2 text-sm text-earth-muted leading-relaxed">See how this journey played out in practice on a realised project.</p>
+          </div>
+          <a href={`/en/portfolio/${featuredProject.slug}`} class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider shrink-0">
+            View {featuredProject.title} →
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CLOSING CTA -->
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={6} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">Have a project in mind?</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">Let's take a look together at what's possible.</p>
+      <a href="/en/contact" class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
+        Discuss your project with Kenneth →
+      </a>
+    </div>
+  </section>
+</Layout>

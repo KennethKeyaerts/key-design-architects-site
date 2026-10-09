@@ -1,0 +1,44 @@
+---
+import FloatingDoodles from '../../components/FloatingDoodles.astro';
+import Layout from '../../layouts/Layout.astro';
+import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../../components/DoodleIcon.astro';
+import { siteSettings } from '../../lib/data';
+import FeasibilityAssessor from '../../components/FeasibilityAssessor';
+
+// Only pass the calculator the fields it actually needs (construction rates
+// and budget-split percentages), not the full settings object.
+const calculatorSettings = Object.fromEntries(
+  Object.entries(siteSettings).filter(([key]) => key.startsWith('feasibility_') || key.startsWith('budget_'))
+);
+---
+
+<Layout
+  title="Feasibility Check | Key-Design Architects"
+  description="Calculate an indicative construction cost for your new-build, renovation or interior project. Architect fees and study costs are not included."
+  path="/en/haalbaarheid"
+  lang="en"
+  altLangPath="/haalbaarheid"
+  breadcrumbs={[{ name: 'Feasibility', url: '/en/haalbaarheid' }]}
+>
+  <section class="relative overflow-hidden py-12 sm:py-14 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="c" />
+    <div class="container-page">
+      <div class="reveal max-w-2xl mb-8">
+        <DoodleIcon name="haalbaarheid" animate class="w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">Transparent from day one</span>
+        <h1 class="text-4xl font-bold text-earth-dark mt-2">Estimate your own budget and timeline</h1>
+        <p class="mt-4 text-earth-muted leading-relaxed">What does building or renovating actually cost? With this indicative tool you immediately get a realistic picture of the expected construction costs. That way you know where you stand in advance.</p>
+      </div>
+
+      <div class="reveal max-w-3xl">
+        <FeasibilityAssessor client:load settings={calculatorSettings} lang="en" />
+      </div>
+
+      <p class="reveal max-w-3xl mt-6 text-sm text-earth-muted">
+        This check is one step in the journey. <a href="/en/aanpak" class="text-terracotta font-bold hover:underline">See how the full journey unfolds, from idea to handover of the keys →</a>
+      </p>
+    </div>
+  </section>
+</Layout>

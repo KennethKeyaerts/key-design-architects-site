@@ -1,0 +1,10 @@
+---
+import DoodleIcon from './DoodleIcon.astro';
+interface Props { icon?: string; class?: string; }
+const { icon = 'pencil', class: cls = '' } = Astro.props;
+---
+<div class={`doodle-divider reveal flex items-center justify-center gap-4 py-2 ${cls}`} aria-hidden="true">
+  <svg class="line-draw hidden sm:block w-40 md:w-64 h-3 text-earth-dark/40" viewBox="0 0 200 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7 C20 2 30 11 50 6 S80 2 100 7 S150 11 198 5" /></svg>
+  <DoodleIcon name={icon as any} animate class="w-10 h-10 text-terracotta wiggle" />
+  <svg class="line-draw hidden sm:block w-40 md:w-64 h-3 text-earth-dark/40" viewBox="0 0 200 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5 C50 11 60 2 100 7 S150 2 170 6 S190 9 198 7" /></svg>
+</div>

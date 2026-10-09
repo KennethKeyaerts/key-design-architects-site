@@ -1,0 +1,29 @@
+---
+import DoodleIcon from '../../components/DoodleIcon.astro';
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="Page not found | Key-Design Architects"
+  description="This page does not exist (anymore). Go back to the Key-Design Architects homepage."
+  path="/en/404"
+  lang="en"
+  altLangPath="/404"
+  noindex
+>
+  <section class="min-h-[75vh] flex items-center justify-center py-16 bg-sand-light">
+    <div class="container-page text-center max-w-lg">
+      <video class="mx-auto w-64 sm:w-80 h-auto" src="/videos/kd-logo-reveal.mp4" autoplay muted playsinline preload="auto"></video>
+      <DoodleIcon name="ontdek" animate class="w-12 h-12 text-terracotta mx-auto mt-4" />
+      <p class="text-xs font-bold uppercase tracking-wider text-terracotta mt-2">Error 404</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-earth-dark mt-2">This page doesn't exist</h1>
+      <p class="mt-3 text-earth-muted leading-relaxed">
+        The page you are looking for has been moved, removed, or was never here. Don't worry, below you'll quickly find your way back.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 mt-8">
+        <a href="/en/" class="btn-cartoon-primary py-3 px-6 text-xs font-bold uppercase tracking-wider">Go to the homepage</a>
+        <a href="/en/contact" class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider">Contact us</a>
+      </div>
+    </div>
+  </section>
+</Layout>

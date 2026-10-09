@@ -1,0 +1,53 @@
+---
+// Subtle, slow-drifting architectural line-art in the background of light
+// sections, purely decorative (aria-hidden, pointer-events-none), so it
+// never competes with real content or gets in the way of reading/clicking.
+interface Props {
+  variant?: 'a' | 'b' | 'c';
+}
+const { variant = 'a' } = Astro.props;
+---
+
+<div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  {variant === 'a' && (
+    <>
+      <!-- Door swing / floor plan corner -->
+      <svg class="absolute -top-6 right-[6%] w-40 h-40 sm:w-56 sm:h-56 text-terracotta/[0.13] animate-float-slow" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M20 10 L20 90 M20 90 L80 90" />
+        <path d="M20 10 A70 70 0 0 1 90 80" stroke-dasharray="2 3" />
+      </svg>
+      <!-- Window mullion cross -->
+      <svg class="absolute bottom-8 left-[4%] w-28 h-28 sm:w-40 sm:h-40 text-terracotta/[0.13] animate-drift-slow" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="10" y="10" width="80" height="80" />
+        <line x1="50" y1="10" x2="50" y2="90" />
+        <line x1="10" y1="50" x2="90" y2="50" />
+      </svg>
+    </>
+  )}
+  {variant === 'b' && (
+    <>
+      <!-- Compass / plan marker -->
+      <svg class="absolute top-10 left-[8%] w-32 h-32 sm:w-44 sm:h-44 text-terracotta/[0.13] animate-drift-slow" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="50" cy="50" r="38" />
+        <line x1="50" y1="4" x2="50" y2="20" />
+        <line x1="50" y1="80" x2="50" y2="96" />
+        <path d="M50 20 L58 50 L50 80 L42 50 Z" />
+      </svg>
+      <!-- Roofline gable -->
+      <svg class="absolute -bottom-4 right-[5%] w-40 h-40 sm:w-52 sm:h-52 text-terracotta/[0.13] animate-float-slow" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M10 60 L50 20 L90 60" />
+        <line x1="20" y1="60" x2="20" y2="90" />
+        <line x1="80" y1="60" x2="80" y2="90" />
+        <line x1="20" y1="90" x2="80" y2="90" />
+      </svg>
+    </>
+  )}
+  {variant === 'c' && (
+    <svg class="absolute top-1/2 -translate-y-1/2 right-[2%] w-48 h-48 sm:w-64 sm:h-64 text-terracotta/[0.13] animate-float-slow" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.2">
+      <rect x="15" y="30" width="70" height="55" />
+      <line x1="15" y1="45" x2="85" y2="45" />
+      <line x1="45" y1="30" x2="45" y2="85" />
+      <path d="M15 30 L50 10 L85 30" />
+    </svg>
+  )}
+</div>

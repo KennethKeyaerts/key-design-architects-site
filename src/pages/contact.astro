@@ -1,0 +1,61 @@
+---
+import FloatingDoodles from '../components/FloatingDoodles.astro';
+import Layout from '../layouts/Layout.astro';
+import ArchitecturalMotifs from '../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../components/DoodleIcon.astro';
+import { s } from '../lib/data';
+import ContactForm from '../components/ContactForm';
+---
+
+<Layout
+  title="Contact | Key-Design Architects"
+  description="Neem contact op met Kenneth Keyaerts van Key-Design Architects voor een vrijblijvend kennismakingsgesprek over uw bouw- of renovatieproject."
+  path="/contact"
+  altLangPath="/en/contact"
+  breadcrumbs={[{ name: 'Contact', url: '/contact' }]}
+>
+  <section class="relative overflow-hidden py-12 sm:py-14 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="b" />
+    <div class="container-page grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-2 reveal">
+        <DoodleIcon name="contact" animate class="w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">{s('contactCategory', 'Persoonlijke Benadering')}</span>
+        <h1 class="text-4xl font-bold text-earth-dark mt-2">{s('contactTitle', 'Laten we uw project bespreken')}</h1>
+        <div class="mt-5 space-y-3 text-earth-muted leading-relaxed">
+          <p>{s('contactText1')}</p>
+          <p>{s('contactText2')}</p>
+        </div>
+
+        <div class="mt-8 card-cartoon p-6 space-y-4">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted">{s('contactMailLabel', 'Direct E-mailadres')}</p>
+            <a href={`mailto:${s('contactMailValue', 'kennethkeyaerts@icloud.com')}`} class="text-terracotta font-bold">
+              {s('contactMailValue', 'kennethkeyaerts@icloud.com')}
+            </a>
+          </div>
+          {s('showPhone') && (
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted">{s('contactPhoneLabel', 'Directe Telefoon Kenneth')}</p>
+              <a href={`tel:${s('topBarPhone', '+32497485743').replace(/\s/g, '')}`} class="text-terracotta font-bold">{s('topBarPhone', '+32 497 48 57 43')}</a>
+            </div>
+          )}
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted">{s('contactRegionLabel', 'Kantoor & Werkregio')}</p>
+            <p class="text-earth-dark font-bold">{s('contactRegionValue', '2500 Lier, Provincie Antwerpen te België')}</p>
+          </div>
+        </div>
+
+        <p class="mt-6 text-[11px] text-earth-muted leading-relaxed border-t-2 border-earth-dark/15 pt-5">
+          {s('contactLawFooter')}
+        </p>
+      </div>
+
+      <div class="lg:col-span-3 reveal" style="transition-delay:0.1s;">
+        <div class="card-cartoon overflow-hidden">
+          <ContactForm client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

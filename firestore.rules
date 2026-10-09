@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Site-wide texts, branding, rates: visible to everyone (the public site
+    // reads this at build time, not at runtime, but the admin dashboard reads
+    // it live) — only a signed-in admin may write.
+    match /site_settings/{document} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Portfolio projects: public read, admin-only write.
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Homepage hero slideshow photos: kept in their own collection (rather
+    // than embedded in site_settings) so a handful of photos never risk
+    // pushing the settings document over Firestore's 1MB-per-document limit.
+    match /hero_slides/{slideId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Contact form leads: anyone may CREATE a new inquiry (that's the public
+    // contact form submitting), but nobody except a signed-in admin may read,
+    // update, or delete them. This is what stops a stranger from reading
+    // every visitor's name/email/phone straight out of the database.
+    match /inquiries/{inquiryId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,234 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string; // e.g. "/portfolio.html", used for canonical + og:url
+  ogImage?: string;
+  hasHero?: boolean; // true only on pages with a full-bleed hero (currently just the homepage): makes the header float transparently over it instead of sitting as a solid bar
+  noindex?: boolean; // true for pages that should never appear in search results (404, etc.)
+  breadcrumbs?: { name: string; url: string }[]; // e.g. [{name:'Projecten', url:'/portfolio'}, {name:'Woning Lookstraat', url:'/portfolio/woning-lookstraat'}] — Home is added automatically, omit on the homepage itself
+  lang?: 'nl' | 'en'; // real, authored English pages live under /en/..., this is not machine translation
+  altLangPath?: string; // the equivalent page's path in the other language, e.g. on /aanpak this is "/en/aanpak", on /en/aanpak this is "/aanpak" — drives the EN/NL toggle as a real link
+}
+
+const {
+  title,
+  description,
+  path = '/',
+  ogImage = '/images/brand/hero-foto.jpg',
+  hasHero = false,
+  noindex = false,
+  breadcrumbs = [],
+  lang = 'nl',
+  altLangPath,
+} = Astro.props;
+
+const siteUrl = 'https://www.keydesignarchitects.be';
+const canonical = new URL(path, siteUrl).toString();
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Kenneth Keyaerts" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang} href={canonical} />
+    {altLangPath && (
+      <link rel="alternate" hreflang={lang === 'nl' ? 'en' : 'nl'} href={new URL(altLangPath, siteUrl).toString()} />
+    )}
+    <link rel="alternate" hreflang="x-default" href={lang === 'nl' ? canonical : new URL(altLangPath || '/', siteUrl).toString()} />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:site_name" content="Key-Design Architects" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, siteUrl).toString()} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_BE" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, siteUrl).toString()} />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': ['Organization', 'LocalBusiness', 'HomeAndConstructionBusiness'],
+      '@id': `${siteUrl}/#firm`,
+      name: 'Key-Design Architects',
+      legalName: 'Key-Design Architects',
+      url: siteUrl,
+      logo: `${siteUrl}/images/brand/logo-key-design.png`,
+      image: `${siteUrl}/images/brand/hero-foto.jpg`,
+      founder: {
+        '@type': 'Person',
+        name: 'Kenneth Keyaerts',
+        jobTitle: 'Erkend Architect',
+        identifier: 'Stamnummer A912091',
+      },
+      email: 'kennethkeyaerts@icloud.com',
+      priceRange: '€€€',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Lier',
+        addressRegion: 'Antwerpen',
+        postalCode: '2500',
+        addressCountry: 'BE',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: '51.1312', longitude: '4.5704' },
+      areaServed: ['Lier', 'Antwerpen', 'Mechelen', 'Kempen', 'Vlaams-Brabant', 'België'],
+      knowsAbout: [
+        'Residentiële Architectuur',
+        'Totaalrenovatie',
+        "Nieuwbouw Villa's",
+        '3D Renderings & Visualisatie',
+        'Omgevingsvergunning & Bouwaanvraag',
+        'Interieurvormgeving',
+      ],
+    })} />
+
+    {breadcrumbs.length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: lang === 'en' ? 'Discover' : 'Ontdek', item: lang === 'en' ? `${siteUrl}/en/` : siteUrl },
+          ...breadcrumbs.map((b, i) => ({
+            '@type': 'ListItem',
+            position: i + 2,
+            name: b.name,
+            item: new URL(b.url, siteUrl).toString(),
+          })),
+        ],
+      })} />
+    )}
+
+    <!--
+      Language (NL/EN): real, separately-authored English pages live under
+      /en/..., not machine translation. The EN/NL toggle in Header.astro and
+      MobileMenu.astro is a plain link to this page's counterpart in the
+      other language (altLangPath, passed in per-page), no JS, no cookie,
+      works identically on every device since it's just a normal link.
+    -->
+  </head>
+  <body class="bg-sand-light text-earth-dark antialiased">
+    <MobileMenu lang={lang} altLangPath={altLangPath} />
+    <Header hasHero={hasHero} lang={lang} altLangPath={altLangPath} />
+    <a href="#main-content" class="skip-link">{lang === 'en' ? 'Skip to content' : 'Naar de inhoud'}</a>
+    <div id="scroll-progress" aria-hidden="true"></div>
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <CookieConsent lang={lang} />
+
+    <button
+      id="back-to-top"
+      aria-label={lang === 'en' ? 'Back to top' : 'Terug naar boven'}
+      class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-orangePastel border-2 border-earth-dark shadow-[3px_3px_0_0_#1C1917] flex items-center justify-center text-earth-dark opacity-0 translate-y-4 pointer-events-none transition-all duration-300"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6" />
+      </svg>
+    </button>
+
+    <script>
+      // Progressive-enhancement only: content is already visible in the raw
+      // HTML. This just adds the fade-in-on-scroll polish for users with JS.
+      document.documentElement.classList.add('js-ready');
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              io.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.12 }
+      );
+      // .line-draw shares the same observer as .reveal (one signature
+      // architectural sketch animating in on scroll), no separate JS needed.
+      document.querySelectorAll('.reveal, .line-draw, .img-wipe, .axis, main h2').forEach((el) => io.observe(el));
+
+      // Scroll progress bar + gentle parallax (skipped for reduced motion)
+      const bar = document.getElementById('scroll-progress');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const para = Array.from(document.querySelectorAll('[data-parallax]'));
+      let ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          if (bar && max > 0) bar.style.transform = `scaleX(${Math.min(1, window.scrollY / max)})`;
+          if (!reduce && window.innerWidth >= 768) {
+            for (const el of para) {
+              const r = el.parentElement.getBoundingClientRect();
+              if (r.bottom < -100 || r.top > window.innerHeight + 100) continue;
+              el.style.translate = `0 ${(r.top + r.height / 2 - window.innerHeight / 2) * -0.06}px`;
+            }
+          }
+          ticking = false;
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuBackdrop = document.getElementById('menu-backdrop');
+      function openMenu() {
+        mobileMenu?.classList.add('open');
+        menuBackdrop?.classList.add('open');
+        hamburger?.setAttribute('aria-expanded', 'true');
+        mobileMenu?.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('overflow-hidden');
+      }
+      function closeMenu() {
+        mobileMenu?.classList.remove('open');
+        menuBackdrop?.classList.remove('open');
+        hamburger?.setAttribute('aria-expanded', 'false');
+        mobileMenu?.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('overflow-hidden');
+      }
+      hamburger?.addEventListener('click', () => {
+        mobileMenu?.classList.contains('open') ? closeMenu() : openMenu();
+      });
+      document.getElementById('menu-close')?.addEventListener('click', closeMenu);
+      document.getElementById('floating-menu-btn')?.addEventListener('click', openMenu);
+      menuBackdrop?.addEventListener('click', closeMenu);
+      mobileMenu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+
+      const backToTop = document.getElementById('back-to-top');
+      const toggleBackToTop = () => {
+        if (!backToTop) return;
+        const show = window.scrollY > 500;
+        backToTop.classList.toggle('opacity-0', !show);
+        backToTop.classList.toggle('translate-y-4', !show);
+        backToTop.classList.toggle('pointer-events-none', !show);
+      };
+      window.addEventListener('scroll', toggleBackToTop, { passive: true });
+      toggleBackToTop();
+      backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+  </body>
+</html>

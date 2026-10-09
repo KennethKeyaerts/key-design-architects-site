@@ -1,0 +1,182 @@
+---
+import FloatingDoodles from '../components/FloatingDoodles.astro';
+import Layout from '../layouts/Layout.astro';
+import ArchitecturalMotifs from '../components/ArchitecturalMotifs.astro';
+import DoodleIcon from '../components/DoodleIcon.astro';
+import { s, getProjectBySlug } from '../lib/data';
+
+interface Stage {
+  n: number;
+  title: string;
+  question: string;
+  happens: string;
+  role: string;
+  client: string;
+  outcome: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+}
+
+const stages: Stage[] = [1, 2, 3, 4, 5, 6, 7].map((n) => ({
+  n,
+  title: s(`approachStage${n}Title`),
+  question: s(`approachStage${n}Question`),
+  happens: s(`approachStage${n}Happens`),
+  role: s(`approachStage${n}Role`),
+  client: s(`approachStage${n}Client`),
+  outcome: s(`approachStage${n}Outcome`),
+  ctaLabel: s(`approachStage${n}CtaLabel`) || undefined,
+  ctaUrl: s(`approachStage${n}CtaUrl`) || undefined,
+}));
+
+const entryPoints = [1, 2, 3, 4, 5]
+  .map((n) => ({ label: s(`approachEntry${n}Label`), url: s(`approachEntry${n}Url`) }))
+  .filter((e) => e.label && e.url);
+
+// If a stage links to a real project, pull its title in for a richer link label.
+const featuredProject = getProjectBySlug('woning-lookstraat');
+---
+
+<Layout
+  title="Van Idee tot Realisatie | Key-Design Architects"
+  description="Hoe verloopt een architecturaal traject bij Key-Design, van eerste idee tot sleuteloverdracht? Ontdek elke stap: haalbaarheid, ontwerp, vergunning, technische uitwerking, realisatie en oplevering."
+  path="/aanpak"
+  altLangPath="/en/aanpak"
+  breadcrumbs={[{ name: 'Aanpak', url: '/aanpak' }]}
+>
+  <!-- INTRO -->
+  <section class="relative overflow-hidden py-14 sm:py-16 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="b" />
+    <div class="container-page max-w-3xl">
+      <DoodleIcon name="aanpak" animate class="reveal w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+      <span class="reveal text-xs font-bold uppercase tracking-wider text-terracotta">{s('approachCategory', 'Van idee tot realisatie')}</span>
+      <h1 class="reveal text-4xl sm:text-5xl font-bold text-earth-dark mt-2 leading-[1.1]">{s('approachTitle', 'U hebt een idee. Wat nu?')}</h1>
+      <p class="reveal text-lg text-earth-muted mt-5 leading-relaxed" style="transition-delay:0.1s;">
+        {s('approachIntro', 'U hoeft niet met een afgewerkt plan aan te kloppen. Eén gesprek is vaak genoeg om te begrijpen wat er onderzocht moet worden en wat de volgende stap is.')}
+      </p>
+    </div>
+  </section>
+
+  <!-- REASSURANCE: an accent, not another box -->
+  <section class="py-10 bg-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={2} />
+    <div class="container-page">
+      <div class="reveal max-w-3xl border-l-4 border-terracotta pl-6 py-1">
+        <h2 class="font-bold text-xl text-earth-dark">{s('approachReassuranceTitle', 'U hoeft het nog niet allemaal uitgestippeld te hebben')}</h2>
+        <p class="mt-2 text-sm text-earth-muted leading-relaxed">
+          {s('approachReassuranceText', 'Of u nu enkel een grond heeft, twijfelt tussen verbouwen of nieuwbouw, geen plannen heeft, niet weet wat mogelijk is, of gewoon niet weet welke dienst u nodig heeft: de eerste stap is een gesprek, geen dossier.')}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTRY POINTS: "Waar staat u nu?" — a row of pills, not a grid of cards -->
+  {entryPoints.length > 0 && (
+    <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
+    <FloatingDoodles seed={3} />
+      <div class="container-page">
+        <h2 class="reveal text-2xl sm:text-3xl font-bold text-earth-dark mb-6">{s('approachEntryTitle', 'Waar staat u nu?')}</h2>
+        <div class="flex flex-wrap gap-3">
+          {entryPoints.map((e, i) => (
+            <a
+              href={e.url}
+              class="reveal inline-flex items-center gap-2 py-2.5 px-5 rounded-full border-2 border-earth-dark bg-white text-sm font-bold text-earth-dark hover:bg-earth-dark hover:text-white transition-colors"
+              style={`transition-delay:${i * 0.05}s`}
+            >
+              {e.label} <span class="text-terracotta">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- THE JOURNEY: a timeline, not a stack of cards -->
+  <section class="py-14 sm:py-16 bg-white relative overflow-hidden isolate" aria-label="De zeven stappen van het architecturaal traject">
+    <FloatingDoodles seed={4} />
+    <div class="container-page">
+      <div class="reveal max-w-2xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-terracotta">Het traject</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-earth-dark mt-2">Van eerste idee tot sleuteloverdracht</h2>
+        <p class="mt-3 text-earth-muted leading-relaxed">Zeven stappen, altijd met dezelfde grondigheid, altijd met Kenneth als vast aanspreekpunt.</p>
+      </div>
+
+      <ol class="max-w-3xl ml-7 sm:ml-8 lg:ml-0">
+        {stages.map((stage, i) => (
+          <li
+            id={`stap-${stage.n}`}
+            class={`relative pl-16 sm:pl-20 scroll-mt-24 reveal ${i < stages.length - 1 ? 'pb-12 border-l-2 border-sand-dark/70' : 'pb-0'}`}
+            style={`transition-delay:${Math.min(i * 0.05, 0.3)}s`}
+          >
+            <div class="badge-cartoon absolute -left-[27px] sm:-left-[31px] top-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center font-bold text-earth-dark text-lg bg-white">
+              {String(stage.n).padStart(2, '0')}
+            </div>
+            <h3 class="font-bold text-xl sm:text-2xl text-earth-dark">{stage.title}</h3>
+            <p class="mt-1 text-sm sm:text-base text-terracotta font-medium italic">{stage.question}</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-1.5">Wat gebeurt er</p>
+                <p class="text-sm text-earth-muted leading-relaxed">{stage.happens}</p>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-1.5">Rol van Key-Design</p>
+                <p class="text-sm text-earth-muted leading-relaxed">{stage.role}</p>
+              </div>
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-1.5">Wat u krijgt</p>
+                <p class="text-sm text-earth-muted leading-relaxed">{stage.outcome}</p>
+              </div>
+            </div>
+
+            <p class="mt-4 text-xs text-earth-muted italic">{stage.client}</p>
+
+            {stage.n === 4 && (
+              <p class="mt-4 text-sm text-earth-muted">
+                Ook een constructie zonder correcte vergunning? <a href="/regularisatie" class="text-terracotta font-bold hover:underline">Ontdek onze aanpak voor regularisatie →</a>
+              </p>
+            )}
+
+            {stage.ctaLabel && stage.ctaUrl && (
+              <a href={stage.ctaUrl} class="btn-cartoon-secondary inline-flex items-center gap-1.5 mt-5 py-2.5 px-5 text-xs font-bold uppercase tracking-wider">
+                {stage.ctaLabel} →
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- LINK TO PROJECTS -->
+  {featuredProject && (
+    <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
+    <FloatingDoodles seed={5} />
+      <div class="container-page">
+        <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
+          <div class="flex-1">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Elk project begint met een vraag</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-earth-dark mt-1">Zo vertaalt deze aanpak zich naar een echt project</h2>
+            <p class="mt-2 text-sm text-earth-muted leading-relaxed">Bekijk hoe dit traject er in de praktijk uitzag bij een gerealiseerd project.</p>
+          </div>
+          <a href={`/portfolio/${featuredProject.slug}`} class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider shrink-0">
+            Bekijk {featuredProject.title} →
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CLOSING CTA -->
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={6} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">{s('approachCtaTitle', 'Een project in gedachten?')}</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">{s('approachCtaText', 'Laten we samen bekijken wat mogelijk is.')}</p>
+      <a href="/contact" class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
+        {s('approachCtaBtn', 'Bespreek uw project met Kenneth')} →
+      </a>
+    </div>
+  </section>
+</Layout>

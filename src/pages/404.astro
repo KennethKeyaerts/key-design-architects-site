@@ -1,0 +1,54 @@
+---
+import DoodleIcon from '../components/DoodleIcon.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Pagina niet gevonden | Key-Design Architects"
+  description="Deze pagina bestaat niet (meer). Ga terug naar de homepagina van Key-Design Architects."
+  path="/404"
+  altLangPath="/en/404"
+  noindex
+>
+  <section class="min-h-[75vh] flex items-center justify-center py-16 bg-sand-light">
+    <div class="container-page text-center max-w-lg">
+      <video
+        id="notfound-logo"
+        class="mx-auto w-64 sm:w-80 h-auto"
+        src="/videos/kd-logo-reveal.mp4"
+        autoplay
+        muted
+        playsinline
+        preload="auto"
+      >
+      </video>
+
+      <DoodleIcon name="ontdek" animate class="w-12 h-12 text-terracotta mx-auto mt-4" />
+      <p class="text-xs font-bold uppercase tracking-wider text-terracotta mt-2">Fout 404</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-earth-dark mt-2">Deze pagina bestaat niet</h1>
+      <p class="mt-3 text-earth-muted leading-relaxed">
+        De pagina die u zoekt is verplaatst, verwijderd, of nooit hier geweest. Geen zorgen, hieronder vindt u snel de weg terug.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4 mt-8">
+        <a href="/" class="btn-cartoon-primary py-3 px-6 text-xs font-bold uppercase tracking-wider">Naar de homepagina</a>
+        <a href="/contact" class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider">Contacteer ons</a>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    // Hosts that only serve one root 404 page (e.g. Cloudflare Pages): show the English one for /en/ URLs.
+    if (location.pathname.indexOf('/en/') === 0 && location.pathname !== '/en/404.html') location.replace('/en/404.html');
+  </script>
+
+  <script>
+    // Replay the reveal once if the visitor comes back to this tab after
+    // it finished, small, harmless touch since this page carries no real
+    // content weight to protect.
+    const vid = document.getElementById('notfound-logo') as HTMLVideoElement | null;
+    vid?.addEventListener('ended', () => {
+      // leave it resting on the final frame; no auto-loop, keeps it calm
+    });
+  </script>
+</Layout>

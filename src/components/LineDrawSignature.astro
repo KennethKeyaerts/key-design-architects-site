@@ -1,0 +1,37 @@
+---
+// One deliberate "wow" moment: a hand-drawn-feeling architectural elevation
+// that sketches itself in as the visitor scrolls to it. Used once per page,
+// not scattered everywhere, so it stays a signature touch rather than noise.
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<svg
+  class={`line-draw ${className}`}
+  viewBox="0 0 400 260"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <!-- ground line -->
+  <path d="M10 230 H390" />
+  <!-- building envelope: gable elevation -->
+  <path d="M60 230 V120 L150 60 L240 120 V230" />
+  <!-- door -->
+  <path d="M130 230 V170 H170 V230" />
+  <!-- windows -->
+  <path d="M75 150 H105 V190 H75 Z" />
+  <path d="M195 150 H225 V190 H195 Z" />
+  <!-- roofline dimension annotation -->
+  <path d="M150 40 V60 M60 100 H50 M240 100 H250 M50 100 V230 M250 100 V230" />
+  <!-- second, lower volume (extension) -->
+  <path d="M240 230 V150 H320 V230" />
+  <path d="M260 190 H300 V230" />
+  <!-- a tree, for scale and a little life -->
+  <path d="M345 230 V190 M345 165 C 330 165 325 185 345 190 C 330 195 335 215 345 205 C 355 215 360 195 345 190 C 365 185 360 165 345 165 Z" />
+</svg>
