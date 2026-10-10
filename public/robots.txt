@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /beheerder/
 
-Sitemap: https://www.keydesignarchitects.be/sitemap.xml
+Sitemap: https://www.keydesignarchitects.be/sitemap-index.xml
