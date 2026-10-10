@@ -1,7 +1,8 @@
 ---
-import { s } from '../lib/data';
+import { s, brandImg } from '../lib/data';
 import Logo from './Logo.astro';
 import DoodleIcon from './DoodleIcon.astro';
+import { regions } from '../lib/regions';
 const year = new Date().getFullYear();
 const ORDE_URL = 'https://vind.architect.be/kenneth-keyaerts/A912091';
 
@@ -69,7 +70,7 @@ const p = (path: string) => (en ? `/en${path}` : path);
       >
         {en ? 'Visit throughrenders.be' : s('footerTrBtn', 'Bezoek throughrenders.be')} →
       </a>
-      <img src="/images/brand/logo-through-renders-full.jpg" alt="Through Renders" class="h-12 w-auto rounded-md mt-3" width="40" height="56" />
+      <img src={brandImg('brandThroughRenders', '/images/brand/logo-through-renders-full.jpg')} alt="Through Renders" class="h-12 w-auto rounded-md mt-3" width="40" height="56" />
     </div>
 
     <div>
@@ -85,6 +86,18 @@ const p = (path: string) => (en ? `/en${path}` : path);
         {en ? 'Order of Architects website' : s('footerLegalBtn', 'Orde van Architecten website')} →
       </a>
     </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <nav aria-label={en ? 'Working area' : 'Werkgebied'} class="container-page py-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+      <span class="text-[11px] font-bold uppercase tracking-wider text-stone-500">{en ? 'Working area' : 'Werkgebied'}</span>
+      {regions.slice(0, 4).map((r) => (
+        <a href={`${p('/architect-' + r.slug)}`} class="text-stone-400 hover:text-white transition-colors">
+          {en ? `Architect ${r.en.label}` : `Architect ${r.nl.label}`}
+        </a>
+      ))}
+      <a href={p('/werkgebied')} class="font-bold text-terracotta-soft hover:text-white transition-colors">{en ? 'All areas →' : 'Alle gemeenten →'}</a>
+    </nav>
   </div>
 
   <div class="border-t border-white/10">

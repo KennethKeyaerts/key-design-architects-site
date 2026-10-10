@@ -10,9 +10,18 @@ interface Props {
   size?: 'sm' | 'md';
   class?: string;
 }
+import { brandImg } from '../lib/data';
 const { tone = 'dark', size = 'md', class: className = '' } = Astro.props;
+// A logo uploaded in /beheerder replaces the built-in vector lockup.
+// Two versions can be uploaded (for light and for dark/photo backgrounds); one is used for both if only one exists.
+const customDark = brandImg('brandLogo', '');
+const customLight = brandImg('brandLogoLight', '');
+const custom = tone === 'light' ? customLight || customDark : customDark || customLight;
 ---
 
+{custom ? (
+  <img src={custom} alt="Key-Design Architects" class={`kd-logo-img kd-logo--${size} ${className}`} />
+) : (
 <span
   class={`kd-logo kd-logo--${size} ${tone === 'light' ? 'kd-logo--light' : 'kd-logo--dark'} ${className}`}
   role="img"
@@ -26,6 +35,7 @@ const { tone = 'dark', size = 'md', class: className = '' } = Astro.props;
     <span>Architects</span>
   </span>
 </span>
+)}
 
 <style>
   .kd-logo {
@@ -34,6 +44,7 @@ const { tone = 'dark', size = 'md', class: className = '' } = Astro.props;
     gap: calc(var(--logo-h) * 0.3);
     line-height: 1;
   }
+  .kd-logo-img { height: var(--logo-h); width: auto; max-width: 15rem; object-fit: contain; display: block; }
   .kd-logo--md { --logo-h: 2.75rem; }
   .kd-logo--sm { --logo-h: 2.5rem; }
   @media (min-width: 640px) {

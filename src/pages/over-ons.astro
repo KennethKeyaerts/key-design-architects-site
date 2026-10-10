@@ -1,10 +1,12 @@
 ---
+import Img from '../components/Img.astro';
 import FloatingDoodles from '../components/FloatingDoodles.astro';
 import Layout from '../layouts/Layout.astro';
 import DoodleIcon from '../components/DoodleIcon.astro';
 import ArchitecturalMotifs from '../components/ArchitecturalMotifs.astro';
-import { s } from '../lib/data';
+import { s, brandImg } from '../lib/data';
 
+const portrait = brandImg('brandPortrait', '/images/brand/kenneth-portrait.jpg');
 const ORDE_URL = 'https://vind.architect.be/kenneth-keyaerts/A912091';
 ---
 
@@ -52,7 +54,7 @@ const ORDE_URL = 'https://vind.architect.be/kenneth-keyaerts/A912091';
       <div class="reveal" style="transition-delay:0.15s;">
         <div class="relative">
           <figure class="rounded-3xl overflow-hidden border-2 border-earth-dark shadow-[6px_6px_0_0_#1C1917] aspect-[3/4] max-h-[560px] bg-sand-medium mx-auto lg:mx-0">
-            <img src="/images/brand/kenneth-portrait.jpg" alt="Kenneth Keyaerts, erkend architect bij Key-Design Architects" class="w-full h-full object-cover" width="800" height="1000" />
+            <Img sizes="(min-width:1024px) 40vw, 90vw" src={portrait} alt="Kenneth Keyaerts, erkend architect bij Key-Design Architects" class="w-full h-full object-cover" width="800" height="1000" />
           </figure>
           <a
             href={ORDE_URL}

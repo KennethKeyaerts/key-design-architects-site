@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FloatingDoodles from './FloatingDoodles.astro';
+import ArchitecturalMotifs from './ArchitecturalMotifs.astro';
+import DoodleIcon from './DoodleIcon.astro';
+import { regions, groupLabels, type RegionGroup } from '../lib/regions';
+
+interface Props { lang?: 'nl' | 'en' }
+const { lang = 'nl' } = Astro.props;
+const en = lang === 'en';
+const base = en ? '/en' : '';
+const path = `${base}/werkgebied`;
+const order: RegionGroup[] = ['thuis', 'antwerpse-rand', 'rand-leuven', 'kempen', 'overig'];
+const groups = order
+  .map((g) => ({ g, items: regions.filter((r) => r.group === g) }))
+  .filter((x) => x.items.length > 0);
+---
+
+<Layout
+  title={en ? 'Working area | Key-Design Architects' : 'Werkgebied | Key-Design Architects'}
+  description={en
+    ? 'Where Key-Design Architects works: from our office in Lier across the province of Antwerp, Mechelen, the Kempen and beyond.'
+    : 'Waar Key-Design Architects werkt: vanuit ons kantoor in Lier in de provincie Antwerpen, Mechelen, de Kempen en daarbuiten.'}
+  path={path}
+  altLangPath={`${en ? '' : '/en'}/werkgebied`}
+  lang={lang}
+  breadcrumbs={[{ name: en ? 'Working area' : 'Werkgebied', url: path }]}
+>
+  <section class="relative overflow-hidden py-14 sm:py-16 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="c" />
+    <div class="container-page max-w-2xl">
+      <DoodleIcon name="ontdek" animate class="reveal w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+      <span class="reveal text-xs font-bold uppercase tracking-wider text-terracotta">{en ? 'Where we work' : 'Waar we werken'}</span>
+      <h1 class="reveal text-4xl sm:text-5xl font-bold text-earth-dark mt-2 leading-[1.1]">{en ? 'Working area' : 'Werkgebied'}</h1>
+      <p class="reveal text-lg text-earth-muted mt-5 leading-relaxed" style="transition-delay:0.1s;">
+        {en
+          ? 'Our office is in Lier. Most projects are within reach of a site visit, and we also take on projects further away when the project calls for it.'
+          : 'Ons kantoor zit in Lier. De meeste projecten liggen binnen bereik van een plaatsbezoek, en we nemen ook projecten verder weg aan als het project erom vraagt.'}
+      </p>
+    </div>
+  </section>
+
+  <section class="py-12 sm:py-14 bg-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={2} />
+    <div class="container-page max-w-3xl space-y-10">
+      {groups.map(({ g, items }) => (
+        <div class="reveal">
+          <h2 class="text-xl font-bold text-earth-dark mb-4">{en ? groupLabels[g].en : groupLabels[g].nl}</h2>
+          <div class="flex flex-wrap gap-2.5">
+            {items.map((r) => (
+              <a href={`${base}/architect-${r.slug}`} class="badge-cartoon px-4 py-2 text-xs font-bold uppercase tracking-wider">
+                {(en ? r.en : r.nl).label}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+      <p class="text-sm text-earth-muted">
+        {en ? 'Your municipality is not listed? ' : 'Staat uw gemeente er niet bij? '}
+        <a href={`${base}/contact`} class="text-terracotta font-bold hover:underline">{en ? 'Get in touch, we are happy to check whether it fits →' : 'Neem contact op, we bekijken graag of het past →'}</a>
+      </p>
+    </div>
+  </section>
+</Layout>

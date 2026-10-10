@@ -7,12 +7,13 @@ import ProjectsPanel from './ProjectsPanel';
 import InquiriesPanel from './InquiriesPanel';
 import PublishPanel from './PublishPanel';
 import HeroPanel from './HeroPanel';
+import BrandPanel from './BrandPanel';
 
-const TABS = ['Hero', 'Site teksten', 'Projecten', 'Aanvragen', 'Publiceren'] as const;
+const TABS = ['Hero', 'Projecten', 'Logo en foto\'s', 'Site teksten', 'Aanvragen', 'Publiceren'] as const;
 
 export default function AdminApp() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
-  const [tab, setTab] = useState<(typeof TABS)[number]>('Site teksten');
+  const [tab, setTab] = useState<(typeof TABS)[number]>('Hero');
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [projects, setProjects] = useState<any[]>([]);
   const [heroSlides, setHeroSlides] = useState<any[]>([]);
@@ -74,7 +75,8 @@ export default function AdminApp() {
           <>
             {tab === 'Hero' && <HeroPanel settings={settings} onSettingsSaved={setSettings} slides={heroSlides} onSlidesChanged={setHeroSlides} projects={projects} />}
             {tab === 'Site teksten' && <SiteTextsPanel settings={settings} onSaved={setSettings} />}
-            {tab === 'Projecten' && <ProjectsPanel projects={projects} onChanged={setProjects} />}
+            {tab === 'Projecten' && <ProjectsPanel projects={projects} onChanged={setProjects} slides={heroSlides} onSlidesChanged={setHeroSlides} />}
+            {tab === "Logo en foto's" && <BrandPanel settings={settings} onSaved={setSettings} />}
             {tab === 'Aanvragen' && <InquiriesPanel />}
             {tab === 'Publiceren' && <PublishPanel />}
           </>

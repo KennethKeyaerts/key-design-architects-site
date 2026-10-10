@@ -1,0 +1,162 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FloatingDoodles from './FloatingDoodles.astro';
+import ArchitecturalMotifs from './ArchitecturalMotifs.astro';
+import DoodleIcon from './DoodleIcon.astro';
+import { projects } from '../lib/data';
+import { regions, regionBySlug } from '../lib/regions';
+
+interface Props { region: string; lang?: 'nl' | 'en' }
+const { region: key, lang = 'nl' } = Astro.props;
+const en = lang === 'en';
+const r = regionBySlug(key);
+const c = en ? r.en : r.nl;
+const base = en ? '/en' : '';
+const path = `${base}/architect-${r.slug}`;
+const altPath = `${en ? '' : '/en'}/architect-${r.slug}`;
+const featured = r.featuredProjectTitle ? projects.find((p) => p.title === r.featuredProjectTitle) : undefined;
+const others = regions.filter((x) => x.slug !== r.slug && x.group === r.group).slice(0, 10);
+const siteUrl = 'https://www.keydesignarchitects.be';
+
+const services = en
+  ? ['Feasibility study', 'Architectural design', 'Building permit and regularisation', 'Technical file and pricing', 'Contractor coordination', 'Site supervision', 'Handover']
+  : ['Haalbaarheidsonderzoek', 'Ontwerp', 'Vergunning en regularisatie', 'Technisch dossier en prijzen', 'Aannemerscoördinatie', 'Werfopvolging', 'Oplevering'];
+
+const jsonLd = [
+  {
+    '@type': 'Service',
+    name: c.h1,
+    serviceType: en ? 'Architecture' : 'Architectuur',
+    provider: { '@id': `${siteUrl}/#firm` },
+    areaServed: { '@type': r.placeType, name: r.name },
+    url: new URL(path, siteUrl).toString(),
+  },
+];
+---
+
+<Layout
+  title={c.title}
+  description={c.description}
+  path={path}
+  altLangPath={altPath}
+  lang={lang}
+  jsonLd={jsonLd}
+  breadcrumbs={[{ name: c.h1, url: path }]}
+>
+  <section class="relative overflow-hidden py-14 sm:py-16 bg-sand-light isolate">
+    <FloatingDoodles seed={2} />
+    <ArchitecturalMotifs variant="c" />
+    <div class="container-page max-w-2xl">
+      <DoodleIcon name="ontdek" animate class="reveal w-14 h-14 sm:w-16 sm:h-16 text-terracotta mb-3" />
+      <span class="reveal text-xs font-bold uppercase tracking-wider text-terracotta">{en ? 'Working area' : 'Werkgebied'}</span>
+      <h1 class="reveal text-4xl sm:text-5xl font-bold text-earth-dark mt-2 leading-[1.1]">{c.h1}</h1>
+      <p class="reveal text-lg text-earth-muted mt-5 leading-relaxed" style="transition-delay:0.1s;">{c.intro}</p>
+      <a href={`${base}/contact`} class="reveal btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider" style="transition-delay:0.2s;">
+        {en ? 'Discuss your project' : 'Bespreek uw project'} →
+      </a>
+    </div>
+  </section>
+
+  <section class="py-12 sm:py-14 bg-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={3} />
+    <div class="container-page max-w-3xl">
+      <h2 class="text-2xl sm:text-3xl font-bold text-earth-dark mb-8">{c.localTitle}</h2>
+      <div class="space-y-7">
+        {c.local.map((x) => (
+          <div class="reveal">
+            <h3 class="text-lg font-bold text-earth-dark">{x.h}</h3>
+            <p class="mt-2 text-earth-muted leading-relaxed">{x.p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {r.personal && (
+    <section class="py-10 bg-sand-light relative overflow-hidden isolate">
+      <div class="container-page max-w-3xl">
+        <div class="card-cartoon reveal p-6 sm:p-7">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">{en ? 'A personal link' : 'Een persoonlijke band'}</span>
+          <p class="mt-2 text-earth-dark leading-relaxed">{en ? r.personal.en : r.personal.nl}</p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="py-12 sm:py-14 bg-sand-medium relative overflow-hidden isolate">
+    <FloatingDoodles seed={4} />
+    <div class="container-page max-w-3xl">
+      <h2 class="text-2xl font-bold text-earth-dark mb-2">{en ? 'One journey, from idea to handover' : 'Eén traject, van idee tot oplevering'}</h2>
+      <p class="text-earth-muted mb-5">{en ? 'You do not buy separate services. You walk one continuous path with one architect.' : 'U neemt geen losse diensten af. U doorloopt één samenhangend traject met één architect.'}</p>
+      <ul class="grid sm:grid-cols-2 gap-x-6 gap-y-2.5 text-earth-muted">
+        {services.map((x) => (
+          <li class="flex items-start gap-2.5"><span class="text-terracotta font-bold mt-0.5">•</span><span>{x}</span></li>
+        ))}
+      </ul>
+      <p class="mt-6 text-sm">
+        <a href={`${base}/aanpak`} class="text-terracotta font-bold hover:underline">{en ? 'Read about our approach →' : 'Lees meer over onze aanpak →'}</a>
+        <span class="mx-2 text-earth-muted">·</span>
+        <a href={`${base}/haalbaarheid`} class="text-terracotta font-bold hover:underline">{en ? 'Estimate your budget →' : 'Schat uw budget →'}</a>
+      </p>
+    </div>
+  </section>
+
+  {featured && (
+    <section class="py-12 bg-white relative overflow-hidden isolate">
+      <div class="container-page max-w-3xl">
+        <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
+          <div class="flex-1">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">{en ? 'Project nearby' : 'Project in de buurt'}</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-earth-dark mt-1">{featured.title}</h2>
+            <p class="mt-2 text-sm text-earth-muted">{featured.location}</p>
+          </div>
+          <a href={`${base}/portfolio/${featured.slug}`} class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider shrink-0">
+            {en ? 'View project' : 'Bekijk project'} →
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="py-12 sm:py-14 bg-sand-light relative overflow-hidden isolate">
+    <FloatingDoodles seed={5} />
+    <div class="container-page max-w-3xl">
+      <h2 class="text-2xl font-bold text-earth-dark mb-6">{en ? 'Frequently asked questions' : 'Veelgestelde vragen'}</h2>
+      <div class="space-y-3">
+        {c.faq.map((f) => (
+          <details class="card-cartoon p-5 group">
+            <summary class="cursor-pointer font-bold text-earth-dark list-none flex items-center justify-between gap-4">
+              <span>{f.q}</span>
+              <span class="text-terracotta text-xl leading-none transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <p class="mt-3 text-earth-muted leading-relaxed">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
+    <div class="container-page max-w-3xl">
+      <h2 class="text-lg font-bold text-earth-dark mb-3">{en ? 'Also active in' : 'Ook actief in'}</h2>
+      <div class="flex flex-wrap gap-2.5">
+        {others.map((o) => (
+          <a href={`${base}/architect-${o.slug}`} class="badge-cartoon px-4 py-2 text-xs font-bold uppercase tracking-wider">
+            {(en ? o.en : o.nl).label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={6} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">{en ? `A project in ${c.label}?` : `Een project in ${c.label}?`}</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">{en ? 'Let us look together at what is possible.' : 'Laten we samen bekijken wat mogelijk is.'}</p>
+      <a href={`${base}/contact`} class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
+        {en ? 'Discuss your project with Kenneth' : 'Bespreek uw project met Kenneth'} →
+      </a>
+    </div>
+  </section>
+</Layout>

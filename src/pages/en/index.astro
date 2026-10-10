@@ -5,11 +5,21 @@ import Layout from '../../layouts/Layout.astro';
 import HeroSection from '../../components/HeroSection.astro';
 import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
 import DoodleIcon from '../../components/DoodleIcon.astro';
-import { getProjectBySlug } from '../../lib/data';
+import { projects, getProjectBySlug, brandImg } from '../../lib/data';
 
-const residentialProject = getProjectBySlug('woning-lookstraat');
-const developmentProject = getProjectBySlug('kwartier-xiv');
-const introImage = developmentProject?.images?.[3] ?? developmentProject?.images?.[0] ?? developmentProject?.image;
+// Homepage showcase: projects starred in /beheerder first, then the classic pair, then whatever exists.
+const featured = [
+  ...projects.filter((p) => p.starred),
+  getProjectBySlug('woning-lookstraat'),
+  getProjectBySlug('kwartier-xiv'),
+  ...projects,
+].filter((p, i, a): p is NonNullable<typeof p> => Boolean(p) && a.indexOf(p) === i);
+const residentialProject = featured[0];
+const developmentProject = featured[1];
+const introSource = developmentProject ?? residentialProject;
+const introImage = introSource?.images?.[3] ?? introSource?.images?.[0] ?? introSource?.image ?? '/images/brand/hero-foto.jpg';
+const portrait = brandImg('brandPortrait', '/images/brand/kenneth-portrait.jpg');
+const trLogo = brandImg('brandThroughRenders', '/images/brand/logo-through-renders-full.jpg');
 ---
 
 <Layout
@@ -70,8 +80,8 @@ const introImage = developmentProject?.images?.[3] ?? developmentProject?.images
     <ArchitecturalMotifs variant="b" />
     <div class="container-page">
       <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
-        <img
-          src="/images/brand/kenneth-portrait.jpg"
+        <Img sizes="160px"
+          src={portrait}
           alt="Kenneth Keyaerts, licensed architect at Key-Design Architects"
           class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-earth-dark shrink-0"
           width="128"
@@ -148,7 +158,7 @@ const introImage = developmentProject?.images?.[3] ?? developmentProject?.images
     <FloatingDoodles seed={4} />
     <div class="container-page">
       <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-        <img src="/images/brand/logo-through-renders-full.jpg" alt="Through Renders" class="h-24 w-auto rounded-xl border-2 border-earth-dark shrink-0" width="64" height="96" />
+        <Img sizes="128px" src={trLogo} alt="Through Renders" class="h-24 w-auto rounded-xl border-2 border-earth-dark shrink-0" width="64" height="96" />
         <div class="flex-1">
           <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Our Visualisation Partner</span>
           <h2 class="text-xl sm:text-2xl font-bold text-earth-dark mt-1">Photorealistic 3D Renders by Through Renders</h2>

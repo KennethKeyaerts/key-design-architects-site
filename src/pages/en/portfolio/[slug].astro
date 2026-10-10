@@ -1,4 +1,5 @@
 ---
+import ProjectBody from '../../../components/ProjectBody.astro';
 import Img from '../../../components/Img.astro';
 import DoodleIcon from '../../../components/DoodleIcon.astro';
 import Layout from '../../../layouts/Layout.astro';
@@ -28,6 +29,15 @@ const timeline: any[] = en.timeline ?? project.timeline ?? [];
   description={t('description')}
   path={`/en/portfolio/${project.slug}`}
   ogImage={project.image}
+  jsonLd={[{
+    '@type': 'CreativeWork',
+    name: project.title,
+    description: t('description'),
+    image: new URL(project.image, 'https://www.keydesignarchitects.be').toString(),
+    creator: { '@id': 'https://www.keydesignarchitects.be/#firm' },
+    dateCreated: project.year ? String(project.year) : undefined,
+    inLanguage: 'en',
+  }]}
   lang="en"
   altLangPath={`/portfolio/${project.slug}`}
   breadcrumbs={[
@@ -55,80 +65,7 @@ const timeline: any[] = en.timeline ?? project.timeline ?? [];
         )}
       </div>
 
-      {t('attributionNote') && (
-        <div class="reveal p-5 mb-8 rounded-2xl bg-amber-50 border-2 border-amber-700/40">
-          <p class="text-[11px] font-bold uppercase tracking-wider text-amber-800 mb-1.5">Origin of this project</p>
-          <p class="text-sm text-amber-900 leading-relaxed">{t('attributionNote')}</p>
-        </div>
-      )}
-
-      {t('statusNote') && (
-        <div class="reveal p-5 mb-8 rounded-2xl bg-sky-50 border-2 border-sky-700/40">
-          <p class="text-[11px] font-bold uppercase tracking-wider text-sky-800 mb-1.5">Status of this project</p>
-          <p class="text-sm text-sky-900 leading-relaxed">{t('statusNote')}</p>
-        </div>
-      )}
-
-      <figure class="reveal rounded-3xl overflow-hidden border border-sand-dark/40 mb-8 bg-sand-medium">
-        <Img eager priority src={project.image} alt={project.title} class="w-full h-auto object-cover" width="1400" height="900" sizes="100vw" />
-      </figure>
-
-      <div class="reveal grid grid-cols-1 lg:grid-cols-3 gap-10 mb-16">
-        <div class="lg:col-span-2 space-y-6">
-          <h2 class="font-serif text-2xl font-bold text-earth-dark">Concept</h2>
-          <p class="text-earth-muted leading-relaxed">{t('description')}</p>
-          {t('concept') && <p class="text-earth-muted leading-relaxed">{t('concept')}</p>}
-        </div>
-        <div class="space-y-6">
-          {t('materials')?.length ? (
-            <div>
-              <h3 class="text-xs font-bold uppercase tracking-wider text-terracotta mb-2">Materials</h3>
-              <ul class="space-y-1.5 text-sm text-earth-muted">
-                {t('materials').map((m: string) => <li>• {m}</li>)}
-              </ul>
-            </div>
-          ) : null}
-          {t('specs') && Object.keys(t('specs')).length ? (
-            <div>
-              <h3 class="text-xs font-bold uppercase tracking-wider text-terracotta mb-2">Specifications</h3>
-              <dl class="space-y-1.5 text-sm">
-                {Object.entries(t('specs')).map(([k, v]) => (
-                  <div class="flex justify-between gap-4">
-                    <dt class="text-earth-muted">{k}</dt>
-                    <dd class="text-earth-dark font-medium text-right">{v as string}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ) : null}
-        </div>
-      </div>
-
-      {gallery.length > 1 && (
-        <div class="reveal mb-16">
-          <h2 class="font-serif text-2xl font-bold text-earth-dark mb-6">Gallery</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {gallery.map((img: string, i: number) => (
-              <Img src={img} alt={`${project.title}, image ${i + 1}`} class="rounded-2xl w-full h-auto object-cover" width="700" height="500" sizes="(min-width:768px) 50vw, 100vw" />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {timeline.length ? (
-        <div class="reveal mb-16">
-          <h2 class="font-serif text-2xl font-bold text-earth-dark mb-6">Journey</h2>
-          <div class="space-y-6">
-            {timeline.map((step: any) => (
-              <div class="p-6 rounded-2xl bg-sand-light border border-sand-dark/40">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">{step.phase} · {step.date}</span>
-                <h3 class="font-serif font-bold text-lg text-earth-dark mt-1">{step.title}</h3>
-                <p class="text-sm text-earth-muted mt-2">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : null}
+      <ProjectBody project={project} lang="en" />
 
       <div class="reveal text-center bg-earth-dark text-white rounded-3xl p-10 sm:p-14">
         <h2 class="text-2xl sm:text-3xl font-bold">Have a similar project in mind?</h2>

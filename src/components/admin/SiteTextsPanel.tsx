@@ -27,6 +27,9 @@ function isFormattingKey(key: string) {
   return key.endsWith('_formatting');
 }
 
+// Images (logos, photos) are managed in their own tab; they must never show up as editable text.
+const isImageKey = (key: string, val: any) => key.startsWith('brand') || (typeof val === 'string' && (val.startsWith('blob:') || val.startsWith('data:image')));
+
 function labelFor(key: string) {
   return key.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()).trim();
 }
@@ -38,7 +41,7 @@ export default function SiteTextsPanel({ settings, onSaved }: Props) {
   const [savedAt, setSavedAt] = useState<number | null>(null);
 
   const editableKeys = useMemo(
-    () => Object.keys(values).filter((k) => typeof values[k] === 'string' && !isFormattingKey(k)),
+    () => Object.keys(values).filter((k) => typeof values[k] === 'string' && !isFormattingKey(k) && !isImageKey(k, values[k])),
     [values]
   );
 
@@ -56,8 +59,9 @@ export default function SiteTextsPanel({ settings, onSaved }: Props) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await saveSiteSettings(values);
-      onSaved(values);
+      const toSave = Object.fromEntries(Object.entries(values).filter(([k, v]) => !isImageKey(k, v)));
+      await saveSiteSettings(toSave);
+      onSaved({ ...settings, ...toSave });
       setSavedAt(Date.now());
     } catch (err) {
       console.error(err);

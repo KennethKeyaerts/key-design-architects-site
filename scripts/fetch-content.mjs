@@ -66,6 +66,55 @@ function saveDataUri(dataUri, outDir, baseName) {
   return urlPath;
 }
 
+
+// ---------- Full-quality uploads ("blob:<id>" references) ----------
+// Photos and logos uploaded in /beheerder are stored as a manifest document
+// plus chunk documents in the "image_blobs" collection (see src/lib/imageStore.ts).
+// Here every reference found in the content is turned into a real file under
+// /images/uploads/ (and, for photos, into several WebP sizes), then replaced
+// by that file's path, so the public site never talks to Firestore for images.
+function collectBlobIds(node, out = new Set()) {
+  if (typeof node === 'string') { if (node.startsWith('blob:')) out.add(node.slice(5)); }
+  else if (Array.isArray(node)) node.forEach((n) => collectBlobIds(n, out));
+  else if (node && typeof node === 'object') Object.values(node).forEach((n) => collectBlobIds(n, out));
+  return out;
+}
+function replaceBlobRefs(node, map) {
+  if (typeof node === 'string') return node.startsWith('blob:') ? (map.get(node.slice(5)) ?? '') : node;
+  if (Array.isArray(node)) return node.map((n) => replaceBlobRefs(n, map));
+  if (node && typeof node === 'object') {
+    const o = {};
+    for (const [k, v] of Object.entries(node)) o[k] = replaceBlobRefs(v, map);
+    return o;
+  }
+  return node;
+}
+async function resolveBlobs(db, ids, outDir) {
+  const map = new Map();
+  for (const id of ids) {
+    try {
+      const mSnap = await getDoc(doc(db, 'image_blobs', id));
+      if (!mSnap.exists()) { console.warn(`[fetch-content] image ${id} not found in image_blobs, skipping`); continue; }
+      const m = mSnap.data();
+      const parts = await Promise.all(
+        Array.from({ length: m.chunks }, (_, i) => getDoc(doc(db, 'image_blobs', `${id}_c${i}`)))
+      );
+      if (parts.some((p) => !p.exists())) { console.warn(`[fetch-content] image ${id} is incomplete, skipping`); continue; }
+      const dataUrl = parts.map((p) => p.data().data).join('');
+      const mm = /^data:image\/([\w+.-]+);base64,(.*)$/s.exec(dataUrl);
+      if (!mm) continue;
+      const ext = mm[1] === 'svg+xml' ? 'svg' : mm[1] === 'jpeg' ? 'jpg' : mm[1];
+      const file = path.join(outDir, `${id}.${ext}`);
+      writeFileSync(file, Buffer.from(mm[2], 'base64'));
+      if (m.kind !== 'logo' && ext !== 'svg') pendingVariants.push(file);
+      map.set(id, `/images/uploads/${id}.${ext}`);
+    } catch (e) {
+      console.warn(`[fetch-content] could not load image ${id}:`, e.message);
+    }
+  }
+  return map;
+}
+
 function extractImages(project, outDir) {
   const p = { ...project };
   if (typeof p.image === 'string' && p.image.startsWith('data:image')) {
@@ -114,25 +163,35 @@ async function main() {
   mkdirSync(dataDir, { recursive: true });
   mkdirSync(imagesDir, { recursive: true });
   mkdirSync(heroImagesDir, { recursive: true });
+  const uploadsDir = path.join(ROOT, 'public', 'images', 'uploads');
+  mkdirSync(uploadsDir, { recursive: true });
 
   try {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
     const settingsSnap = await getDoc(doc(db, 'site_settings', 'homeTexts'));
-    const settings = settingsSnap.exists() ? settingsSnap.data() : {};
+    const settingsRaw = settingsSnap.exists() ? settingsSnap.data() : {};
 
     const projectsSnap = await getDocs(query(collection(db, 'projects'), orderBy('order', 'asc')));
-    const projects = projectsSnap.docs
-      .map((d) => extractImages({ id: d.id, ...d.data() }, imagesDir))
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    const projectsRaw = projectsSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
 
     const heroSnap = await getDocs(query(collection(db, 'hero_slides'), orderBy('order', 'asc')));
-    const heroSlides = heroSnap.docs
-      .map((d) => {
-        const slide = { id: d.id, ...d.data() };
+    const heroRaw = heroSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+    // Resolve full-quality uploads first, so the rest of the pipeline only ever sees real file paths.
+    const blobIds = collectBlobIds([settingsRaw, projectsRaw, heroRaw]);
+    const blobMap = blobIds.size ? await resolveBlobs(db, [...blobIds], uploadsDir) : new Map();
+    const settings = replaceBlobRefs(settingsRaw, blobMap);
+
+    const projects = replaceBlobRefs(projectsRaw, blobMap)
+      .map((p) => extractImages(p, imagesDir))
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+    const heroSlides = replaceBlobRefs(heroRaw, blobMap)
+      .map((slide) => {
         if (typeof slide.image === 'string' && slide.image.startsWith('data:image')) {
-          slide.image = saveDataUri(slide.image, heroImagesDir, `slide_${d.id}`);
+          slide.image = saveDataUri(slide.image, heroImagesDir, `slide_${slide.id}`);
         }
         return slide;
       })

@@ -1,0 +1,11 @@
+---
+import RegionPage from '../../components/RegionPage.astro';
+import { regions } from '../../lib/regions';
+export function getStaticPaths() {
+  // lier, antwerpen, mechelen and kempen have their own files; every region added later is generated here
+  const own = ['lier', 'antwerpen', 'mechelen', 'kempen'];
+  return regions.filter((r) => !own.includes(r.slug)).map((r) => ({ params: { slug: r.slug }, props: { region: r.slug } }));
+}
+const { region } = Astro.props;
+---
+<RegionPage region={region} lang="en" />

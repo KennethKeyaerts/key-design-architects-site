@@ -4,7 +4,7 @@ import Img from '../../components/Img.astro';
 import Layout from '../../layouts/Layout.astro';
 import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
 import DoodleIcon from '../../components/DoodleIcon.astro';
-import { projects } from '../../lib/data';
+import { projects, phaseLabel } from '../../lib/data';
 
 const CATEGORY_LABELS: Record<string, string> = {
   nieuwbouw: 'New-build',
@@ -56,6 +56,12 @@ const t = (p: any, key: string) => p.en?.[key] ?? p[key];
               <h2 class="font-bold text-lg text-earth-dark mt-1">{p.title}</h2>
               <p class="text-xs text-earth-muted mt-1">{t(p, 'location')} · {p.year} · {t(p, 'area')}</p>
               <p class="text-sm text-earth-muted mt-3 line-clamp-2">{t(p, 'description')}</p>
+              {(p.phase || p.role === 'collaborated') && (
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                  {p.phase && <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sand-medium text-earth-dark">{phaseLabel(p.phase, true)}</span>}
+                  {p.role === 'collaborated' && <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Contributed</span>}
+                </div>
+              )}
             </div>
           </a>
         ))}

@@ -4,6 +4,7 @@ import Footer from '../components/Footer.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import '../styles/global.css';
+import { brandImg } from '../lib/data';
 
 interface Props {
   title: string;
@@ -14,6 +15,7 @@ interface Props {
   noindex?: boolean; // true for pages that should never appear in search results (404, etc.)
   breadcrumbs?: { name: string; url: string }[]; // e.g. [{name:'Projecten', url:'/portfolio'}, {name:'Woning Lookstraat', url:'/portfolio/woning-lookstraat'}] — Home is added automatically, omit on the homepage itself
   lang?: 'nl' | 'en'; // real, authored English pages live under /en/..., this is not machine translation
+  jsonLd?: Record<string, unknown>[]; // extra schema.org blocks for this page (e.g. Service on a regional page, CreativeWork on a project)
   altLangPath?: string; // the equivalent page's path in the other language, e.g. on /aanpak this is "/en/aanpak", on /en/aanpak this is "/aanpak" — drives the EN/NL toggle as a real link
 }
 
@@ -21,12 +23,13 @@ const {
   title,
   description,
   path = '/',
-  ogImage = '/images/brand/hero-foto.jpg',
+  ogImage = brandImg('brandShareImage', '/images/brand/hero-foto.jpg'),
   hasHero = false,
   noindex = false,
   breadcrumbs = [],
   lang = 'nl',
   altLangPath,
+  jsonLd = [],
 } = Astro.props;
 
 const siteUrl = 'https://www.keydesignarchitects.be';
@@ -48,7 +51,7 @@ const canonical = new URL(path, siteUrl).toString();
       <link rel="alternate" hreflang={lang === 'nl' ? 'en' : 'nl'} href={new URL(altLangPath, siteUrl).toString()} />
     )}
     <link rel="alternate" hreflang="x-default" href={lang === 'nl' ? canonical : new URL(altLangPath || '/', siteUrl).toString()} />
-    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
@@ -61,7 +64,8 @@ const canonical = new URL(path, siteUrl).toString();
     <meta property="og:image" content={new URL(ogImage, siteUrl).toString()} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="nl_BE" />
+    <meta property="og:locale" content={lang === 'en' ? 'en_GB' : 'nl_BE'} />
+    {altLangPath && <meta property="og:locale:alternate" content={lang === 'en' ? 'nl_BE' : 'en_GB'} />}
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -75,8 +79,8 @@ const canonical = new URL(path, siteUrl).toString();
       name: 'Key-Design Architects',
       legalName: 'Key-Design Architects',
       url: siteUrl,
-      logo: `${siteUrl}/images/brand/logo-key-design.png`,
-      image: `${siteUrl}/images/brand/hero-foto.jpg`,
+      logo: new URL(brandImg('brandLogo', '/images/brand/logo-key-design.png'), siteUrl).toString(),
+      image: new URL(brandImg('brandShareImage', '/images/brand/hero-foto.jpg'), siteUrl).toString(),
       founder: {
         '@type': 'Person',
         name: 'Kenneth Keyaerts',
@@ -84,6 +88,18 @@ const canonical = new URL(path, siteUrl).toString();
         identifier: 'Stamnummer A912091',
       },
       email: 'kennethkeyaerts@icloud.com',
+      sameAs: [
+        'https://www.instagram.com/keydesign.architects/',
+        'https://vind.architect.be/kenneth-keyaerts/A912091',
+      ],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: lang === 'en' ? 'Architecture services' : 'Architectuurdiensten',
+        itemListElement: (lang === 'en'
+          ? ['Feasibility study', 'Architectural design', 'Building permits and regularisation', 'Technical file', 'Contractor coordination', 'Site supervision', 'Handover']
+          : ['Haalbaarheidsonderzoek', 'Architecturaal ontwerp', 'Omgevingsvergunning en regularisatie', 'Technisch dossier', 'Aannemerscoördinatie', 'Werfopvolging', 'Oplevering']
+        ).map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })),
+      },
       priceRange: '€€€',
       address: {
         '@type': 'PostalAddress',
@@ -103,6 +119,20 @@ const canonical = new URL(path, siteUrl).toString();
         'Interieurvormgeving',
       ],
     })} />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'Key-Design Architects',
+      inLanguage: lang === 'en' ? 'en' : 'nl-BE',
+      publisher: { '@id': `${siteUrl}/#firm` },
+    })} />
+
+    {jsonLd.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', ...block })} />
+    ))}
 
     {breadcrumbs.length > 0 && (
       <script type="application/ld+json" set:html={JSON.stringify({

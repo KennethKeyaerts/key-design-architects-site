@@ -132,3 +132,42 @@ export async function updateInquiry(id: string, data: Record<string, any>) {
 export async function deleteInquiry(id: string) {
   await deleteDoc(doc(db, 'inquiries', id));
 }
+
+// ---------- Full-quality images (manifest + chunk documents) ----------
+// A single Firestore document may not exceed 1 MB, which forced photos to be
+// squeezed until they looked blurry. An image is now split over a few chunk
+// documents instead, so a 2400px photo stays sharp. Each reference stored in
+// projects / hero slides / settings looks like "blob:<id>"; the build step
+// (scripts/fetch-content.mjs) turns it into a real file on the website.
+export interface BlobManifest {
+  id: string;
+  mime: string;
+  width: number;
+  height: number;
+  chunks: number;
+  kind: 'photo' | 'logo';
+  thumb: string; // small data URL used only for previews in this dashboard
+  createdAt: string;
+}
+
+export async function saveBlob(manifest: BlobManifest, chunks: string[]) {
+  for (let i = 0; i < chunks.length; i++) {
+    await setDoc(doc(db, 'image_blobs', `${manifest.id}_c${i}`), { i, data: chunks[i] });
+  }
+  // The manifest is written last, so a half-finished upload is never referenced.
+  await setDoc(doc(db, 'image_blobs', manifest.id), manifest);
+}
+
+export async function fetchBlobManifest(id: string): Promise<BlobManifest | null> {
+  const snap = await getDoc(doc(db, 'image_blobs', id));
+  return snap.exists() ? (snap.data() as BlobManifest) : null;
+}
+
+export async function deleteBlob(id: string) {
+  const m = await fetchBlobManifest(id);
+  const n = m?.chunks ?? 8;
+  for (let i = 0; i < n; i++) {
+    try { await deleteDoc(doc(db, 'image_blobs', `${id}_c${i}`)); } catch { /* already gone */ }
+  }
+  await deleteDoc(doc(db, 'image_blobs', id));
+}

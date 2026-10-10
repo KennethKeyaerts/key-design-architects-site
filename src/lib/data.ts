@@ -11,6 +11,29 @@ export interface TimelineStep {
   images?: string[];
 }
 
+export interface ProjectBlock {
+  id: string;
+  type: 'heading' | 'text' | 'image' | 'images2' | 'images3' | 'quote' | 'video';
+  text?: string;       // heading / text / quote / video url
+  images?: string[];   // image paths taken from the project's own photos
+  caption?: string;
+  en?: { text?: string; caption?: string }; // English version of the texts
+}
+
+/** Project phases, in order. Used for the badge on cards and the progress bar on a project page. */
+export const PHASES: { key: string; nl: string; en: string }[] = [
+  { key: 'voorstudie', nl: 'Voorstudie', en: 'Preliminary study' },
+  { key: 'haalbaarheid', nl: 'Haalbaarheid', en: 'Feasibility' },
+  { key: 'ontwerp', nl: 'Ontwerp', en: 'Design' },
+  { key: 'vergunning', nl: 'Vergunningstraject', en: 'Permit procedure' },
+  { key: 'werf', nl: 'Op de werf', en: 'Under construction' },
+  { key: 'opgeleverd', nl: 'Opgeleverd', en: 'Completed' },
+];
+export const phaseLabel = (key: string | undefined, en = false) => {
+  const ph = PHASES.find((p) => p.key === key);
+  return ph ? (en ? ph.en : ph.nl) : '';
+};
+
 export interface Project {
   id: string;
   slug?: string;
@@ -32,6 +55,9 @@ export interface Project {
   timeline?: TimelineStep[];
   attributionNote?: string; // for projects designed by a different firm (e.g. experience gained during prior employment): rendered as a prominent, unmissable notice on the project's own page, never silently omitted
   en?: Record<string, any>; // English translations of this project's text fields, used by the /en/ pages
+  role?: 'own' | 'collaborated'; // own = designed by Key-Design; collaborated = worked on it for another firm/employer (attributionNote explains)
+  phase?: string; // one of PHASES[].key
+  blocks?: ProjectBlock[]; // free page layout built in /beheerder; when absent the classic layout is used
   statusNote?: string; // for self-initiated studies/unbuilt concepts (e.g. a feasibility study): rendered as its own prominent, unmissable notice, distinct in tone from attributionNote since it's a different kind of caveat (not-yet-realized, not authorship)
 }
 
@@ -70,12 +96,15 @@ const HQ_SLIDE_IMAGES: Record<string, string> = {
 };
 const hqPath = (stem: string) => `/images/hq/${stem}.jpg`;
 
+// Images re-uploaded through /beheerder live under /images/uploads/ and are already full quality:
+// those are never overridden. Only the old, heavily compressed copies are swapped for the HQ files.
+const isUpload = (src?: string) => typeof src === 'string' && src.startsWith('/images/uploads/');
 function applyHq(p: Project): Project {
   const list = HQ_PROJECT_IMAGES[p.id];
   if (!list) return p;
   const images = [...(p.images ?? [])];
-  list.forEach((stem, i) => { images[i] = hqPath(stem); });
-  return { ...p, image: hqPath(list[0]), images };
+  list.forEach((stem, i) => { if (!isUpload(images[i])) images[i] = hqPath(stem); });
+  return { ...p, image: isUpload(p.image) ? p.image : hqPath(list[0]), images };
 }
 
 export const projects: Project[] = (projectsRaw as Project[])
@@ -96,11 +125,27 @@ export interface HeroSlide {
   order?: number;
   titleEn?: string; // English caption, shown on the /en/ pages
   focusX?: number; focusY?: number; focusMobileX?: number | null; focusMobileY?: number | null; // chosen focal point of the photo (percent) for computer/tablet and phone
+  projectId?: string; // id of the linked project (preferred: survives a renamed project)
   projectSlug?: string; // the project this slide shows; drives the hero's "View this project" button
 }
 
 export const heroSlides: HeroSlide[] = (heroSlidesRaw as HeroSlide[])
-  .map((sl) => (HQ_SLIDE_IMAGES[sl.id] ? { ...sl, image: hqPath(HQ_SLIDE_IMAGES[sl.id]) } : sl))
+  .map((sl) => (HQ_SLIDE_IMAGES[sl.id] && !isUpload(sl.image) ? { ...sl, image: hqPath(HQ_SLIDE_IMAGES[sl.id]) } : sl))
+  // A slide linked to a project (projectId) always follows that project: its link,
+  // and, unless the slide has its own text, its title, place and year. A deleted
+  // project simply loses the link instead of breaking the page.
+  .map((sl) => {
+    const proj = sl.projectId ? projects.find((p) => p.id === sl.projectId) : sl.projectSlug ? projects.find((p) => p.slug === sl.projectSlug) : undefined;
+    if (!proj) return { ...sl, projectSlug: sl.projectId ? undefined : sl.projectSlug };
+    return {
+      ...sl,
+      projectSlug: proj.slug,
+      image: sl.image || proj.image,
+      title: sl.title || proj.title,
+      location: sl.location || proj.location,
+      year: sl.year || proj.year,
+    };
+  })
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
 /**
@@ -125,6 +170,12 @@ export function getHeroConfig() {
     videoMobile,
     slides,
   };
+}
+
+/** A branding image (logo, portrait, ...) the owner can replace in /beheerder; falls back to the built-in file. */
+export function brandImg(key: string, fallback: string): string {
+  const val = siteSettings[key];
+  return typeof val === 'string' && val.length > 0 ? val : fallback;
 }
 
 /** Small helper so templates can do settings.get('heroTitle', 'fallback') */

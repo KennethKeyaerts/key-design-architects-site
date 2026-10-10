@@ -1,0 +1,147 @@
+---
+import Img from './Img.astro';
+import { PHASES, phaseLabel } from '../lib/data';
+
+// Shared body of a project page (NL and EN): phase progress, role notice,
+// free page layout (blocks) or the classic layout, and the timeline.
+interface Props { project: any; lang?: 'nl' | 'en'; }
+const { project, lang = 'nl' } = Astro.props;
+const en = lang === 'en';
+const T: Record<string, any> = en ? (project.en || {}) : {};
+const t = (k: string) => T[k] ?? project[k];
+const L = en
+  ? { phase: 'Project phase', origin: 'Origin of this project', status: 'Status of this project', concept: 'Concept', materials: 'Materials', specs: 'Specifications', gallery: 'Gallery', journey: 'Journey', image: 'image',
+      collab: 'This project was designed by another firm. Kenneth Keyaerts contributed to it; it is not a Key-Design design.' }
+  : { phase: 'Fase van het project', origin: 'Herkomst van dit project', status: 'Status van dit project', concept: 'Concept', materials: 'Materialen', specs: 'Specificaties', gallery: 'Beeldmateriaal', journey: 'Traject', image: 'beeld',
+      collab: 'Dit project werd ontworpen door een ander kantoor. Kenneth Keyaerts werkte eraan mee; het is geen ontwerp van Key-Design.' };
+
+const gallery: string[] = project.images?.length ? project.images : [project.image];
+const blocks: any[] = Array.isArray(project.blocks) ? project.blocks : [];
+const useBlocks = blocks.length > 0;
+const note: string = t('attributionNote') || (project.role === 'collaborated' ? L.collab : '');
+const timeline: any[] = (T.timeline ?? project.timeline ?? []).map((s: any, i: number) => ({ ...s, images: (project.timeline?.[i]?.images ?? s.images ?? []) }));
+const phaseIdx = PHASES.findIndex((p) => p.key === project.phase);
+
+function bt(b: any, k: 'text' | 'caption') { return (en && b.en?.[k]) || b[k] || ''; }
+function embed(url: string) {
+  const yt = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{6,})/.exec(url || '');
+  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}`;
+  const vm = /vimeo\.com\/(?:video\/)?(\d+)/.exec(url || '');
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  return '';
+}
+---
+
+{phaseIdx >= 0 && (
+  <div class="reveal mb-8" aria-label={L.phase}>
+    <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-3">{L.phase}: <span class="text-terracotta">{phaseLabel(project.phase, en)}</span></p>
+    <ol class="grid grid-cols-6 gap-1 sm:gap-2">
+      {PHASES.map((ph, i) => (
+        <li class="min-w-0">
+          <div class={`h-1.5 rounded-full ${i <= phaseIdx ? 'bg-terracotta' : 'bg-sand-dark/40'}`}></div>
+          <span class={`hidden sm:block mt-1.5 text-[10px] leading-tight uppercase tracking-wide ${i === phaseIdx ? 'text-earth-dark font-bold' : 'text-earth-muted'}`}>{en ? ph.en : ph.nl}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+)}
+
+{note && (
+  <div class="reveal p-5 mb-8 rounded-2xl bg-amber-50 border-2 border-amber-700/40">
+    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-800 mb-1.5">{L.origin}</p>
+    <p class="text-sm text-amber-900 leading-relaxed">{note}</p>
+  </div>
+)}
+
+{t('statusNote') && (
+  <div class="reveal p-5 mb-8 rounded-2xl bg-sky-50 border-2 border-sky-700/40">
+    <p class="text-[11px] font-bold uppercase tracking-wider text-sky-800 mb-1.5">{L.status}</p>
+    <p class="text-sm text-sky-900 leading-relaxed">{t('statusNote')}</p>
+  </div>
+)}
+
+<figure class="reveal rounded-3xl overflow-hidden border border-sand-dark/40 mb-8 bg-sand-medium">
+  <Img eager priority src={project.image} alt={project.title} class="w-full h-auto object-cover" width="1400" height="900" sizes="100vw" />
+</figure>
+
+<div class="reveal grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10 mb-12 sm:mb-16">
+  <div class="lg:col-span-2 space-y-6">
+    <h2 class="font-serif text-2xl font-bold text-earth-dark">{L.concept}</h2>
+    <p class="text-earth-muted leading-relaxed">{t('description')}</p>
+    {t('concept') && <p class="text-earth-muted leading-relaxed">{t('concept')}</p>}
+  </div>
+  <div class="space-y-6">
+    {t('materials')?.length ? (
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-terracotta mb-2">{L.materials}</h3>
+        <ul class="space-y-1.5 text-sm text-earth-muted">{t('materials').map((m: string) => <li>• {m}</li>)}</ul>
+      </div>
+    ) : null}
+    {t('specs') && Object.keys(t('specs')).length ? (
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-terracotta mb-2">{L.specs}</h3>
+        <dl class="space-y-1.5 text-sm">
+          {Object.entries(t('specs')).map(([k, v]) => (
+            <div class="flex justify-between gap-4"><dt class="text-earth-muted">{k}</dt><dd class="text-earth-dark font-medium text-right">{v as string}</dd></div>
+          ))}
+        </dl>
+      </div>
+    ) : null}
+  </div>
+</div>
+
+{useBlocks ? (
+  <div class="mb-12 sm:mb-16 space-y-8 sm:space-y-10">
+    {blocks.map((b: any) => {
+      const imgs: string[] = (b.images || []).filter(Boolean);
+      if (b.type === 'heading') return <h2 class="reveal font-serif text-2xl sm:text-3xl font-bold text-earth-dark">{bt(b, 'text')}</h2>;
+      if (b.type === 'text') return <p class="reveal text-earth-muted leading-relaxed max-w-3xl whitespace-pre-line">{bt(b, 'text')}</p>;
+      if (b.type === 'quote') return <blockquote class="reveal border-l-4 border-terracotta pl-5 italic text-lg text-earth-muted max-w-3xl">“{bt(b, 'text')}”</blockquote>;
+      if (b.type === 'video') {
+        const src = embed(b.text);
+        return src ? <div class="reveal aspect-video rounded-2xl overflow-hidden bg-sand-medium"><iframe src={src} title={project.title} loading="lazy" allowfullscreen class="w-full h-full"></iframe></div> : null;
+      }
+      if (!imgs.length) return null;
+      const cols = b.type === 'images3' ? 'sm:grid-cols-3' : b.type === 'images2' ? 'sm:grid-cols-2' : '';
+      const sizes = b.type === 'images3' ? '(min-width:768px) 33vw, 100vw' : b.type === 'images2' ? '(min-width:768px) 50vw, 100vw' : '100vw';
+      return (
+        <figure class="reveal">
+          <div class={`grid grid-cols-1 ${cols} gap-3 sm:gap-4`}>
+            {imgs.map((img, i) => <Img src={img} alt={`${project.title}, ${L.image} ${i + 1}`} class="rounded-2xl w-full h-auto object-cover" sizes={sizes} />)}
+          </div>
+          {bt(b, 'caption') && <figcaption class="mt-2 text-xs text-earth-muted">{bt(b, 'caption')}</figcaption>}
+        </figure>
+      );
+    })}
+  </div>
+) : gallery.length > 1 ? (
+  <div class="reveal mb-12 sm:mb-16">
+    <h2 class="font-serif text-2xl font-bold text-earth-dark mb-6">{L.gallery}</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {gallery.map((img: string, i: number) => (
+        <Img src={img} alt={`${project.title}, ${L.image} ${i + 1}`} class="rounded-2xl w-full h-auto object-cover" width="700" height="500" sizes="(min-width:768px) 50vw, 100vw" />
+      ))}
+    </div>
+  </div>
+) : null}
+
+{timeline.length ? (
+  <div class="reveal mb-12 sm:mb-16">
+    <h2 class="font-serif text-2xl font-bold text-earth-dark mb-6">{L.journey}</h2>
+    <ol class="relative border-l-2 border-sand-dark/50 ml-2 space-y-8">
+      {timeline.map((step: any) => (
+        <li class="pl-5 sm:pl-7 relative">
+          <span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-terracotta"></span>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">{[step.phase, step.date].filter(Boolean).join(' · ')}</span>
+          <h3 class="font-serif font-bold text-lg text-earth-dark mt-1">{step.title}</h3>
+          {step.description && <p class="text-sm text-earth-muted mt-2 leading-relaxed">{step.description}</p>}
+          {step.images?.length ? (
+            <div class={`mt-4 grid gap-3 grid-cols-1 ${step.images.length > 1 ? 'sm:grid-cols-2' : ''}`}>
+              {step.images.filter(Boolean).map((img: string, i: number) => <Img src={img} alt={`${step.title}, ${L.image} ${i + 1}`} class="rounded-xl w-full h-auto object-cover" sizes="(min-width:768px) 40vw, 100vw" />)}
+            </div>
+          ) : null}
+        </li>
+      ))}
+    </ol>
+  </div>
+) : null}

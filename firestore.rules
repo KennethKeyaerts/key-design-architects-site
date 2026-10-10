@@ -24,6 +24,15 @@ service cloud.firestore {
       allow write: if request.auth != null;
     }
 
+    // Uploaded photos and logos in full quality. One image = one small
+    // "manifest" document plus a few "chunk" documents that each stay well
+    // below Firestore's 1MB-per-document limit. The public site reads these
+    // while it is being built; only a signed-in admin may write.
+    match /image_blobs/{blobId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
     // Contact form leads: anyone may CREATE a new inquiry (that's the public
     // contact form submitting), but nobody except a signed-in admin may read,
     // update, or delete them. This is what stops a stranger from reading

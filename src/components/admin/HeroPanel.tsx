@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { saveSiteSettings, saveHeroSlide, deleteHeroSlide } from '../../lib/firebase';
-import { compressForHero } from '../../lib/imageCompressor';
+import ImageField, { ImagePicker, Preview, usePreviewSrc } from './ImageField';
 
 interface Props {
   settings: Record<string, any>;
@@ -15,7 +15,8 @@ function slugify(input: string): string {
 }
 
 // Click on the photo to choose which part must stay in view when it is cropped.
-function FocusPicker({ image, x, y, aspect, label, onPick }: { image: string; x: number; y: number; aspect: string; label: string; onPick: (x: number, y: number) => void }) {
+function FocusPicker({ image: imageRef, x, y, aspect, label, onPick }: { image: string; x: number; y: number; aspect: string; label: string; onPick: (x: number, y: number) => void }) {
+  const image = usePreviewSrc(imageRef);
   const pick = (e: React.MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     onPick(Math.round(((e.clientX - r.left) / r.width) * 100), Math.round(((e.clientY - r.top) / r.height) * 100));
@@ -66,17 +67,12 @@ export default function HeroPanel({ settings, onSettingsSaved, slides, onSlidesC
     }
   };
 
-  const startNewSlide = () => setEditingSlide({ id: null, image: '', title: '', location: '', year: '', description: '', order: slides.length });
-  const startEditSlide = (slide: any) => setEditingSlide({ ...slide });
-
-  const handleSlideImageUpload = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const compressed = await compressForHero(reader.result as string);
-      setEditingSlide((prev: any) => ({ ...prev, image: compressed }));
-    };
-    reader.readAsDataURL(file);
-  };
+  const startNewSlide = () => setEditingSlide({ id: null, projectId: '', image: '', title: '', location: '', year: '', description: '', order: slides.length });
+  // Older slides only stored the project's web address; map that back to the project.
+  const linkedProject = (slide: any) =>
+    projects.find((p) => p.id === slide.projectId) ||
+    (!slide.projectId && slide.projectSlug ? projects.find((p) => (p.slug || slugify(p.title)) === slide.projectSlug) : undefined);
+  const startEditSlide = (slide: any) => setEditingSlide({ ...slide, projectId: slide.projectId || linkedProject(slide)?.id || '' });
 
   const handleSaveSlide = async () => {
     if (!editingSlide.image) {
@@ -85,9 +81,11 @@ export default function HeroPanel({ settings, onSettingsSaved, slides, onSlidesC
     }
     setSavingSlide(true);
     try {
-      const { id, ...data } = editingSlide;
+      const { id, ...rest } = editingSlide;
+      const linked = projects.find((p) => p.id === rest.projectId);
+      const data = { ...rest, projectSlug: linked ? (linked.slug || slugify(linked.title)) : '' };
       const newId = await saveHeroSlide(id, data);
-      const updated = id ? slides.map((s) => (s.id === id ? editingSlide : s)) : [...slides, { ...editingSlide, id: newId }];
+      const updated = id ? slides.map((s) => (s.id === id ? { ...editingSlide, ...data } : s)) : [...slides, { ...editingSlide, ...data, id: newId }];
       onSlidesChanged(updated.sort((a, b) => (a.order ?? 0) - (b.order ?? 0)));
       setEditingSlide(null);
     } catch (err) {
@@ -122,10 +120,43 @@ export default function HeroPanel({ settings, onSettingsSaved, slides, onSlidesC
         <button onClick={() => setEditingSlide(null)} className="text-xs text-earth-muted hover:text-terracotta">← Terug naar overzicht</button>
         <h3 className="font-serif text-lg font-bold text-earth-dark">{editingSlide.id ? 'Hero-foto bewerken' : 'Nieuwe hero-foto'}</h3>
 
-        <div>
-          <label className="block text-xs font-bold text-earth-dark mb-1">Foto</label>
-          <input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && handleSlideImageUpload(e.target.files[0])} className="text-sm" />
-          <p className="text-[11px] text-earth-muted mt-1">Gebruik een brede, landschap-foto (min. 1600px breed) voor het beste resultaat. De foto wordt automatisch scherp gehouden (tot 2200px breed).</p>
+        <div className="p-4 rounded-xl bg-sand-light border border-sand-dark/40 space-y-2">
+          <p className="text-xs font-bold text-earth-dark">Stap 1: kies het project</p>
+          <select
+            value={editingSlide.projectId || ''}
+            onChange={(e) => {
+              const proj = projects.find((p) => p.id === e.target.value);
+              setEditingSlide({
+                ...editingSlide,
+                projectId: e.target.value,
+                // Selecting a project suggests its main photo, which can still be changed below.
+                image: editingSlide.image || proj?.image || '',
+              });
+            }}
+            className="w-full px-3 py-2 rounded-xl border border-sand-dark/60 text-sm bg-white"
+          >
+            <option value="">Geen project (de knop gaat naar het overzicht van alle projecten)</option>
+            {projects.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
+          </select>
+          <p className="text-[11px] text-earth-muted">De knop "Bekijk dit project" opent dit project. Het project bestaat nog niet? Maak het eerst aan bij "Projecten" en kom dan terug.</p>
+        </div>
+
+        <div className="space-y-3">
+          <p className="text-xs font-bold text-earth-dark">Stap 2: kies de foto</p>
+          {(() => {
+            const proj = projects.find((p) => p.id === editingSlide.projectId);
+            const own: string[] = proj ? Array.from(new Set([proj.image, ...(proj.images || [])].filter(Boolean))) : [];
+            return own.length ? (
+              <ImagePicker label="Een foto van dit project" images={own} value={editingSlide.image} onChange={(v: string) => setEditingSlide({ ...editingSlide, image: v })} />
+            ) : null;
+          })()}
+          <ImageField
+            label="Of upload een andere, speciale hero-foto"
+            value={editingSlide.image}
+            onChange={(ref) => setEditingSlide({ ...editingSlide, image: ref })}
+            previewClass="w-44 h-28 object-cover"
+            help="Gebruik een brede foto, het liefst minstens 2000px breed. Ze wordt automatisch tot 2400px breed in hoge kwaliteit bewaard en voor telefoon en tablet verkleind, zodat de website snel blijft."
+          />
         </div>
 
         {editingSlide.image && (
@@ -144,34 +175,18 @@ export default function HeroPanel({ settings, onSettingsSaved, slides, onSlidesC
         )}
 
         <div>
-          <label className="block text-xs font-bold text-earth-dark mb-1">Titel (optioneel bijschrift)</label>
+          <label className="block text-xs font-bold text-earth-dark mb-1">Titel (leeg laten = naam van het project)</label>
           <input value={editingSlide.title} onChange={(e) => setEditingSlide({ ...editingSlide, title: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-sand-dark/60 text-sm" />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-earth-dark mb-1">Locatie</label>
+            <label className="block text-xs font-bold text-earth-dark mb-1">Locatie (leeg = van het project)</label>
             <input value={editingSlide.location} onChange={(e) => setEditingSlide({ ...editingSlide, location: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-sand-dark/60 text-sm" />
           </div>
           <div>
             <label className="block text-xs font-bold text-earth-dark mb-1">Jaar</label>
             <input value={editingSlide.year} onChange={(e) => setEditingSlide({ ...editingSlide, year: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-sand-dark/60 text-sm" />
           </div>
-        </div>
-
-        <div>
-          <label className="block text-xs font-bold text-earth-dark mb-1">Gekoppeld project (voor de knop "Bekijk dit project")</label>
-          <select
-            value={(editingSlide as any).projectSlug || ''}
-            onChange={(e) => setEditingSlide({ ...editingSlide, projectSlug: e.target.value } as any)}
-            className="w-full px-3 py-2 rounded-xl border border-sand-dark/60 text-sm bg-white"
-          >
-            <option value="">Geen: de knop gaat naar het overzicht van alle projecten</option>
-            {projects.map((p) => {
-              const slug = p.slug || slugify(p.title);
-              return <option key={p.id || slug} value={slug}>{p.title}</option>;
-            })}
-          </select>
-          <p className="text-[11px] text-earth-muted mt-1">Kies het project dat bij deze foto hoort. Een nieuw project staat hier meteen in de lijst.</p>
         </div>
 
         <button onClick={handleSaveSlide} disabled={savingSlide} className="py-3 px-8 bg-terracotta hover:bg-terracotta-dark disabled:opacity-60 text-white text-sm font-bold uppercase tracking-wider rounded-xl">
@@ -230,10 +245,20 @@ export default function HeroPanel({ settings, onSettingsSaved, slides, onSlidesC
           {slides.length === 0 && <p className="text-sm text-earth-muted">Nog geen hero-foto's toegevoegd.</p>}
           {slides.map((slide, i) => (
             <div key={slide.id} className="flex items-center gap-3 p-3 rounded-xl bg-white border border-sand-dark/40">
-              <img src={slide.image} alt="" className="w-16 h-12 object-cover rounded-lg shrink-0" />
+              <Preview value={slide.image} className="w-16 h-12 object-cover rounded-lg shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-earth-dark truncate">{slide.title || '(zonder titel)'}</p>
-                <p className="text-[11px] text-earth-muted truncate">{slide.location} {slide.year}</p>
+                {(() => {
+                  const proj = linkedProject(slide);
+                  const missing = (slide.projectId || slide.projectSlug) && !proj;
+                  return (
+                    <>
+                      <p className="text-sm font-medium text-earth-dark truncate">{slide.title || proj?.title || '(zonder titel)'}</p>
+                      <p className={`text-[11px] truncate ${missing ? 'text-red-600 font-bold' : 'text-earth-muted'}`}>
+                        {missing ? 'Het gekoppelde project bestaat niet meer: de knop gaat naar het overzicht.' : proj ? `Knop opent: ${proj.title}` : 'Geen project gekoppeld: de knop gaat naar het overzicht.'}
+                      </p>
+                    </>
+                  );
+                })()}
               </div>
               <div className="flex items-center gap-1.5 text-xs shrink-0">
                 <button onClick={() => moveSlide(slide, -1)} disabled={i === 0} className="disabled:opacity-30 text-earth-muted" aria-label="Naar boven">↑</button>

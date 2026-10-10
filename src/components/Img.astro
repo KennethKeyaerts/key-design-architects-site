@@ -17,9 +17,9 @@ interface Props {
   parallax?: boolean;
 }
 const { src, alt, class: cls = '', sizes = '100vw', eager = false, priority = false, width, height, style, parallax = false } = Astro.props;
-const m = /^\/images\/((?:hq|hero|projects)\/.+)\.(?:jpe?g|png|webp)$/i.exec(src || '');
+const m = /^\/images\/((?:hq|hero|projects|uploads)\/.+)\.(?:jpe?g|png|webp)$/i.exec(src || '');
 const widths = [640, 1024, 1600, 2400].filter((w) => !m || existsSync(path.join(process.cwd(), 'public', 'images', `${m[1]}-${w}.webp`)));
-const srcset = m ? widths.map((w) => `/images/${m[1]}-${w}.webp ${w}w`).join(', ') : undefined;
+const srcset = m && widths.length ? widths.map((w) => `/images/${m[1]}-${w}.webp ${w}w`).join(', ') : undefined;
 ---
 <img
   src={src}
