@@ -1,69 +1,11 @@
 ---
-import ProjectBody from '../../components/ProjectBody.astro';
-import Img from '../../components/Img.astro';
-import DoodleIcon from '../../components/DoodleIcon.astro';
-import Layout from '../../layouts/Layout.astro';
+import ProjectPage from '../../components/ProjectPage.astro';
 import { projects } from '../../lib/data';
 
 export function getStaticPaths() {
-  return projects.map((p) => ({
-    params: { slug: p.slug },
-    props: { project: p },
-  }));
+  return projects.map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
 }
-
 const { project } = Astro.props;
-const gallery = project.images?.length ? project.images : [project.image];
 ---
 
-<Layout
-  title={`${project.title} | Key-Design Architects`}
-  description={project.description}
-  path={`/portfolio/${project.slug}`}
-  altLangPath={`/en/portfolio/${project.slug}`}
-  ogImage={project.image}
-  jsonLd={[{
-    '@type': 'CreativeWork',
-    name: project.title,
-    description: project.description,
-    image: new URL(project.image, 'https://www.keydesignarchitects.be').toString(),
-    creator: { '@id': 'https://www.keydesignarchitects.be/#firm' },
-    dateCreated: project.year ? String(project.year) : undefined,
-    inLanguage: 'nl',
-  }]}
-  breadcrumbs={[
-    { name: 'Projecten', url: '/portfolio' },
-    { name: project.title, url: `/portfolio/${project.slug}` },
-  ]}
->
-  <article class="py-10 sm:py-14">
-    <div class="container-page">
-      <nav class="reveal text-xs text-earth-muted mb-6">
-        <a href="/portfolio" class="hover:text-terracotta">Projecten</a> / <span class="text-earth-dark">{project.title}</span>
-      </nav>
-
-      <div class="reveal grid grid-cols-1 lg:grid-cols-3 gap-10 mb-8">
-        <div class="lg:col-span-2">
-          <DoodleIcon name="projecten" animate class="w-12 h-12 text-terracotta mb-3" />
-          <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">{project.category}</span>
-          <h1 class="text-3xl sm:text-4xl font-bold text-earth-dark mt-2">{project.title}</h1>
-          <p class="mt-3 text-earth-muted">{project.location} · {project.year} · {project.area}</p>
-        </div>
-        {project.quote && (
-          <blockquote class="lg:col-span-1 border-l-4 border-terracotta pl-5 italic text-earth-muted self-center">
-            “{project.quote}”
-          </blockquote>
-        )}
-      </div>
-
-      <ProjectBody project={project} lang="nl" />
-
-      <div class="reveal text-center bg-earth-dark text-white rounded-3xl p-10 sm:p-14">
-        <h2 class="text-2xl sm:text-3xl font-bold">Een gelijkaardig project in gedachten?</h2>
-        <a href="/contact" class="btn-cartoon-primary inline-block mt-6 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
-          Bespreek uw project met Kenneth
-        </a>
-      </div>
-    </div>
-  </article>
-</Layout>
+<ProjectPage project={project} lang="nl" />

@@ -4,18 +4,14 @@ import Img from '../components/Img.astro';
 import Layout from '../layouts/Layout.astro';
 import ArchitecturalMotifs from '../components/ArchitecturalMotifs.astro';
 import DoodleIcon from '../components/DoodleIcon.astro';
-import { s, projects, phaseLabel } from '../lib/data';
+import { s, projects, phaseLabel, getFilterConfig, categoryLabel, grayscaleHover } from '../lib/data';
 
-const CATEGORY_LABELS: Record<string, string> = {
-  nieuwbouw: 'Nieuwbouw',
-  renovatie: 'Totaalrenovatie',
-  interieur: 'Interieur & Maatwerk',
-};
 
-// Always show the full filter system (not just categories currently in use):
 // with only a handful of projects today, this is exactly where visitors will
 // expect a working index/filter once the portfolio grows to dozens of them.
-const categories = Object.keys(CATEGORY_LABELS);
+const filterCfg = getFilterConfig();
+const categories = filterCfg.items;
+const EN = false;
 ---
 
 <Layout
@@ -40,31 +36,27 @@ const categories = Object.keys(CATEGORY_LABELS);
         <p class="text-earth-muted">Binnenkort verschijnen hier de eerste projecten.</p>
       )}
 
-      <div class="reveal flex flex-wrap gap-2.5 mb-8" id="portfolio-filters">
-        <button
-          data-filter="alle"
-          class="portfolio-filter-btn active py-2 px-4 rounded-full border-2 border-earth-dark text-xs font-bold uppercase tracking-wider transition-colors"
-        >
-          Alle projecten
+      {categories.length > 0 && (
+      <div class="reveal flex flex-wrap gap-3 mb-8 pb-1" id="portfolio-filters" role="group" aria-label={filterCfg.all.nl}>
+        <button type="button" data-filter="alle" class="filter-btn active py-2 px-4 text-xs font-bold uppercase tracking-wider">
+          {filterCfg.all.nl}
         </button>
         {categories.map((cat) => (
-          <button
-            data-filter={cat}
-            class="portfolio-filter-btn py-2 px-4 rounded-full border-2 border-earth-dark text-xs font-bold uppercase tracking-wider transition-colors"
-          >
-            {CATEGORY_LABELS[cat] || cat}
+          <button type="button" data-filter={cat.key} class="filter-btn py-2 px-4 text-xs font-bold uppercase tracking-wider">
+            {EN ? cat.en : cat.nl}
           </button>
         ))}
       </div>
+      )}
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
         {projects.map((p) => (
           <a href={`/portfolio/${p.slug}`} data-category={p.category} class="portfolio-card card-cartoon portfolio-grid-item reveal block overflow-hidden">
-            <div class="aspect-[4/3] overflow-hidden bg-sand-medium border-b-2 border-earth-dark">
+            <div class={`aspect-[4/3] overflow-hidden bg-sand-medium border-b-2 border-earth-dark ${grayscaleHover ? 'photo-bw' : ''}`}>
               <Img src={p.image} alt={p.title} class="w-full h-full object-cover" width="600" height="450" sizes="(min-width:1024px) 50vw, 100vw" />
             </div>
             <div class="p-5">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-terracotta">{CATEGORY_LABELS[p.category] || p.category}</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-terracotta">{categoryLabel(p.category, EN)}</span>
               <h2 class="font-bold text-lg text-earth-dark mt-1">{p.title}</h2>
               <p class="text-xs text-earth-muted mt-1">{p.location} · {p.year} · {p.area}</p>
               <p class="text-sm text-earth-muted mt-3 line-clamp-2">{p.description}</p>
@@ -84,19 +76,8 @@ const categories = Object.keys(CATEGORY_LABELS);
   </section>
 </Layout>
 
-<style>
-  .portfolio-filter-btn {
-    background: white;
-    color: #4E342E;
-  }
-  .portfolio-filter-btn.active {
-    background: #C86A4B;
-    color: white;
-  }
-</style>
-
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.portfolio-filter-btn');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
   const cards = document.querySelectorAll<HTMLElement>('.portfolio-card');
   const emptyState = document.getElementById('portfolio-empty-state');
 

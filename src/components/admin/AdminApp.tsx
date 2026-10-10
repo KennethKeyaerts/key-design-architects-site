@@ -75,7 +75,7 @@ export default function AdminApp() {
           <>
             {tab === 'Hero' && <HeroPanel settings={settings} onSettingsSaved={setSettings} slides={heroSlides} onSlidesChanged={setHeroSlides} projects={projects} />}
             {tab === 'Site teksten' && <SiteTextsPanel settings={settings} onSaved={setSettings} />}
-            {tab === 'Projecten' && <ProjectsPanel projects={projects} onChanged={setProjects} slides={heroSlides} onSlidesChanged={setHeroSlides} />}
+            {tab === 'Projecten' && <ProjectsPanel projects={projects} onChanged={setProjects} slides={heroSlides} onSlidesChanged={setHeroSlides} settings={settings} onSettingsSaved={setSettings} />}
             {tab === "Logo en foto's" && <BrandPanel settings={settings} onSaved={setSettings} />}
             {tab === 'Aanvragen' && <InquiriesPanel />}
             {tab === 'Publiceren' && <PublishPanel />}

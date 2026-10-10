@@ -50,23 +50,23 @@ function draw(img: HTMLImageElement, maxEdge: number) {
 export interface PreparedImage { dataUrl: string; mime: string; width: number; height: number; thumb: string }
 
 /** Scales and encodes a file. Photos: JPEG, as sharp as fits. Logos: PNG/SVG, transparency kept. */
-export async function prepareImage(file: File, kind: 'photo' | 'logo'): Promise<PreparedImage> {
+export async function prepareImage(file: File, kind: 'photo' | 'logo' | 'drawing'): Promise<PreparedImage> {
   const original = await readAsDataUrl(file);
   const isSvg = file.type === 'image/svg+xml' || /\.svg$/i.test(file.name);
 
   if (isSvg) {
-    if (original.length > 400_000) throw new Error('Dit SVG-bestand is te groot (max. ongeveer 300 KB).');
+    if (original.length > (kind === 'drawing' ? 3_000_000 : 400_000)) throw new Error('Dit SVG-bestand is te groot.');
     const img = await loadImage(original).catch(() => null);
     return { dataUrl: original, mime: 'image/svg+xml', width: img?.naturalWidth || 400, height: img?.naturalHeight || 400, thumb: original };
   }
 
   const img = await loadImage(original);
   const thumbCanvas = draw(img, 800).canvas;
-  const thumb = thumbCanvas.toDataURL(kind === 'logo' ? 'image/png' : 'image/jpeg', 0.72);
+  const thumb = thumbCanvas.toDataURL(kind !== 'photo' ? 'image/png' : 'image/jpeg', 0.72);
 
-  if (kind === 'logo') {
-    // Logos keep transparency: PNG, scaled down in steps until it fits.
-    let edge = Math.min(1600, Math.max(img.naturalWidth, img.naturalHeight));
+  if (kind === 'logo' || kind === 'drawing') {
+    // Logos and drawings keep transparency: PNG, scaled down in steps until it fits.
+    let edge = Math.min(kind === 'drawing' ? 2400 : 1600, Math.max(img.naturalWidth, img.naturalHeight));
     for (let i = 0; i < 6; i++) {
       const { canvas, width, height } = draw(img, edge);
       const out = canvas.toDataURL('image/png');
@@ -90,7 +90,7 @@ export async function prepareImage(file: File, kind: 'photo' | 'logo'): Promise<
 }
 
 /** Uploads a file and returns its reference ("blob:<id>"). */
-export async function uploadImage(file: File, kind: 'photo' | 'logo' = 'photo'): Promise<string> {
+export async function uploadImage(file: File, kind: 'photo' | 'logo' | 'drawing' = 'photo'): Promise<string> {
   const p = await prepareImage(file, kind);
   const id = newId();
   const chunks: string[] = [];

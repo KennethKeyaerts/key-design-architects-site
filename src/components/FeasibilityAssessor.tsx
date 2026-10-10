@@ -145,10 +145,10 @@ export default function FeasibilityAssessor({ settings: t, lang = 'nl' }: Props)
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-earth-dark mb-2">
+          <label htmlFor="fa-size" className="block text-xs font-bold text-earth-dark mb-2">
             {en ? '2. Desired surface area:' : '2. Gewenste oppervlakte:'} <span className="text-terracotta">{projectSize} m²</span>
           </label>
-          <input type="range" min={10} max={5000} step={10} value={projectSize} onChange={(e) => setProjectSize(Number(e.target.value))} className="w-full accent-terracotta" />
+          <input id="fa-size" type="range" min={10} max={5000} step={10} value={projectSize} onChange={(e) => setProjectSize(Number(e.target.value))} className="w-full accent-terracotta" />
         </div>
 
         <div>
@@ -177,7 +177,7 @@ export default function FeasibilityAssessor({ settings: t, lang = 'nl' }: Props)
         <div className="flex items-center justify-between mb-4">
           <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-terracotta">{en ? 'Dynamic calculation' : 'Dynamische calculatie'}</span>
-            <h3 className="font-bold text-xl text-earth-dark">{en ? 'Indicative Budget Estimate' : 'Indicatieve Budget Raming'}</h3>
+            <h3 aria-level={2} className="font-bold text-xl text-earth-dark">{en ? 'Indicative Budget Estimate' : 'Indicatieve Budget Raming'}</h3>
           </div>
           <div className="flex rounded-full border-2 border-earth-dark overflow-hidden text-xs font-bold shrink-0">
             <button onClick={() => setExpanded(false)} className={`px-3 py-1.5 ${!expanded ? 'bg-earth-dark text-white' : 'bg-white text-earth-dark'}`}>Compact</button>

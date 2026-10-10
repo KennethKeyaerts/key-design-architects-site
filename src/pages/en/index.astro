@@ -5,25 +5,20 @@ import Layout from '../../layouts/Layout.astro';
 import HeroSection from '../../components/HeroSection.astro';
 import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
 import DoodleIcon from '../../components/DoodleIcon.astro';
-import { projects, getProjectBySlug, brandImg } from '../../lib/data';
+import { getFeatured, categoryLabel, brandImg } from '../../lib/data';
 
-// Homepage showcase: projects starred in /beheerder first, then the classic pair, then whatever exists.
-const featured = [
-  ...projects.filter((p) => p.starred),
-  getProjectBySlug('woning-lookstraat'),
-  getProjectBySlug('kwartier-xiv'),
-  ...projects,
-].filter((p, i, a): p is NonNullable<typeof p> => Boolean(p) && a.indexOf(p) === i);
-const residentialProject = featured[0];
-const developmentProject = featured[1];
-const introSource = developmentProject ?? residentialProject;
+// Homepage showcase: the 2 or 3 projects chosen in /beheerder (with the label written for each).
+const featured = getFeatured();
+const introSource = (featured[1] ?? featured[0])?.project;
 const introImage = introSource?.images?.[3] ?? introSource?.images?.[0] ?? introSource?.image ?? '/images/brand/hero-foto.jpg';
+const EN = true;
+const base = EN ? '/en' : '';
 const portrait = brandImg('brandPortrait', '/images/brand/kenneth-portrait.jpg');
 const trLogo = brandImg('brandThroughRenders', '/images/brand/logo-through-renders-full.jpg');
 ---
 
 <Layout
-  title="Key-Design Architects | Kenneth Keyaerts - Licensed Architect Lier & Antwerp"
+  title="Key-Design Architects | Licensed Architect in Lier & Antwerp"
   description="Exclusive residential architecture, full renovations, new-build villas, interiors and 3D visualisations by licensed architect Kenneth Keyaerts. Active in Lier, Antwerp and the Kempen region."
   path="/en/"
   hasHero
@@ -54,7 +49,7 @@ const trLogo = brandImg('brandThroughRenders', '/images/brand/logo-through-rende
 
       {introImage && (
         <figure class="reveal mt-16 sm:mt-20 rounded-2xl overflow-hidden bg-sand-medium aspect-[4/3] sm:aspect-[16/8]">
-          <Img parallax src={introImage} alt={developmentProject?.title || 'Key-Design Architects'} class="w-full h-full object-cover" width="1600" height="800" sizes="100vw" />
+          <Img parallax src={introImage} alt={introSource?.title || 'Key-Design Architects'} class="w-full h-full object-cover" width="1600" height="800" sizes="100vw" />
         </figure>
       )}
 
@@ -115,37 +110,24 @@ const trLogo = brandImg('brandThroughRenders', '/images/brand/logo-through-rende
           From a personal renovation to a full-scale property development: Key-Design guides both with the same thoroughness.
         </p>
       </div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {residentialProject && (
-          <a href={`/en/portfolio/${residentialProject.slug}`} class="card-cartoon portfolio-grid-item reveal block overflow-hidden group">
-            <div class="aspect-[16/10] overflow-hidden bg-sand-medium border-b-2 border-earth-dark relative">
-              <Img src={residentialProject.image} alt={residentialProject.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width="800" height="500" sizes="(min-width:1024px) 50vw, 100vw" />
-              <span class="badge-cartoon absolute top-4 left-4 py-1.5 px-3.5 text-[10px] font-bold uppercase tracking-wider">For private clients</span>
+      <div class={`grid grid-cols-1 gap-6 lg:grid-cols-2`}>
+        {featured.map(({ project, label, labelEn, text, textEn, link, linkEn }, i) => (
+          <a href={`${base}/portfolio/${project.slug}`} class={`card-cartoon portfolio-grid-item reveal block overflow-hidden group`} style={`transition-delay:${i * 0.08}s`}>
+            <div class={`aspect-[16/10] overflow-hidden bg-sand-medium border-b-2 border-earth-dark relative`}>
+              <Img src={project.image} alt={project.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width="800" height="500" sizes="(min-width:1024px) 50vw, 100vw" />
+              {(EN ? labelEn : label) && (
+                <span class={`absolute top-4 left-4 max-w-[80%] py-1.5 px-3.5 text-[10px] font-bold uppercase tracking-wider leading-snug rounded-full border-2 border-earth-dark shadow-[3px_3px_0_0_#1C1917] ${i % 2 === 0 ? 'bg-orangePastel text-earth-dark' : 'bg-earth-dark text-white'}`}>{EN ? labelEn : label}</span>
+              )}
             </div>
-            <div class="p-6">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-terracotta">Renovation</span>
-              <h3 class="font-bold text-xl text-earth-dark mt-1">{residentialProject.title}</h3>
-              <p class="text-xs text-earth-muted mt-1">{residentialProject.location} · {residentialProject.year}</p>
-              <p class="mt-3 text-sm text-earth-muted leading-relaxed">Your own home, from first idea to a renovation that holds up to the smallest detail.</p>
-              <span class="inline-block mt-4 text-sm font-bold text-terracotta group-hover:text-terracotta-dark">View this renovation →</span>
-            </div>
-          </a>
-        )}
-        {developmentProject && (
-          <a href={`/en/portfolio/${developmentProject.slug}`} class="card-cartoon portfolio-grid-item reveal block overflow-hidden group" style="transition-delay:0.08s">
-            <div class="aspect-[16/10] overflow-hidden bg-sand-medium border-b-2 border-earth-dark relative">
-              <Img src={developmentProject.image} alt={developmentProject.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width="800" height="500" sizes="(min-width:1024px) 50vw, 100vw" />
-              <span class="py-1.5 px-3.5 text-[10px] font-bold uppercase tracking-wider rounded-full border-2 border-earth-dark bg-earth-dark text-white absolute top-4 left-4 shadow-[3px_3px_0_0_#1C1917]">For developers & real estate</span>
-            </div>
-            <div class="p-6">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-terracotta">New-build</span>
-              <h3 class="font-bold text-xl text-earth-dark mt-1">{developmentProject.title}</h3>
-              <p class="text-xs text-earth-muted mt-1">{developmentProject.location}</p>
-              <p class="mt-3 text-sm text-earth-muted leading-relaxed">Feasibility, spatial yield and architectural added value for your real estate project.</p>
-              <span class="inline-block mt-4 text-sm font-bold text-terracotta group-hover:text-terracotta-dark">Discover this development →</span>
+            <div class="p-5 sm:p-6">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-terracotta">{categoryLabel(project.category, EN)}</span>
+              <h3 class="font-bold text-xl text-earth-dark mt-1">{project.title}</h3>
+              <p class="text-xs text-earth-muted mt-1">{[(EN ? project.en?.location : '') || project.location, project.year].filter(Boolean).join(' · ')}</p>
+              <p class="mt-3 text-sm text-earth-muted leading-relaxed">{(EN ? textEn : text) || (EN ? project.en?.description : '') || project.description}</p>
+              <span class="inline-block mt-4 text-sm font-bold text-terracotta group-hover:text-terracotta-dark">{EN ? linkEn : link} →</span>
             </div>
           </a>
-        )}
+        ))}
       </div>
       <div class="reveal text-center mt-8">
         <a href="/en/portfolio" class="text-sm font-bold text-terracotta hover:text-terracotta-dark">View all projects →</a>

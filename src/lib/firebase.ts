@@ -145,7 +145,7 @@ export interface BlobManifest {
   width: number;
   height: number;
   chunks: number;
-  kind: 'photo' | 'logo';
+  kind: 'photo' | 'logo' | 'drawing';
   thumb: string; // small data URL used only for previews in this dashboard
   createdAt: string;
 }

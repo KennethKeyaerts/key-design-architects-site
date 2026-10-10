@@ -76,7 +76,9 @@ function saveDataUri(dataUri, outDir, baseName) {
 function collectBlobIds(node, out = new Set()) {
   if (typeof node === 'string') { if (node.startsWith('blob:')) out.add(node.slice(5)); }
   else if (Array.isArray(node)) node.forEach((n) => collectBlobIds(n, out));
-  else if (node && typeof node === 'object') Object.values(node).forEach((n) => collectBlobIds(n, out));
+  else if (node && typeof node === 'object') {
+    for (const [k, v] of Object.entries(node)) { if (k.startsWith('blob:')) out.add(k.slice(5)); collectBlobIds(v, out); }
+  }
   return out;
 }
 function replaceBlobRefs(node, map) {
@@ -84,7 +86,10 @@ function replaceBlobRefs(node, map) {
   if (Array.isArray(node)) return node.map((n) => replaceBlobRefs(n, map));
   if (node && typeof node === 'object') {
     const o = {};
-    for (const [k, v] of Object.entries(node)) o[k] = replaceBlobRefs(v, map);
+    for (const [k, v] of Object.entries(node)) {
+      const key = k.startsWith('blob:') ? (map.get(k.slice(5)) || k) : k; // photo labels are keyed by the photo's reference
+      o[key] = replaceBlobRefs(v, map);
+    }
     return o;
   }
   return node;

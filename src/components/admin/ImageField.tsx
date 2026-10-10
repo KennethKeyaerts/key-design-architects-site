@@ -23,7 +23,7 @@ interface FieldProps {
   label: string;
   value?: string;
   onChange: (ref: string) => void;
-  kind?: 'photo' | 'logo';
+  kind?: 'photo' | 'logo' | 'drawing';
   help?: string;
   previewClass?: string;
   allowRemove?: boolean;
@@ -53,11 +53,11 @@ export default function ImageField({ label, value, onChange, kind = 'photo', hel
     <div>
       <label className="block text-xs font-bold text-earth-dark mb-1">{label}</label>
       <div className="flex items-start gap-4">
-        <div className={`rounded-lg border border-sand-dark/40 overflow-hidden bg-white ${kind === 'logo' ? 'p-2 bg-[repeating-conic-gradient(#eee_0_25%,#fff_0_50%)] bg-[length:16px_16px]' : ''}`}>
+        <div className={`rounded-lg border border-sand-dark/40 overflow-hidden bg-white ${kind !== 'photo' ? 'p-2 bg-[repeating-conic-gradient(#eee_0_25%,#fff_0_50%)] bg-[length:16px_16px]' : ''}`}>
           <Preview value={value} className={kind === 'logo' ? 'w-44 h-24 object-contain' : previewClass} />
         </div>
         <div className="space-y-2 text-sm">
-          <input ref={input} type="file" accept={kind === 'logo' ? 'image/png,image/svg+xml,image/webp,image/jpeg' : 'image/*'} onChange={(e) => pick(e.target.files?.[0])} className="text-xs" disabled={busy} />
+          <input ref={input} type="file" accept={kind !== 'photo' ? 'image/png,image/svg+xml,image/webp,image/jpeg' : 'image/*'} onChange={(e) => pick(e.target.files?.[0])} className="text-xs" disabled={busy} />
           {busy && <p className="text-xs text-earth-muted">Bezig met uploaden in hoge kwaliteit…</p>}
           {error && <p className="text-xs text-red-600">{error}</p>}
           {allowRemove && value && !busy && (

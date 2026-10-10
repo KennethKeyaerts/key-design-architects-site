@@ -1,0 +1,391 @@
+---
+import Img from './Img.astro';
+import DoodleIcon from './DoodleIcon.astro';
+import Layout from '../layouts/Layout.astro';
+import { PHASES, phaseLabel, categoryLabel, imageTypeLabel } from '../lib/data';
+
+// One template for every project page, Dutch and English: back button, a full-width
+// photo with the title beneath it (the architect's convention), a swipeable zone for
+// sketches and diagrams next to the project information, labelled photos, and the
+// free layout / timeline the owner builds in /beheerder.
+interface Props { project: any; lang?: 'nl' | 'en'; }
+const { project, lang = 'nl' } = Astro.props;
+const en = lang === 'en';
+const base = en ? '/en' : '';
+const T: Record<string, any> = en ? (project.en || {}) : {};
+const t = (k: string) => T[k] ?? project[k];
+const L = en
+  ? { back: 'Back to projects', projects: 'Projects', phase: 'Project phase', origin: 'Origin of this project', status: 'Status of this project', concept: 'Concept', materials: 'Materials', specs: 'Specifications', contribution: 'Contribution', sheet: 'Project data', gallery: 'Image material', journey: 'Journey', image: 'image', schemas: 'Sketches & diagrams', prev: 'Previous', next: 'Next', all: 'All', location: 'Location', year: 'Year', area: 'Area',
+      cta: 'Have a similar project in mind?', ctaBtn: 'Discuss your project with Kenneth', swipe: 'Swipe or use the arrows',
+      collab: 'This project was designed by another firm. Kenneth Keyaerts contributed to it; it is not a Key-Design design.' }
+  : { back: 'Terug naar projecten', projects: 'Projecten', phase: 'Fase van het project', origin: 'Herkomst van dit project', status: 'Status van dit project', concept: 'Concept', materials: 'Materialen', specs: 'Specificaties', contribution: 'Bijdrage', sheet: 'Projectgegevens', gallery: 'Beeldmateriaal', journey: 'Traject', image: 'beeld', schemas: "Schema's en schetsen", prev: 'Vorige', next: 'Volgende', all: 'Alles', location: 'Locatie', year: 'Jaar', area: 'Oppervlakte',
+      cta: 'Een gelijkaardig project in gedachten?', ctaBtn: 'Bespreek uw project met Kenneth', swipe: 'Veeg of gebruik de pijlen',
+      collab: 'Dit project werd ontworpen door een ander kantoor. Kenneth Keyaerts werkte eraan mee; het is geen ontwerp van Key-Design.' };
+
+const gallery: string[] = (project.images?.length ? project.images : [project.image]).filter(Boolean);
+const info: Record<string, any> = project.imageInfo || {};
+const infoOf = (src: string) => info[src] || {};
+const capOf = (src: string) => (en && infoOf(src).en?.caption) || infoOf(src).caption || '';
+const typeOf = (src: string) => infoOf(src).type || '';
+const types = Array.from(new Set(gallery.map(typeOf).filter(Boolean)));
+
+const blocks: any[] = Array.isArray(project.blocks) ? project.blocks : [];
+const useBlocks = blocks.length > 0;
+const schemas: any[] = (project.schemas || []).filter((s: any) => s && s.image);
+const contributions: any[] = (project.contributions || []).filter((c: any) => c && c.nl);
+const note: string = t('attributionNote') || (project.role === 'collaborated' ? L.collab : '');
+const timeline: any[] = (T.timeline ?? project.timeline ?? []).map((s: any, i: number) => ({ ...s, images: (project.timeline?.[i]?.images ?? s.images ?? []) }));
+const phaseIdx = PHASES.findIndex((p) => p.key === project.phase);
+const cat = categoryLabel(project.category, en);
+
+function bt(b: any, k: 'text' | 'caption') { return (en && b.en?.[k]) || b[k] || ''; }
+function embed(url: string) {
+  const yt = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{6,})/.exec(url || '');
+  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}`;
+  const vm = /vimeo\.com\/(?:video\/)?(\d+)/.exec(url || '');
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  return '';
+}
+const hasMaterials = t('materials')?.length > 0;
+const hasSpecs = t('specs') && Object.keys(t('specs')).length > 0;
+---
+
+<Layout
+  title={`${project.title} | Key-Design Architects`}
+  description={t('description')}
+  path={`${base}/portfolio/${project.slug}`}
+  altLangPath={en ? `/portfolio/${project.slug}` : `/en/portfolio/${project.slug}`}
+  ogImage={project.image}
+  lang={lang}
+  hasHero
+  jsonLd={[{
+    '@type': 'CreativeWork',
+    name: project.title,
+    description: t('description'),
+    image: new URL(project.image, 'https://www.keydesignarchitects.be').toString(),
+    creator: { '@id': 'https://www.keydesignarchitects.be/#firm' },
+    dateCreated: project.year ? String(project.year) : undefined,
+    inLanguage: lang,
+  }]}
+  breadcrumbs={[
+    { name: L.projects, url: `${base}/portfolio` },
+    { name: project.title, url: `${base}/portfolio/${project.slug}` },
+  ]}
+>
+  <article class="pb-12 sm:pb-16">
+    <!-- Main image: exactly like the homepage hero (full width, from the very top, header floating over it),
+         with room beneath for the title, as architects present projects -->
+    <figure class="project-hero relative overflow-hidden bg-sand-medium">
+      <Img eager priority parallax src={project.image} alt={project.title} class="absolute inset-0 w-full h-full object-cover" sizes="100vw" />
+      <div class="pointer-events-none absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-black/50 via-black/15 to-transparent" aria-hidden="true"></div>
+      <div class="absolute inset-x-0 top-[4.75rem] sm:top-[6.5rem] z-10">
+        <div class="container-page">
+          <a href={`${base}/portfolio`} class="btn-cartoon-secondary inline-flex items-center gap-2 py-2 px-4 text-[11px] sm:text-xs font-bold uppercase tracking-wider">
+            <span aria-hidden="true">←</span> {L.back}
+          </a>
+        </div>
+      </div>
+    </figure>
+
+    <!-- Title zone -->
+    <header class="container-page pt-8 sm:pt-10 lg:pt-12 pb-6 sm:pb-8">
+      <div class="reveal grid grid-cols-1 md:grid-cols-[1fr_auto] gap-x-10 gap-y-5 items-end">
+        <div class="min-w-0">
+          {cat && <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">{cat}</span>}
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-earth-dark mt-2 break-words">{project.title}</h1>
+        </div>
+        <dl class="flex flex-wrap md:flex-col md:items-end gap-x-6 gap-y-1.5 text-sm text-earth-muted">
+          {t('location') && <div class="flex gap-2"><dt class="sr-only">{L.location}</dt><dd>{t('location')}</dd></div>}
+          {project.year && <div class="flex gap-2"><dt class="sr-only">{L.year}</dt><dd>{project.year}</dd></div>}
+          {t('area') && <div class="flex gap-2"><dt class="sr-only">{L.area}</dt><dd>{t('area')}</dd></div>}
+        </dl>
+      </div>
+      {phaseIdx >= 0 && (
+        <div class="reveal mt-7" aria-label={L.phase}>
+          <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-3">{L.phase}: <span class="text-terracotta">{phaseLabel(project.phase, en)}</span></p>
+          <ol class="grid grid-cols-6 gap-1 sm:gap-2 max-w-3xl">
+            {PHASES.map((ph, i) => (
+              <li class="min-w-0">
+                <div class={`h-1.5 rounded-full ${i <= phaseIdx ? 'bg-terracotta' : 'bg-sand-dark/40'}`}></div>
+                <span class={`hidden sm:block mt-1.5 text-[10px] leading-tight uppercase tracking-wide ${i === phaseIdx ? 'text-earth-dark font-bold' : 'text-earth-muted'}`}>{en ? ph.en : ph.nl}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+    </header>
+
+    <div class="container-page">
+      <!-- Explanation and concept (left), project data sheet (right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 mb-14 sm:mb-20">
+        <div class="reveal min-w-0 lg:col-span-7 space-y-5">
+          <h2 class="font-serif text-2xl font-bold text-earth-dark">{L.concept}</h2>
+          <p class="text-earth-muted leading-relaxed">{t('description')}</p>
+          {t('concept') && <p class="text-earth-muted leading-relaxed">{t('concept')}</p>}
+          {t('quote') && (
+            <blockquote class="border-l-4 border-terracotta pl-5 italic text-earth-muted">“{t('quote')}”</blockquote>
+          )}
+          {note && (
+            <div class="p-5 mt-2 rounded-2xl bg-amber-50 border-2 border-amber-700/40">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-amber-800 mb-1.5">{L.origin}</p>
+              <p class="text-sm text-amber-900 leading-relaxed">{note}</p>
+            </div>
+          )}
+          {t('statusNote') && (
+            <div class="p-5 rounded-2xl bg-sky-50 border-2 border-sky-700/40">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-sky-800 mb-1.5">{L.status}</p>
+              <p class="text-sm text-sky-900 leading-relaxed">{t('statusNote')}</p>
+            </div>
+          )}
+        </div>
+
+        {(contributions.length > 0 || hasMaterials || hasSpecs) && (
+          <aside class="reveal min-w-0 lg:col-span-5 self-start lg:sticky lg:top-8 border-t border-sand-dark/50 pt-8 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-10" style="transition-delay:.08s" aria-label={L.sheet}>
+            <div class="space-y-8">
+              {contributions.length > 0 && (
+                <section>
+                  <h3 class="text-[11px] font-bold uppercase tracking-[0.14em] text-terracotta mb-3">{L.contribution}</h3>
+                  <ul class="flex flex-wrap gap-2">
+                    {contributions.map((c: any) => (
+                      <li class="rounded-full border border-earth-dark/40 px-3 py-1 text-[11px] sm:text-xs font-semibold text-earth-dark leading-snug">{(en && c.en) || c.nl}</li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+              {hasMaterials && (
+                <section>
+                  <h3 class="text-[11px] font-bold uppercase tracking-[0.14em] text-terracotta mb-3">{L.materials}</h3>
+                  <ul class="space-y-2">
+                    {t('materials').map((m: string) => (
+                      <li class="flex gap-3 text-sm text-earth-muted leading-snug"><span class="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-terracotta" aria-hidden="true"></span><span>{m}</span></li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+              {hasSpecs && (
+                <section>
+                  <h3 class="text-[11px] font-bold uppercase tracking-[0.14em] text-terracotta mb-3">{L.specs}</h3>
+                  <dl class="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-x-4 text-sm">
+                    {Object.entries(t('specs')).map(([k, v]) => (
+                      <>
+                        <dt class="py-2 border-t border-sand-dark/40 first:border-t-0 text-[11px] font-bold uppercase tracking-wider text-earth-muted leading-snug">{k}</dt>
+                        <dd class="py-2 border-t border-sand-dark/40 first:border-t-0 text-earth-dark leading-snug">{v as string}</dd>
+                      </>
+                    ))}
+                  </dl>
+                </section>
+              )}
+            </div>
+          </aside>
+        )}
+      </div>
+
+      <!-- Sketches, axonometries, diagrams: transparent images that sit directly on the page background -->
+      {schemas.length > 0 && (
+        <section class="schema-zone reveal mb-14 sm:mb-20" aria-label={L.schemas} data-count={schemas.length}>
+          <h2 class="font-serif text-2xl font-bold text-earth-dark mb-4 sm:mb-6">{L.schemas}</h2>
+          <div class="relative">
+            <div class="schema-track no-scrollbar flex gap-4 sm:gap-10 overflow-x-auto snap-x snap-mandatory py-4 -mx-4 px-4 sm:mx-0 sm:px-0" tabindex="0" role="group" aria-roledescription="carousel" aria-label={L.schemas}>
+              {schemas.map((sc: any, i: number) => (
+                <figure class="schema-slide snap-center shrink-0 w-[86%] sm:w-[68%] lg:w-[56%]" aria-roledescription="slide" aria-label={`${i + 1} / ${schemas.length}`}>
+                  <div class="schema-stage aspect-[4/3] sm:aspect-[16/10] flex items-center justify-center">
+                    <Img src={sc.image} alt={(en && sc.en?.caption) || sc.caption || `${project.title}, ${L.schemas.toLowerCase()} ${i + 1}`} class="schema-img max-w-full max-h-full w-auto h-auto object-contain" sizes="(min-width:1024px) 56vw, 90vw" />
+                  </div>
+                  {((en && sc.en?.caption) || sc.caption) && <figcaption class="mt-2 text-xs sm:text-sm font-semibold text-earth-muted leading-relaxed max-w-xl">{(en && sc.en?.caption) || sc.caption}</figcaption>}
+                </figure>
+              ))}
+            </div>
+            {schemas.length > 1 && (
+              <>
+                <button type="button" class="schema-prev schema-arrow absolute left-0 top-[42%] -translate-y-1/2 sm:-translate-x-2 w-11 h-11 flex items-center justify-center text-terracotta disabled:opacity-0 disabled:pointer-events-none" aria-label={L.prev}>
+                  <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4 7 12l8 8"/></svg>
+                </button>
+                <button type="button" class="schema-next schema-arrow absolute right-0 top-[42%] -translate-y-1/2 sm:translate-x-2 w-11 h-11 flex items-center justify-center text-terracotta disabled:opacity-0 disabled:pointer-events-none" aria-label={L.next}>
+                  <svg viewBox="0 0 24 24" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4 8 8-8 8"/></svg>
+                </button>
+              </>
+            )}
+          </div>
+          {schemas.length > 1 && (
+            <div class="mt-2 flex items-center gap-4">
+              <div class="h-1 flex-1 rounded-full bg-sand-dark/30 overflow-hidden"><span class="schema-bar block h-full rounded-full bg-terracotta" style={`width:${100 / schemas.length}%`}></span></div>
+              <p class="schema-count text-[11px] font-bold tracking-wider text-earth-muted tabular-nums">1 / {schemas.length}</p>
+            </div>
+          )}
+        </section>
+      )}
+
+      <!-- Image material: free layout when the owner built one, otherwise the labelled grid -->
+      {useBlocks ? (
+        <div class="mb-12 sm:mb-16 space-y-8 sm:space-y-10">
+          {blocks.map((b: any) => {
+            const imgs: string[] = (b.images || []).filter(Boolean);
+            if (b.type === 'heading') return <h2 class="reveal font-serif text-2xl sm:text-3xl font-bold text-earth-dark">{bt(b, 'text')}</h2>;
+            if (b.type === 'text') return <p class="reveal text-earth-muted leading-relaxed max-w-3xl whitespace-pre-line">{bt(b, 'text')}</p>;
+            if (b.type === 'quote') return <blockquote class="reveal border-l-4 border-terracotta pl-5 italic text-lg text-earth-muted max-w-3xl">“{bt(b, 'text')}”</blockquote>;
+            if (b.type === 'video') {
+              const src = embed(b.text);
+              return src ? <div class="reveal aspect-video rounded-2xl overflow-hidden bg-sand-medium"><iframe src={src} title={project.title} loading="lazy" allowfullscreen class="w-full h-full"></iframe></div> : null;
+            }
+            if (!imgs.length) return null;
+            const cols = b.type === 'images3' ? 'sm:grid-cols-3' : b.type === 'images2' ? 'sm:grid-cols-2' : '';
+            const sizes = b.type === 'images3' ? '(min-width:768px) 33vw, 100vw' : b.type === 'images2' ? '(min-width:768px) 50vw, 100vw' : '100vw';
+            return (
+              <figure class="reveal">
+                <div class={`grid grid-cols-1 ${cols} gap-3 sm:gap-4`}>
+                  {imgs.map((img, i) => (
+                    <div class={`relative`}>
+                      <Img src={img} alt={`${project.title}, ${L.image} ${i + 1}`} class="rounded-2xl w-full h-auto object-cover" sizes={sizes} />
+                      {typeOf(img) && <span class="badge-cartoon absolute left-3 bottom-3 py-1 px-3 text-[10px] font-bold uppercase tracking-wider">{imageTypeLabel(typeOf(img), en)}</span>}
+                    </div>
+                  ))}
+                </div>
+                {bt(b, 'caption') && <figcaption class="mt-2 text-xs text-earth-muted">{bt(b, 'caption')}</figcaption>}
+              </figure>
+            );
+          })}
+        </div>
+      ) : gallery.length > 1 ? (
+        <div class="gallery-zone reveal mb-12 sm:mb-16">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <h2 class="font-serif text-2xl font-bold text-earth-dark">{L.gallery}</h2>
+            {types.length > 0 && (
+              <div class="flex flex-wrap gap-2" role="group" aria-label={L.gallery}>
+                <button type="button" data-gfilter="alle" class="gallery-chip active badge-cartoon py-1.5 px-3.5 text-[10px] font-bold uppercase tracking-wider">{L.all}</button>
+                {types.map((tp) => <button type="button" data-gfilter={tp} class="gallery-chip badge-cartoon py-1.5 px-3.5 text-[10px] font-bold uppercase tracking-wider">{imageTypeLabel(tp, en)}</button>)}
+              </div>
+            )}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {gallery.map((img: string, i: number) => (
+              <figure class="gallery-item" data-gtype={typeOf(img)}>
+                <div class={`relative`}>
+                  <Img src={img} alt={capOf(img) || `${project.title}, ${L.image} ${i + 1}`} class="rounded-2xl w-full h-auto object-cover" width="700" height="500" sizes="(min-width:768px) 50vw, 100vw" />
+                  {typeOf(img) && <span class="badge-cartoon absolute left-3 bottom-3 py-1 px-3 text-[10px] font-bold uppercase tracking-wider">{imageTypeLabel(typeOf(img), en)}</span>}
+                </div>
+                {capOf(img) && <figcaption class="mt-2 text-xs sm:text-sm text-earth-muted leading-relaxed">{capOf(img)}</figcaption>}
+              </figure>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {timeline.length ? (
+        <div class="reveal mb-12 sm:mb-16">
+          <h2 class="font-serif text-2xl font-bold text-earth-dark mb-6">{L.journey}</h2>
+          <ol class="relative border-l-2 border-sand-dark/50 ml-2 space-y-8">
+            {timeline.map((step: any) => (
+              <li class="pl-5 sm:pl-7 relative">
+                <span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-terracotta"></span>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">{[step.phase, step.date].filter(Boolean).join(' · ')}</span>
+                <h3 class="font-serif font-bold text-lg text-earth-dark mt-1">{step.title}</h3>
+                {step.description && <p class="text-sm text-earth-muted mt-2 leading-relaxed">{step.description}</p>}
+                {step.images?.length ? (
+                  <div class={`mt-4 grid gap-3 grid-cols-1 ${step.images.length > 1 ? 'sm:grid-cols-2' : ''}`}>
+                    {step.images.filter(Boolean).map((img: string, i: number) => <Img src={img} alt={`${step.title}, ${L.image} ${i + 1}`} class="rounded-xl w-full h-auto object-cover" sizes="(min-width:768px) 40vw, 100vw" />)}
+                  </div>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </div>
+      ) : null}
+
+      <div class="reveal text-center bg-earth-dark text-white rounded-3xl p-8 sm:p-14">
+        <h2 class="text-2xl sm:text-3xl font-bold">{L.cta}</h2>
+        <a href={`${base}/contact`} class="btn-cartoon-primary inline-block mt-6 py-3.5 px-6 sm:px-8 text-sm font-bold uppercase tracking-wider">{L.ctaBtn}</a>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  /* like the homepage hero, minus a strip so the title is readable in the first view */
+  .project-hero { height: clamp(380px, calc(100vh - 8.5rem), 1000px); height: clamp(380px, calc(100svh - 8.5rem), 1000px); }
+  @media (max-width: 639px) { .project-hero { height: clamp(360px, calc(100vh - 11rem), 760px); height: clamp(360px, calc(100svh - 11rem), 760px); } }
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .schema-track { scroll-behavior: smooth; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+  :global(html.js-ready) .schema-slide { opacity: .5; transform: scale(.955); transition: opacity .5s ease, transform .55s cubic-bezier(.16,1,.3,1); }
+  :global(html.js-ready) .schema-slide.is-active { opacity: 1; transform: none; }
+  .schema-img { transition: transform .6s cubic-bezier(.16,1,.3,1), filter .6s ease; will-change: transform; }
+  .schema-arrow { transition: transform .25s ease, opacity .25s ease; }
+  .schema-arrow:hover:not(:disabled) { transform: translateY(-50%) scale(1.15); }
+  @media (hover: hover) {
+    .schema-slide:hover .schema-img { transform: translate(var(--tx,0px), calc(var(--ty,0px) - 8px)) rotate(-.7deg) scale(1.03); filter: drop-shadow(0 14px 14px rgba(28,25,23,.14)); }
+  }
+  .schema-bar { transition: width .5s cubic-bezier(.16,1,.3,1); }
+  .gallery-chip { background: white; color: #1C1917; cursor: pointer; }
+  .gallery-chip.active { background: #C86A4B; color: white; }
+  .gallery-item.is-hidden { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .schema-track { scroll-behavior: auto; }
+    :global(html.js-ready) .schema-slide, .schema-bar, .schema-img, .schema-arrow { transition: none; }
+  }
+</style>
+
+<script>
+  // Schema carousel: arrows, keyboard, swipe (native scroll-snap), progress bar and counter.
+  document.querySelectorAll<HTMLElement>('.schema-zone').forEach((zone) => {
+    const track = zone.querySelector<HTMLElement>('.schema-track');
+    if (!track) return;
+    const slides = Array.from(track.querySelectorAll<HTMLElement>('.schema-slide'));
+    const prev = zone.querySelector<HTMLButtonElement>('.schema-prev');
+    const next = zone.querySelector<HTMLButtonElement>('.schema-next');
+    const bar = zone.querySelector<HTMLElement>('.schema-bar');
+    const count = zone.querySelector<HTMLElement>('.schema-count');
+    const current = () => {
+      const mid = track.scrollLeft + track.clientWidth / 2;
+      let best = 0, d = Infinity;
+      slides.forEach((s, i) => { const dist = Math.abs(s.offsetLeft + s.offsetWidth / 2 - mid); if (dist < d) { d = dist; best = i; } });
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 4) best = slides.length - 1;
+      if (track.scrollLeft <= 2) best = 0;
+      return best;
+    };
+    const update = () => {
+      const i = current();
+      slides.forEach((s, k) => s.classList.toggle('is-active', k === i));
+      if (bar) bar.style.width = `${((i + 1) / slides.length) * 100}%`;
+      if (count) count.textContent = `${i + 1} / ${slides.length}`;
+      if (prev) prev.disabled = i === 0;
+      if (next) next.disabled = i === slides.length - 1;
+    };
+    const go = (i: number) => {
+      const s = slides[Math.max(0, Math.min(slides.length - 1, i))];
+      track.scrollTo({ left: s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2, behavior: 'smooth' });
+    };
+    let raf = 0;
+    track.addEventListener('scroll', () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }, { passive: true });
+    prev?.addEventListener('click', () => go(current() - 1));
+    next?.addEventListener('click', () => go(current() + 1));
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(current() + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(current() - 1); }
+    });
+    // gentle follow-the-pointer drift on the drawings (desktop only)
+    if (window.matchMedia('(hover: hover)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      slides.forEach((s) => {
+        s.addEventListener('pointermove', (e) => {
+          const r = s.getBoundingClientRect();
+          s.style.setProperty('--tx', `${((e.clientX - r.left) / r.width - 0.5) * 14}px`);
+          s.style.setProperty('--ty', `${((e.clientY - r.top) / r.height - 0.5) * 8}px`);
+        });
+        s.addEventListener('pointerleave', () => { s.style.setProperty('--tx', '0px'); s.style.setProperty('--ty', '0px'); });
+      });
+    }
+    window.addEventListener('resize', update);
+    update();
+  });
+
+  // Gallery filter by photo type (werffoto, oplevering, ...)
+  document.querySelectorAll<HTMLElement>('.gallery-zone').forEach((zone) => {
+    const chips = zone.querySelectorAll<HTMLButtonElement>('.gallery-chip');
+    const items = zone.querySelectorAll<HTMLElement>('.gallery-item');
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      const f = chip.dataset.gfilter;
+      items.forEach((it) => it.classList.toggle('is-hidden', f !== 'alle' && it.dataset.gtype !== f));
+    }));
+  });
+</script>

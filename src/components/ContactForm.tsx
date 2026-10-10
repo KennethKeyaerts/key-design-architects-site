@@ -128,18 +128,20 @@ export default function ContactForm({ preFilledType, preFilledMessage, lang = 'n
     <form onSubmit={handleSubmit} className="space-y-4 p-6 sm:p-8 bg-white">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Your Name *' : 'Uw Naam *'}</label>
+          <label htmlFor="cf-name" className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Your Name *' : 'Uw Naam *'}</label>
           <input
             value={name}
+            id="cf-name" autoComplete="name"
             onChange={(e) => setName(e.target.value)}
             placeholder={en ? 'e.g. John Smith' : 'bijv. Jan Janssens'}
             className="w-full px-4 py-2.5 rounded-xl border-2 border-earth-dark/25 focus:border-terracotta focus:outline-none text-sm"
           />
         </div>
         <div>
-          <label className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Email Address *' : 'E-mailadres *'}</label>
+          <label htmlFor="cf-email" className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Email Address *' : 'E-mailadres *'}</label>
           <input
             type="email"
+            id="cf-email" autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={en ? 'e.g. john@domain.com' : 'bijv. jan@domein.be'}
@@ -150,18 +152,20 @@ export default function ContactForm({ preFilledType, preFilledMessage, lang = 'n
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Phone Number *' : 'Telefoonnummer *'}</label>
+          <label htmlFor="cf-phone" className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Phone Number *' : 'Telefoonnummer *'}</label>
           <input
             value={phone}
+            id="cf-phone" type="tel" autoComplete="tel"
             onChange={(e) => setPhone(e.target.value)}
             placeholder={en ? '+32 470 12 34 56' : '0470 12 34 56'}
             className="w-full px-4 py-2.5 rounded-xl border-2 border-earth-dark/25 focus:border-terracotta focus:outline-none text-sm"
           />
         </div>
         <div>
-          <label className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Project Location' : 'Locatie project'}</label>
+          <label htmlFor="cf-location" className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Project Location' : 'Locatie project'}</label>
           <input
             value={location}
+            id="cf-location"
             onChange={(e) => setLocation(e.target.value)}
             placeholder={en ? 'e.g. Lier, Antwerp...' : 'bijv. Lier, Antwerpen...'}
             className="w-full px-4 py-2.5 rounded-xl border-2 border-earth-dark/25 focus:border-terracotta focus:outline-none text-sm"
@@ -170,9 +174,10 @@ export default function ContactForm({ preFilledType, preFilledMessage, lang = 'n
       </div>
 
       <div>
-        <label className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Project Type' : 'Type Project'}</label>
+        <label htmlFor="cf-type" className="block text-xs font-bold text-earth-dark mb-1.5">{en ? 'Project Type' : 'Type Project'}</label>
         <select
           value={projectType}
+            id="cf-type"
           onChange={(e) => setProjectType(e.target.value)}
           className="w-full px-4 py-2.5 rounded-xl border-2 border-earth-dark/25 focus:border-terracotta focus:outline-none text-sm bg-white"
         >
@@ -183,11 +188,12 @@ export default function ContactForm({ preFilledType, preFilledMessage, lang = 'n
       </div>
 
       <div>
-        <label className="block text-xs font-bold text-earth-dark mb-1.5">
+        <label htmlFor="cf-message" className="block text-xs font-bold text-earth-dark mb-1.5">
           {en ? 'Briefly describe your wishes & ideas' : 'Beschrijf kort uw wensen & ideeën'}
         </label>
         <textarea
           value={message}
+            id="cf-message"
           onChange={(e) => setMessage(e.target.value)}
           rows={4}
           placeholder={

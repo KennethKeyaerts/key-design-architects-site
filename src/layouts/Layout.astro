@@ -21,7 +21,7 @@ interface Props {
 
 const {
   title,
-  description,
+  description: descriptionFull,
   path = '/',
   ogImage = brandImg('brandShareImage', '/images/brand/hero-foto.jpg'),
   hasHero = false,
@@ -32,6 +32,8 @@ const {
   jsonLd = [],
 } = Astro.props;
 
+// Search engines show roughly 160 characters; longer descriptions (e.g. a project's full text) are cut at a word boundary.
+const description = descriptionFull.length <= 160 ? descriptionFull : descriptionFull.slice(0, 157).replace(/\s+\S*$/, '').replace(/[\s,;:.]+$/, '') + '...';
 const siteUrl = 'https://www.keydesignarchitects.be';
 const canonical = new URL(path, siteUrl).toString();
 ---
@@ -231,6 +233,7 @@ const canonical = new URL(path, siteUrl).toString();
         menuBackdrop?.classList.add('open');
         hamburger?.setAttribute('aria-expanded', 'true');
         mobileMenu?.setAttribute('aria-hidden', 'false');
+        mobileMenu?.removeAttribute('inert');
         document.body.classList.add('overflow-hidden');
       }
       function closeMenu() {
@@ -238,6 +241,7 @@ const canonical = new URL(path, siteUrl).toString();
         menuBackdrop?.classList.remove('open');
         hamburger?.setAttribute('aria-expanded', 'false');
         mobileMenu?.setAttribute('aria-hidden', 'true');
+        mobileMenu?.setAttribute('inert', '');
         document.body.classList.remove('overflow-hidden');
       }
       hamburger?.addEventListener('click', () => {
@@ -259,6 +263,18 @@ const canonical = new URL(path, siteUrl).toString();
       window.addEventListener('scroll', toggleBackToTop, { passive: true });
       toggleBackToTop();
       backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+    <script is:inline>
+      // Touch screens have no hover: the black-and-white photo near the middle of the screen turns to colour.
+      (function () {
+        if (!window.matchMedia('(hover: none)').matches || !('IntersectionObserver' in window)) return;
+        var els = document.querySelectorAll('.photo-bw');
+        if (!els.length) return;
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { e.target.classList.toggle('is-colour', e.isIntersecting); });
+        }, { rootMargin: '-32% 0px -32% 0px' });
+        els.forEach(function (el) { io.observe(el); });
+      })();
     </script>
   </body>
 </html>

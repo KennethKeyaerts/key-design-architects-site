@@ -29,21 +29,21 @@ const { hasHero = false, lang = 'nl', altLangPath = '/' } = Astro.props;
     : 'sticky top-0 z-40 bg-sand-light/95 backdrop-blur-md border-b-2 border-earth-dark'}
 >
   <div class="container-page flex items-center justify-between py-3 sm:py-4">
-    <a href={lang === 'en' ? '/en/' : '/'} aria-label={lang === 'en' ? 'Go to the Key-Design Architects homepage' : 'Naar de homepagina van Key-Design Architects'} class="flex items-center">
+    <a href={lang === 'en' ? '/en/' : '/'} aria-label={lang === 'en' ? 'Key-Design Architects, go to the homepage' : 'Key-Design Architects, naar de homepagina'} class="flex items-center">
       <Logo tone={hasHero ? 'light' : 'dark'} size="md" />
     </a>
 
     <div class="flex items-center gap-3">
       <a
         href={altLangPath}
-        aria-label={lang === 'en' ? 'Bekijk deze pagina in het Nederlands' : 'View this page in English'}
+        aria-label={lang === 'en' ? 'NL, bekijk deze pagina in het Nederlands' : 'EN, view this page in English'}
         class="notranslate hidden sm:inline-flex py-2 px-4 bg-orangePastel text-earth-dark text-xs font-bold rounded-full border-2 border-earth-dark shadow-[3px_3px_0_0_#1C1917] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0_0_#1C1917] transition-all"
       >
         {lang === 'en' ? 'NL' : 'EN'}
       </a>
       <a
         href={altLangPath}
-        aria-label={lang === 'en' ? 'Bekijk deze pagina in het Nederlands' : 'View this page in English'}
+        aria-label={lang === 'en' ? 'NL, bekijk deze pagina in het Nederlands' : 'EN, view this page in English'}
         class="notranslate sm:hidden py-1.5 px-3 bg-orangePastel text-earth-dark text-[11px] font-bold rounded-full border-2 border-earth-dark shadow-[2px_2px_0_0_#1C1917]"
       >
         {lang === 'en' ? 'NL' : 'EN'}
