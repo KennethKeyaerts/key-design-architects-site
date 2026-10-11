@@ -100,7 +100,7 @@ export const kennis: KennisPage[] = [
         'Een boete of bestuurlijke maatregel.',
         'Een herstelvordering: het aanpassen of terugbrengen in vergunde staat.',
         'Afbraak, als laatste middel en niet in elk dossier.'] },
-      { h2: 'Wat betekent verjaring?', p: ['Er bestaan verjaringstermijnen voor strafvervolging en voor herstelvorderingen. Ze lopen niet gelijk en hangen af van de datum en de aard van de overtreding. Een belangrijk punt: een constructie die verjaard is, wordt daardoor niet automatisch vergund. Dat speelt bij verkoop, verbouwing en verzekering.', 'In principe worden constructies van voor 22 april 1962 vergund geacht. Voor latere constructies is bewijs nodig.'] },
+      { h2: 'Wat betekent verjaring?', p: ['Er bestaan verjaringstermijnen voor strafvervolging en voor herstelvorderingen. Ze lopen niet gelijk en hangen af van de datum en de aard van de overtreding. Een belangrijk punt: een constructie die verjaard is, wordt daardoor niet automatisch vergund. Dat speelt bij verkoop, verbouwing en verzekering.', 'Constructies van voor 22 april 1962 worden altijd vergund geacht. Tussen 22 april 1962 en de invoering van het gewestplan geldt een vermoeden van vergunning, tenzij de overheid het tegendeel kan bewijzen. U moet wel aantonen wanneer de constructie werd opgericht en dat ze er toen al zo uitzag.'] },
       { h2: 'Wat kan u zelf doen?', steps: [
         'Zoek de vergunningstoestand van uw woning op via de gemeente en het stedenbouwkundig uittreksel.',
         'Laat de bestaande toestand opmeten en vergelijk met de vergunde plannen.',
@@ -177,7 +177,8 @@ export const kennis: KennisPage[] = [
     answer: 'Voor de meeste vergunningsplichtige verbouwingen en voor nieuwbouw is een architect verplicht. Voor bepaalde kleine werken, zoals ingrepen die de stabiliteit niet raken en beperkt blijven in omvang, bestaan uitzonderingen. Voor u iets zonder architect indient, controleert u de actuele regels.',
     sections: [
       { h2: 'Wanneer is een architect verplicht?', p: ['Een omgevingsvergunning heette vroeger een bouwvergunning. Wie bouwt of verbouwt op een manier die een vergunning vraagt, moet in de regel een architect inschakelen. De architect staat in voor het ontwerp en het dossier.'] },
-      { h2: 'Wanneer mag het zonder?', p: ['Voor bepaalde kleine werken is een architect niet verplicht, bijvoorbeeld ingrepen van beperkte omvang die geen invloed hebben op de stabiliteit. De drempels verschillen per soort werk en kunnen wijzigen. Het Omgevingsloket en de gemeentelijke dienst kunnen u zeggen wat voor uw situatie geldt.'] },
+      { h2: 'Wanneer mag het zonder?', p: ['Voor bepaalde kleine werken is een architect niet verplicht, bijvoorbeeld een vergunningsvrij niet-bewoonbaar bijgebouw of een lichte, losstaande veranda. In de praktijk is een architect wel onvermijdelijk bij een bewoonbare uitbreiding, een optopping, een doorbraak in een dragende muur of een terras op een plat dak. De drempels kunnen wijzigen. Het Omgevingsloket en de gemeentelijke dienst kunnen u zeggen wat voor uw situatie geldt.'] },
+      { h2: 'Wat verandert er in 2026?', p: ['Sinds 1 maart 2026 zijn meer gevel-, dak- en binnenwerken zonder volumevergroting vrijgesteld van vergunning. Vergunningvrij betekent niet architectvrij: sinds 5 september 2026 moet bij vrijgestelde werken die de stabiliteit beïnvloeden een architect worden aangesteld voor ontwerp en controle van de uitvoering.'] },
       { h2: 'Waarom toch een architect?', list: [
         'Een architect kent het geldende kader en voorkomt een weigering.',
         'Een goed dossier is sneller beoordeeld.',
@@ -232,6 +233,7 @@ export const kennis: KennisPage[] = [
         'Vergunningvrij: kleine werken die u zonder aanvraag mag uitvoeren, binnen de voorwaarden.',
         'Meldingsplichtig: werken die u moet melden bij de gemeente, zonder volledige vergunningsprocedure.',
         'Vergunningsplichtig: alle andere ingrepen met een grotere invloed op de woning of de omgeving.'] },
+      { h2: 'Nieuw sinds 1 maart 2026', p: ['Sinds 1 maart 2026 zijn meer gevel-, dak- en binnenwerken vrijgesteld van een omgevingsvergunning, zolang het bouwvolume niet toeneemt. Denk aan ramen en deuren, binnenverbouwingen en isolatie. Vergunningvrij betekent niet dat een architect overbodig is. Sinds 5 september 2026 geldt de vrijstelling voor werken die de stabiliteit beïnvloeden alleen nog als een architect is aangesteld voor het ontwerp én de controle van de uitvoering. Een louter advies volstaat niet. Controleer daarom bij elke verbouwing of er stabiliteitswerken bij zijn.'] },
       { h2: 'Vaak gestelde voorbeelden', p: ['Tuinhuis, carport, pergola, zonnepanelen, airco, dakvenster, dakkapel, afsluiting, oprit en zwembad komen regelmatig voor. Voor elk bestaan eigen voorwaarden. Een zwembad in de tuin vraagt bijvoorbeeld meestal aandacht voor afmetingen, afstand tot de perceelsgrens en bestemming.'] },
       { h2: 'Wat u altijd moet nakijken', list: [
         'Het bestemmingsgebied en het verkavelingsvoorschrift van uw perceel.',
@@ -287,7 +289,7 @@ export const kennis: KennisPage[] = [
         'Het voorschrift van uw perceel: afstanden tot de grens staan vaak vast.',
         'De hoogte van de constructie aan de perceelsgrens.',
         'Brandveiligheid: een muur op de grens heeft vaak eigen eisen.',
-        'Ramen en zichten naar de buren: meestal gelden minimale afstanden voor rechtstreekse zichten, vaak ongeveer 1,90 meter.'] },
+        'Ramen en zichten naar de buren: sinds 1 september 2021 geldt in het Burgerlijk Wetboek één regel voor alle openingen in een muur, namelijk 1,90 meter vanaf de grens, tenzij u iets anders schriftelijk afspreekt met de buur.'] },
       { h2: 'Gemene muur', p: ['Een scheidingsmuur kan van beide buren zijn. Wie er tegenaan bouwt of de muur wil verhogen of overnemen, volgt best de regels voor een gemene muur en regelt dit schriftelijk met de buur.'] },
       { h2: 'Zo pakt u het aan', steps: [
         'Controleer de afstands- en hoogteregels in het voorschrift van uw perceel.',
@@ -312,10 +314,11 @@ export const kennis: KennisPage[] = [
     sections: [
       { h2: 'Wat is zonevreemd?', p: ['Een constructie is zonevreemd als haar functie niet past bij de bestemming van het gebied waarin ze staat. Dat komt vaak voor bij oudere woningen en hoeves in landelijke gebieden.'] },
       { h2: 'Wat kan er wel?', list: [
-        'Onderhoud en herstel van een bestaande vergunde woning.',
-        'Verbouwen binnen het bestaande volume.',
-        'Een beperkte uitbreiding onder voorwaarden.',
-        'In sommige gevallen een functiewijziging.'] },
+        'Verbouwen binnen het bestaande volume. Structurele werken, zoals een nieuw dak of dragende wanden, vragen een vergunning.',
+        'Uitbreiden tot een totaalvolume van in de regel 1.000 m³, zonder de woning op te splitsen in meerdere woongelegenheden. In kwetsbare gebieden of recreatiegebieden niet.',
+        'Afbreken en herbouwen op dezelfde plaats, onder voorwaarden en met een vergunning.',
+        'Onder voorwaarden een zorgwoning toevoegen.'] },
+      { h2: 'Welke voorwaarden gelden?', p: ['De woning moet in de regel hoofdzakelijk vergund zijn en niet verkrot. De werken mogen de goede ruimtelijke ordening niet schaden en het aantal woongelegenheden blijft gelijk. Zwembaden en veel andere tuinconstructies vallen buiten de basisrechten.'] },
       { h2: 'Waar moet u mee beginnen?', steps: [
         'Controleer of de woning vergund of vergund geacht is.',
         'Bepaal het bestemmingsgebied van het perceel.',
@@ -390,9 +393,9 @@ export const kennis: KennisPage[] = [
     title: 'Renovatieverplichting in Vlaanderen: wat moet u doen?',
     metaTitle: 'Renovatieverplichting Vlaanderen en architect | Key-Design Architects',
     description: 'Wat is de renovatieverplichting in Vlaanderen en wat betekent ze voor uw woning? Uitleg over EPC, termijnen en de rol van de architect.',
-    answer: 'In Vlaanderen moeten eigenaars van bepaalde woningen met een slecht EPC-label na aankoop renoveren tot een beter label binnen een vaste termijn. De exacte voorwaarden en termijnen veranderen. Controleer ze bij de overheid en laat uw woning vooraf doorrekenen.',
+    answer: 'Wie in Vlaanderen sinds 1 januari 2023 een woning of appartement met EPC-label E of F koopt, moet die binnen 6 jaar na de aankoopakte renoveren tot minstens label D. Het bewijs is een nieuw EPC. De regels kunnen nog wijzigen, controleer ze op vlaanderen.be.',
     sections: [
-      { h2: 'Waar gaat het om?', p: ['De overheid wil dat woningen met een slechte energieprestatie sneller verbeteren. Wie zo\'n woning koopt, krijgt een termijn om ze energetisch te renoveren naar een minimum label. De regels hangen af van het label en de aard van de woning.'] },
+      { h2: 'Waar gaat het om?', p: ['De overheid wil dat woningen met een slechte energieprestatie sneller verbeteren. De verplichting geldt voor kopers van een woning of appartement met label E of F. Zij moeten binnen 6 jaar na de notariële akte een EPC kunnen voorleggen met minstens label D. Die termijn werd recent verlengd van 5 naar 6 jaar.', 'Ze geldt niet bij een erfenis, bij sloop binnen 6 jaar na de aankoop en bij beschermd erfgoed. Wie ze niet naleeft, riskeert een boete en krijgt daarna toch een nieuwe termijn.'] },
       { h2: 'Wat doet een architect hierbij?', list: [
         'De woning doorlichten en een renovatiepad opstellen.',
         'De werken in logische fasen plannen, zodat u niets dubbel doet.',
@@ -400,12 +403,12 @@ export const kennis: KennisPage[] = [
         'Offertes vergelijken en de uitvoering opvolgen.'] },
       { h2: 'Waar begint u?', steps: [
         'Vraag het EPC van de woning op.',
-        'Controleer bij de overheid wat in uw situatie geldt.',
+        'Controleer op vlaanderen.be wat in uw situatie geldt, en tot wanneer.',
         'Laat een haalbaarheidsonderzoek maken, zodat u budget en volgorde kent.'] },
     ],
     faq: [
-      { q: 'Moet ik meteen renoveren na aankoop?', a: 'Er geldt een termijn. Controleer de actuele voorwaarden bij de overheid.' },
-      { q: 'Zijn er premies?', a: 'Er bestaan premies en voordelen voor energetisch renoveren. Controleer de actuele voorwaarden op vlaanderen.be.' },
+      { q: 'Moet ik meteen renoveren na aankoop?', a: 'Nee, u krijgt een termijn van 6 jaar na de aankoopakte. Controleer de actuele voorwaarden op vlaanderen.be.' },
+      { q: 'Zijn er premies?', a: 'Voor kopers van een woning met label E of F bestaat een renovatielening met rentesubsidie. Controleer de actuele voorwaarden op vlaanderen.be.' },
     ],
     related: ['/kennis/bouwkosten-per-m2', '/haalbaarheid', '/kennis/wat-kost-een-architect'],
     cta: 'haalbaarheid', ctaType: 'Haalbaarheid',

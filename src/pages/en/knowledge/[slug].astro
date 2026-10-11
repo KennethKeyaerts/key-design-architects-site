@@ -1,0 +1,10 @@
+---
+import KennisArticle from '../../../components/KennisArticle.astro';
+import { kennisEn } from '../../../data/kennis-en';
+
+export function getStaticPaths() {
+  return kennisEn.map((k) => ({ params: { slug: k.path.replace('/en/knowledge/', '') }, props: { page: k } }));
+}
+const { page } = Astro.props;
+---
+<KennisArticle page={page} />

@@ -1,0 +1,60 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import FloatingDoodles from '../../../components/FloatingDoodles.astro';
+import ArchitecturalMotifs from '../../../components/ArchitecturalMotifs.astro';
+import { kennisEn, THEMES_EN } from '../../../data/kennis-en';
+
+const order = ['vergunning', 'regularisatie', 'kosten'] as const;
+---
+<Layout
+  title="Building and renovating in Flanders | Key-Design Architects"
+  description="Clear answers for English speakers: building permits, architects, buying a house with unpermitted work and the renovation rule in Flanders, Belgium."
+  path="/en/knowledge"
+  lang="en"
+  altLangPath="/kennis"
+  breadcrumbs={[{ name: 'Knowledge', url: '/en/knowledge' }]}
+>
+  <section class="relative overflow-hidden py-14 sm:py-16 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="c" />
+    <div class="container-page max-w-2xl">
+      <span class="reveal text-xs font-bold uppercase tracking-wider text-terracotta">Knowledge</span>
+      <h1 class="reveal text-4xl sm:text-5xl font-bold text-earth-dark mt-2 leading-[1.1]">Building and renovating in Flanders, in plain English</h1>
+      <p class="reveal text-lg text-earth-muted mt-5 leading-relaxed" style="transition-delay:.1s;">
+        The Flemish permit system is unlike most others. These short guides explain how it works, with a clear answer at the top of each page.
+      </p>
+    </div>
+  </section>
+
+  {order.map((key, i) => {
+    const items = kennisEn.filter((k) => k.theme === key);
+    if (!items.length) return null;
+    return (
+      <section class={`py-12 relative overflow-hidden isolate ${i % 2 ? 'bg-sand-medium' : 'bg-white'}`}>
+        <div class="container-page max-w-3xl">
+          <h2 class="reveal text-2xl font-bold text-earth-dark">{THEMES_EN[key].label}</h2>
+          <p class="reveal text-earth-muted mt-1 mb-5">{THEMES_EN[key].intro}</p>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {items.map((k) => (
+              <li class="reveal">
+                <a href={k.path} class="card-cartoon block p-4 h-full hover:text-terracotta transition-colors">
+                  <span class="font-bold text-earth-dark block">{k.title}</span>
+                  <span class="text-sm text-earth-muted mt-1 block leading-snug">{k.description}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  })}
+
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={4} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">Your question is not here?</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">Ask us. A first answer costs nothing.</p>
+      <a href="/en/contact" class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">Ask your question →</a>
+    </div>
+  </section>
+</Layout>
