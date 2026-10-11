@@ -14,12 +14,11 @@ const introImage = introSource?.images?.[3] ?? introSource?.images?.[0] ?? intro
 const EN = false;
 const base = EN ? '/en' : '';
 const portrait = brandImg('brandPortrait', '/images/brand/kenneth-portrait.jpg');
-const trLogo = brandImg('brandThroughRenders', '/images/brand/logo-through-renders-full.jpg');
 ---
 
 <Layout
   title="Key-Design Architects | Erkend Architect in Lier & Antwerpen"
-  description="Exclusieve residentiële architectuur, totaalrenovaties, nieuwbouw villa's, interieur en 3D visualisaties door erkend architect Kenneth Keyaerts. Actief in Lier, Antwerpen en Kempen."
+  description="Exclusieve residentiële architectuur, totaalrenovaties, nieuwbouw villa's en haalbaarheidsstudies door erkend architect Kenneth Keyaerts. Actief in Lier, Antwerpen en Kempen."
   path="/"
   hasHero
   altLangPath="/en/"
@@ -135,29 +134,11 @@ const trLogo = brandImg('brandThroughRenders', '/images/brand/logo-through-rende
     </div>
   </section>
 
-  <!-- THROUGH RENDERS TEASER -->
-  <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
-    <FloatingDoodles seed={4} />
-    <div class="container-page">
-      <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-        <Img sizes="128px" src={trLogo} alt="Through Renders" class="h-24 w-auto rounded-xl border-2 border-earth-dark shrink-0" width="64" height="96" />
-        <div class="flex-1">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">{s('throughRendersCategory', 'Onze Visualisatiepartner')}</span>
-          <h2 class="text-xl sm:text-2xl font-bold text-earth-dark mt-1">{s('throughRendersTitle', 'Fotorealistische 3D Renders door Through Renders')}</h2>
-          <p class="mt-2 text-sm text-earth-muted leading-relaxed max-w-xl">{s('throughRendersText')}</p>
-        </div>
-        <a href="https://www.throughrenders.be" target="_blank" rel="noopener noreferrer" class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider shrink-0">
-          {s('throughRendersBtn', 'Bezoek Through Renders')} →
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- CTA -->
   <section class="py-14 bg-earth-dark text-white relative overflow-hidden isolate">
     <FloatingDoodles seed={5} />
     <div class="container-page text-center reveal">
-      <h2 class="text-3xl sm:text-4xl font-bold">{s('trajectoryBannerTitle', 'Klaar om jouw project vrijblijvend te bespreken?')}</h2>
+      <h2 class="text-3xl sm:text-4xl font-bold">{s('trajectoryBannerTitle', 'Klaar om uw project vrijblijvend te bespreken?')}</h2>
       <p class="mt-4 text-stone-300 max-w-xl mx-auto">{s('trajectoryBannerSubtitle')}</p>
       <a href="/contact" class="btn-cartoon-primary inline-block mt-8 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">
         {s('trajectoryCtaBtn', 'Bespreek uw project met Kenneth')}

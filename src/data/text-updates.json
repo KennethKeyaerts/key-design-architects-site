@@ -1,0 +1,30 @@
+{
+ "heroTitle": {
+  "from": "Geen project te klein. Geen idee te groot.",
+  "to": "Eerst onderzoeken wat mogelijk is. Dan pas tekenen."
+ },
+ "trajectoryBannerTitle": {
+  "from": "Klaar om jouw project vrijblijvend te bespreken?",
+  "to": "Klaar om uw project vrijblijvend te bespreken?"
+ },
+ "feasibilityTitle": {
+  "from": "Schat zelf je budget en traject",
+  "to": "Schat uw budget en traject zelf in"
+ },
+ "feasibilitySubtitle": {
+  "from": "Wat kost bouwen of renoveren eigenlijk? Met deze indicatieve verkenner krijg je meteen een realistisch beeld van de verwachte bouwkosten en het bijbehorende ereloon. Zo weet je vooraf waar je aan toe bent.",
+  "to": "Wat kost bouwen of renoveren eigenlijk? Met deze indicatieve verkenner krijgt u meteen een realistisch beeld van de verwachte bouwkosten en het bijbehorende ereloon. Zo weet u vooraf waar u aan toe bent."
+ },
+ "feasibility_phase1_desc": {
+  "from": "We vertalen jouw wensen en budget naar een eerste, helder concept.",
+  "to": "We vertalen uw wensen en budget naar een eerste, helder concept."
+ },
+ "feasibility_phase3_desc": {
+  "from": "De plannen worden tot in detail uitgewerkt zodat je aannemersoffertes objectief kan vergelijken.",
+  "to": "De plannen worden tot in detail uitgewerkt zodat u aannemersoffertes objectief kunt vergelijken."
+ },
+ "feasibility_phase4_desc": {
+  "from": "Ik volg de uitvoering op de werf op en begeleid je tot de oplevering.",
+  "to": "Ik volg de uitvoering op de werf op en begeleid u tot de oplevering."
+ }
+}

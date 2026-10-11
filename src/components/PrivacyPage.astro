@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+interface Props { lang?: 'nl' | 'en' }
+const { lang = 'nl' } = Astro.props;
+const en = lang === 'en';
+const MAIL = 'kennethkeyaerts@icloud.com';
+
+const nl = {
+  title: 'Privacybeleid | Key-Design Architects',
+  desc: 'Hoe Key-Design Architects omgaat met uw persoonsgegevens: welke gegevens we verwerken, waarom, waar ze bewaard worden en wat uw rechten zijn.',
+  h1: 'Privacybeleid',
+  intro: 'In dit beleid leest u welke persoonsgegevens ik verwerk wanneer u deze website gebruikt of contact opneemt, en wat uw rechten zijn. Ik hou het bewust kort en duidelijk.',
+  sections: [
+    ['Wie is verantwoordelijk?', 'Kenneth Keyaerts, architect, handelend onder de naam Key-Design Architects, 2500 Lier (België). Ingeschreven bij de Orde van Architecten, stamnummer A912091. Voor alle vragen over uw gegevens kunt u mailen naar ' + MAIL + '.'],
+    ['Welke gegevens verwerk ik?', 'Alleen wat u zelf invult in het contactformulier of de haalbaarheidscheck: uw naam, e-mailadres, telefoonnummer, de plaats van uw project, het type project en uw bericht. Er worden geen advertentie- of volgcookies gebruikt en deze website bevat geen analyse- of marketing-tracking.'],
+    ['Waarom, en op welke grond?', 'Om uw aanvraag te beantwoorden en u persoonlijk te contacteren (uw toestemming en de voorbereiding van een mogelijke overeenkomst). Uw gegevens worden niet verkocht en niet gebruikt voor reclame. Elke aanvraag wordt behandeld met de geheimhoudingsplicht uit de deontologie van de Orde van Architecten.'],
+    ['Wie ontvangt uw gegevens?', 'Enkel dienstverleners die technisch nodig zijn om de website te laten werken: EmailJS (verzending van het bericht naar mijn mailbox), Google Firebase (beveiligde opslag van aanvragen, enkel toegankelijk voor mij via een persoonlijke login) en Cloudflare (hosting van de website). Zij handelen in mijn opdracht. Sommige van deze diensten kunnen gegevens buiten de Europese Economische Ruimte verwerken, met de wettelijke waarborgen die daarvoor gelden.'],
+    ['Hoelang bewaar ik ze?', 'Niet langer dan nodig is om uw aanvraag te behandelen en, als er een opdracht volgt, om te voldoen aan mijn wettelijke en contractuele verplichtingen. Aanvragen die nergens toe leiden verwijder ik na verloop van tijd.'],
+    ['Cookies en lokale opslag', 'Deze website plaatst geen tracking-cookies. Enkel uw keuze in het meldingsvenster wordt in uw browser onthouden, zodat het venster niet bij elk bezoek terugkomt.'],
+    ['Uw rechten', 'U kunt uw gegevens op elk moment kosteloos opvragen, laten verbeteren of laten verwijderen, de verwerking laten beperken of er bezwaar tegen maken. Mail daarvoor naar ' + MAIL + '. Bent u niet tevreden, dan kunt u een klacht indienen bij de Gegevensbeschermingsautoriteit (gegevensbeschermingsautoriteit.be).'],
+  ],
+  back: 'Terug naar de startpagina', home: '/', updated: 'Laatst bijgewerkt',
+};
+const eng = {
+  title: 'Privacy Policy | Key-Design Architects',
+  desc: 'How Key-Design Architects handles your personal data: what we process, why, where it is stored and what your rights are.',
+  h1: 'Privacy Policy',
+  intro: 'This policy explains which personal data I process when you use this website or get in touch, and what your rights are. I keep it short and clear on purpose.',
+  sections: [
+    ['Who is responsible?', 'Kenneth Keyaerts, architect, trading as Key-Design Architects, 2500 Lier (Belgium). Registered with the Order of Architects, registration no. A912091. For any question about your data, email ' + MAIL + '.'],
+    ['Which data do I process?', 'Only what you enter yourself in the contact form or the feasibility check: your name, email address, phone number, the location of your project, the project type and your message. No advertising or tracking cookies are used and this website contains no analytics or marketing tracking.'],
+    ['Why, and on what basis?', 'To answer your request and contact you personally (your consent and preparing a possible agreement). Your data is not sold and not used for advertising. Every request is handled under the confidentiality duty of the Order of Architects code of conduct.'],
+    ['Who receives your data?', 'Only service providers that are technically needed to run the website: EmailJS (delivering the message to my mailbox), Google Firebase (secure storage of requests, accessible only to me through a personal login) and Cloudflare (website hosting). They act on my instructions. Some of these services may process data outside the European Economic Area, under the legal safeguards that apply.'],
+    ['How long do I keep it?', 'No longer than needed to handle your request and, if an assignment follows, to meet my legal and contractual obligations. Requests that lead nowhere are deleted after a while.'],
+    ['Cookies and local storage', 'This website sets no tracking cookies. Only your choice in the notice window is remembered in your browser, so the window does not return on every visit.'],
+    ['Your rights', 'You can access, correct or delete your data free of charge at any time, restrict the processing or object to it. Email ' + MAIL + '. If you are not satisfied, you can lodge a complaint with the Belgian Data Protection Authority (gegevensbeschermingsautoriteit.be).'],
+  ],
+  back: 'Back to the homepage', home: '/en/', updated: 'Last updated',
+};
+const T = en ? eng : nl;
+const path = en ? '/en/privacy' : '/privacy';
+---
+
+<Layout title={T.title} description={T.desc} path={path} altLangPath={en ? '/privacy' : '/en/privacy'} lang={lang} noindex={false}
+  breadcrumbs={[{ name: T.h1, url: path }]}>
+  <section class="py-14 sm:py-20 bg-sand-light">
+    <div class="container-page"><div class="max-w-3xl">
+      <span class="text-xs font-bold uppercase tracking-wider text-terracotta">Key-Design Architects</span>
+      <h1 class="text-4xl font-bold text-earth-dark mt-2">{T.h1}</h1>
+      <div class="w-14 h-0.5 bg-terracotta mt-4"></div>
+      <p class="mt-6 text-earth-muted leading-relaxed">{T.intro}</p>
+      <div class="mt-10 space-y-8">
+        {T.sections.map(([h, p], i) => (
+          <section>
+            <h2 class="font-serif text-xl font-bold text-earth-dark mb-2">{i + 1}. {h}</h2>
+            <p class="text-earth-muted leading-relaxed">{p}</p>
+          </section>
+        ))}
+      </div>
+      <p class="mt-12 text-[11px] text-earth-muted/80">{T.updated}: {new Date().toLocaleDateString(en ? 'en-GB' : 'nl-BE', { year: 'numeric', month: 'long' })}</p>
+      <a href={T.home} class="btn-cartoon-secondary inline-block mt-6 py-2.5 px-6 text-xs font-bold uppercase tracking-wider">← {T.back}</a>
+    </div>
+  </div></section>
+</Layout>

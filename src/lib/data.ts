@@ -2,6 +2,7 @@ import siteSettingsRaw from '../data/site_settings.json';
 import projectsRaw from '../data/projects.json';
 import heroSlidesRaw from '../data/hero_slides.json';
 import demoOverlay from '../data/demo-overlay.json';
+import textUpdates from '../data/text-updates.json';
 
 export interface TimelineStep {
   id: string;
@@ -112,7 +113,13 @@ export type SiteSettings = Record<string, any>;
 // Every editable text/setting from the original CMS lives here, keyed exactly
 // the same way as before, so the admin dashboard can keep editing the same
 // fields without a data migration on the content side.
-export const siteSettings: SiteSettings = siteSettingsRaw as SiteSettings;
+// Wording updates (src/data/text-updates.json): replace an OLD default text by the new one, but only while the
+// text in /beheerder is still the old one or empty. Anything Kenneth typed himself is never touched.
+const _raw: SiteSettings = { ...(siteSettingsRaw as SiteSettings) };
+for (const [k, u] of Object.entries(textUpdates as Record<string, { from: string; to: string }>)) {
+  if (!_raw[k] || _raw[k] === u.from) _raw[k] = u.to;
+}
+export const siteSettings: SiteSettings = _raw;
 
 function slugify(input: string): string {
   return input
@@ -278,7 +285,9 @@ export function resolveFilterConfig(c?: Partial<FilterConfig> | null): FilterCon
   };
 }
 export function getFilterConfig(): FilterConfig {
-  return resolveFilterConfig(siteSettings.projectFilterConfig as Partial<FilterConfig> | undefined);
+  const cfg = resolveFilterConfig(siteSettings.projectFilterConfig as Partial<FilterConfig> | undefined);
+  // A filter without any project would only give an empty page: it is hidden until a project uses it.
+  return { ...cfg, items: cfg.items.filter((i) => (projectsRaw as Project[]).some((p) => p.category === i.key)) };
 }
 
 /** Label of a project category (filter), in Dutch or English. Unknown keys are shown as written. */

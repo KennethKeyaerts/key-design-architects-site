@@ -14,12 +14,11 @@ const introImage = introSource?.images?.[3] ?? introSource?.images?.[0] ?? intro
 const EN = true;
 const base = EN ? '/en' : '';
 const portrait = brandImg('brandPortrait', '/images/brand/kenneth-portrait.jpg');
-const trLogo = brandImg('brandThroughRenders', '/images/brand/logo-through-renders-full.jpg');
 ---
 
 <Layout
   title="Key-Design Architects | Licensed Architect in Lier & Antwerp"
-  description="Exclusive residential architecture, full renovations, new-build villas, interiors and 3D visualisations by licensed architect Kenneth Keyaerts. Active in Lier, Antwerp and the Kempen region."
+  description="Exclusive residential architecture, full renovations, new-build villas and feasibility studies by licensed architect Kenneth Keyaerts. Active in Lier, Antwerp and the Kempen region."
   path="/en/"
   hasHero
   lang="en"
@@ -131,24 +130,6 @@ const trLogo = brandImg('brandThroughRenders', '/images/brand/logo-through-rende
       </div>
       <div class="reveal text-center mt-8">
         <a href="/en/portfolio" class="text-sm font-bold text-terracotta hover:text-terracotta-dark">View all projects →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- THROUGH RENDERS TEASER -->
-  <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
-    <FloatingDoodles seed={4} />
-    <div class="container-page">
-      <div class="card-cartoon reveal p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-        <Img sizes="128px" src={trLogo} alt="Through Renders" class="h-24 w-auto rounded-xl border-2 border-earth-dark shrink-0" width="64" height="96" />
-        <div class="flex-1">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Our Visualisation Partner</span>
-          <h2 class="text-xl sm:text-2xl font-bold text-earth-dark mt-1">Photorealistic 3D Renders by Through Renders</h2>
-          <p class="mt-2 text-sm text-earth-muted leading-relaxed max-w-xl">Curious how your design will look in reality? Every breathtaking 3D visualisation on this website was produced by our sister company Through Renders, co-founded by Kenneth Keyaerts and Thomas Desmet. They take architectural renders to an exceptional, photorealistic level.</p>
-        </div>
-        <a href="https://www.throughrenders.be" target="_blank" rel="noopener noreferrer" class="btn-cartoon-secondary py-3 px-6 text-xs font-bold uppercase tracking-wider shrink-0">
-          Visit Through Renders →
-        </a>
       </div>
     </div>
   </section>

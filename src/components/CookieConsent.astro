@@ -125,6 +125,7 @@ const en = lang === 'en';
         {en ? 'Last updated: ' : 'Laatst bijgewerkt: '}
         {new Date().toLocaleDateString(en ? 'en-GB' : 'nl-BE', { year: 'numeric', month: 'long' })}
       </span>
+      <a href={en ? '/en/privacy' : '/privacy'} class="text-[11px] underline text-stone-500 hover:text-terracotta">{en ? 'Full privacy policy' : 'Volledig privacybeleid'}</a>
       <button id="privacy-accept-close" class="py-3 px-6 bg-terracotta hover:bg-terracotta-dark text-white text-xs font-bold rounded-xl transition-colors">
         {en ? 'Understood & Close' : 'Begrepen & Sluiten'}
       </button>
@@ -158,5 +159,4 @@ const en = lang === 'en';
   document.getElementById('cookie-details')?.addEventListener('click', openModal);
   document.getElementById('privacy-close')?.addEventListener('click', closeModal);
   document.getElementById('privacy-accept-close')?.addEventListener('click', () => { accept(); closeModal(); });
-  document.getElementById('footer-cookie-link')?.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
 </script>

@@ -152,7 +152,7 @@ const p = (path: string) => (en ? `/en${path}` : path);
   <div class="border-t border-white/10">
     <div class="container-page py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-stone-500">
       <p>© {year} {en ? 'Key-Design Architects. All rights reserved.' : s('footerCopyright', 'Key-Design Architects. Alle rechten voorbehouden.')}</p>
-      <a href="#" id="footer-cookie-link" class="hover:text-stone-300 transition-colors underline underline-offset-2">
+      <a href={en ? '/en/privacy' : '/privacy'} id="footer-cookie-link" class="hover:text-stone-300 transition-colors underline underline-offset-2">
         {en ? 'Privacy & Cookie Policy (GDPR)' : 'Privacy & Cookie Beleid (AVG)'}
       </a>
     </div>

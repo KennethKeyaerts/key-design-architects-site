@@ -93,10 +93,10 @@ export default function FeasibilityAssessor({ settings: t, lang = 'nl' }: Props)
       'The plans are developed in detail so you can compare contractor quotes objectively.',
       'I follow the execution on site and guide you through to handover.',
     ][n - 1] : t[`feasibility_phase${n}_desc`] || [
-      'We vertalen jouw wensen en budget naar een eerste, helder concept.',
+      'We vertalen uw wensen en budget naar een eerste, helder concept.',
       'Ik stel het dossier samen, dien in en volg de procedure op tot de vergunning binnen is.',
-      'De plannen worden tot in detail uitgewerkt zodat je aannemersoffertes objectief kan vergelijken.',
-      'Ik volg de uitvoering op de werf op en begeleid je tot de oplevering.',
+      'De plannen worden tot in detail uitgewerkt zodat u aannemersoffertes objectief kunt vergelijken.',
+      'Ik volg de uitvoering op de werf op en begeleid u tot de oplevering.',
     ][n - 1],
   }));
 
@@ -272,7 +272,7 @@ export default function FeasibilityAssessor({ settings: t, lang = 'nl' }: Props)
             {(en
               ? 'This calculation is a first, indicative simulation based on current market averages. However, the construction industry is subject to fluctuations in material and labour costs. This overview is a handy guideline for exploring your budget, but is not a binding price quote. Architect fees, studies, safety coordination, EPB/BEN guidance and other professional costs are not included. Real prices are finalised through actual contractor quotes.'
               : null) || t.feasibility_disclaimer_text ||
-              'Deze berekening is een eerste, indicatieve simulatie op basis van de huidige marktgemiddelden. De bouwwereld is echter onderhevig aan schommelingen in materiaal- en loonkosten. Dit overzicht is een handige richtlijn om je budget te verkennen, maar vormt geen bindende prijsofferte. Architectenereloon, studies, veiligheidscoördinatie, EPB/BEN-begeleiding en andere professionele kosten zijn hier niet in inbegrepen. Echte prijzen worden definitief vastgelegd via de reële offertes van aannemers.'}
+              'Deze berekening is een eerste, indicatieve simulatie op basis van de huidige marktgemiddelden. De bouwwereld is echter onderhevig aan schommelingen in materiaal- en loonkosten. Dit overzicht is een handige richtlijn om uw budget te verkennen, maar vormt geen bindende prijsofferte. Architectenereloon, studies, veiligheidscoördinatie, EPB/BEN-begeleiding en andere professionele kosten zijn hier niet in inbegrepen. Echte prijzen worden definitief vastgelegd via de reële offertes van aannemers.'}
           </p>
         </div>
 
