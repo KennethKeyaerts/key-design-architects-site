@@ -40,6 +40,7 @@ const p = (path: string) => (en ? `/en${path}` : path);
           ['projecten', p('/portfolio'), en ? 'Projects' : s('navProjects', 'Projecten')],
           ['haalbaarheid', p('/haalbaarheid'), en ? 'Feasibility' : s('navFeasibility', 'Haalbaarheid')],
           ['regularisatie', p('/regularisatie'), en ? 'Regularisation' : s('navRegularisatie', 'Regularisatie')],
+          ...(en ? [] : [['aanpak', '/kennis', 'Kennis']]),
           ['kenneth', p('/over-ons'), en ? 'About Kenneth' : s('navAbout', 'Over Kenneth')],
           ['contact', p('/contact'), 'Contact'],
         ].map(([icon, href, label]) => (

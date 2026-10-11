@@ -4,11 +4,13 @@ import Layout from '../layouts/Layout.astro';
 import ArchitecturalMotifs from '../components/ArchitecturalMotifs.astro';
 import DoodleIcon from '../components/DoodleIcon.astro';
 import { s } from '../lib/data';
+import { kennis } from '../data/kennis';
+const regulPages = kennis.filter((k) => k.path.startsWith('/regularisatie/'));
 ---
 
 <Layout
-  title="Regularisatie zonder vergunning | Key-Design Architects"
-  description="Veranda, aanbouw, terrasoverkapping of verbouwing zonder correcte vergunning? Key-Design onderzoekt of en hoe regularisatie mogelijk is, en begeleidt het volledige dossier."
+  title="Bouwovertreding regulariseren | Key-Design Architects"
+  description="Bouwovertreding regulariseren? Veranda, aanbouw of verbouwing zonder correcte vergunning: wij onderzoeken of regularisatie kan en begeleiden het dossier."
   path="/regularisatie"
   altLangPath="/en/regularisatie"
   breadcrumbs={[{ name: 'Regularisatie', url: '/regularisatie' }]}
@@ -78,6 +80,24 @@ import { s } from '../lib/data';
           </div>
         </li>
       </ol>
+    </div>
+  </section>
+
+  <!-- GUIDES -->
+  <section class="py-12 bg-white relative overflow-hidden isolate">
+    <div class="container-page max-w-2xl">
+      <h2 class="reveal text-2xl font-bold text-earth-dark mb-2">Veelgestelde vragen over bouwovertredingen</h2>
+      <p class="reveal text-earth-muted mb-5">Kosten, architect, verjaring, weigering en kleine constructies: de antwoorden op een rij.</p>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {regulPages.map((k) => (
+          <li class="reveal">
+            <a href={k.path} class="card-cartoon block p-4 h-full hover:text-terracotta transition-colors">
+              <span class="font-bold text-earth-dark">{k.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="reveal mt-5 text-sm text-earth-muted">Meer uitleg vindt u in onze <a href="/kennis" class="text-terracotta underline">kennispagina's</a>.</p>
     </div>
   </section>
 

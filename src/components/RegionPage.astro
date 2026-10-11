@@ -5,6 +5,9 @@ import ArchitecturalMotifs from './ArchitecturalMotifs.astro';
 import DoodleIcon from './DoodleIcon.astro';
 import { projects } from '../lib/data';
 import { regions, regionBySlug } from '../lib/regions';
+import { bySlugPath } from '../data/kennis';
+const guidePaths = ['/regularisatie/kostprijs', '/kennis/omgevingsvergunning-zonder-architect', '/kennis/hoeveel-mag-ik-bouwen'];
+const guides = guidePaths.map((g) => bySlugPath(g)).filter(Boolean) as NonNullable<ReturnType<typeof bySlugPath>>[];
 
 interface Props { region: string; lang?: 'nl' | 'en' }
 const { region: key, lang = 'nl' } = Astro.props;
@@ -135,6 +138,21 @@ const jsonLd = [
       </div>
     </div>
   </section>
+
+  {!en && (
+    <section class="py-12 bg-white relative overflow-hidden isolate">
+      <div class="container-page max-w-3xl">
+        <h2 class="text-lg font-bold text-earth-dark mb-3">Nuttige antwoorden voor bouwers in {c.label}</h2>
+        <ul class="grid gap-3 sm:grid-cols-3">
+          {guides.map((g) => (
+            <li>
+              <a href={g.path} class="card-cartoon block p-4 h-full hover:text-terracotta transition-colors text-sm font-bold text-earth-dark">{g.title}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 
   <section class="py-12 bg-sand-medium relative overflow-hidden isolate">
     <div class="container-page max-w-3xl">

@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FloatingDoodles from '../../components/FloatingDoodles.astro';
+import ArchitecturalMotifs from '../../components/ArchitecturalMotifs.astro';
+import { kennis, THEMES } from '../../data/kennis';
+
+const order = ['regularisatie', 'vergunning', 'bouwen', 'kosten'] as const;
+---
+<Layout
+  title="Kennis over vergunningen, bouwen en kosten | Key-Design Architects"
+  description="Heldere antwoorden over omgevingsvergunning, regularisatie van bouwovertredingen, wat u mag bouwen en wat een architect kost in Vlaanderen."
+  path="/kennis"
+  breadcrumbs={[{ name: 'Kennis', url: '/kennis' }]}
+>
+  <section class="relative overflow-hidden py-14 sm:py-16 bg-sand-light isolate">
+    <FloatingDoodles seed={1} />
+    <ArchitecturalMotifs variant="c" />
+    <div class="container-page max-w-2xl">
+      <span class="reveal text-xs font-bold uppercase tracking-wider text-terracotta">Kennis</span>
+      <h1 class="reveal text-4xl sm:text-5xl font-bold text-earth-dark mt-2 leading-[1.1]">Antwoorden voor wie wil bouwen of verbouwen</h1>
+      <p class="reveal text-lg text-earth-muted mt-5 leading-relaxed" style="transition-delay:.1s;">
+        Korte, eerlijke uitleg over vergunningen, regularisatie, wat u mag bouwen en wat het kost. Zonder jargon, met een duidelijk antwoord bovenaan.
+      </p>
+    </div>
+  </section>
+
+  {order.map((key, i) => {
+    const items = kennis.filter((k) => k.theme === key);
+    return (
+      <section class={`py-12 relative overflow-hidden isolate ${i % 2 ? 'bg-sand-medium' : 'bg-white'}`}>
+        <div class="container-page max-w-3xl">
+          <h2 class="reveal text-2xl font-bold text-earth-dark">{THEMES[key].label}</h2>
+          <p class="reveal text-earth-muted mt-1 mb-5">{THEMES[key].intro}</p>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {items.map((k) => (
+              <li class="reveal">
+                <a href={k.path} class="card-cartoon block p-4 h-full hover:text-terracotta transition-colors">
+                  <span class="font-bold text-earth-dark block">{k.title}</span>
+                  <span class="text-sm text-earth-muted mt-1 block leading-snug">{k.description}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  })}
+
+  <section class="py-16 bg-earth-dark text-white relative overflow-hidden isolate">
+    <FloatingDoodles seed={4} />
+    <div class="container-page reveal text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold max-w-xl mx-auto">Staat uw vraag er niet bij?</h2>
+      <p class="mt-3 text-stone-300 max-w-lg mx-auto">Stel ze gerust. Een eerste antwoord kost u niets.</p>
+      <a href="/contact" class="btn-cartoon-primary inline-block mt-7 py-3.5 px-8 text-sm font-bold uppercase tracking-wider">Stel uw vraag →</a>
+    </div>
+  </section>
+</Layout>
