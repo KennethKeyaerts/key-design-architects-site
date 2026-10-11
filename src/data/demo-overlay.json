@@ -1,0 +1,416 @@
+{
+ "proj_lookstraat_lier": {
+  "phase": "opgeleverd",
+  "role": "own",
+  "contributions": [
+   {
+    "nl": "Ontwerp",
+    "en": "Design"
+   },
+   {
+    "nl": "Interieurontwerp",
+    "en": "Interior design"
+   },
+   {
+    "nl": "Vergunningsdossier",
+    "en": "Permit application"
+   },
+   {
+    "nl": "Opvolging van de werf",
+    "en": "Site supervision"
+   },
+   {
+    "nl": "Oplevering",
+    "en": "Handover"
+   }
+  ],
+  "schemas": [
+   {
+    "image": "/images/demo/axo-a.png",
+    "caption": "Axonometrie van de volumes (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Axonometry of the volumes (temporary example)"
+    }
+   },
+   {
+    "image": "/images/demo/zon-a.png",
+    "caption": "Doorsnede met zonnestudie (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Section with sun study (temporary example)"
+    }
+   },
+   {
+    "image": "/images/demo/plan-a.png",
+    "caption": "Schema van de indeling (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Layout diagram (temporary example)"
+    }
+   }
+  ],
+  "images": [
+   "/images/projects/proj_lookstraat_lier_main.webp",
+   "/images/projects/proj_lookstraat_lier_img1.webp"
+  ],
+  "imageInfo": {
+   "/images/projects/proj_lookstraat_lier_main.webp": {
+    "type": "oplevering",
+    "caption": "De leefruimte met het centrale dakvenster.",
+    "en": {
+     "caption": "The living space with the central roof light."
+    }
+   },
+   "/images/projects/proj_lookstraat_lier_img1.webp": {
+    "type": "detail",
+    "caption": "Detail van het maatwerk in eik.",
+    "en": {
+     "caption": "Detail of the bespoke oak work."
+    }
+   }
+  }
+ },
+ "proj_herbestemming_herenhuizen": {
+  "phase": "haalbaarheid",
+  "role": "own",
+  "contributions": [
+   {
+    "nl": "Haalbaarheidsstudie",
+    "en": "Feasibility study"
+   },
+   {
+    "nl": "Ontwerp",
+    "en": "Design"
+   },
+   {
+    "nl": "3D-visualisatie",
+    "en": "3D visualisation"
+   }
+  ],
+  "schemas": [
+   {
+    "image": "/images/demo/axo-b.png",
+    "caption": "Axonometrie: bestaand schoolgebouw en nieuwe volumes (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Axonometry: existing school and new volumes (temporary example)"
+    }
+   },
+   {
+    "image": "/images/demo/axo-c.png",
+    "caption": "Massastudie (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Massing study (temporary example)"
+    }
+   },
+   {
+    "image": "/images/demo/zon-b.png",
+    "caption": "Zonnestudie (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Sun study (temporary example)"
+    }
+   },
+   {
+    "image": "/images/demo/plan-b.png",
+    "caption": "Programma-schema (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Programme diagram (temporary example)"
+    }
+   }
+  ],
+  "imageInfo": {
+   "/images/projects/kwartier14_01_straatbeeld.jpg": {
+    "type": "render",
+    "caption": "Het straatbeeld blijft behouden.",
+    "en": {
+     "caption": "The streetscape is preserved."
+    }
+   },
+   "/images/projects/kwartier14_02_nieuwbouw.jpg": {
+    "type": "render",
+    "caption": "De nieuwe volumes naast het schoolgebouw.",
+    "en": {
+     "caption": "The new volumes next to the school building."
+    }
+   },
+   "/images/projects/kwartier14_03_tuin.jpg": {
+    "type": "render",
+    "caption": "De gedeelde tuin met waterpartij.",
+    "en": {
+     "caption": "The shared garden with water feature."
+    }
+   },
+   "/images/projects/kwartier14_04_avond.jpg": {
+    "type": "render",
+    "caption": "Avondsfeer aan de straatkant.",
+    "en": {
+     "caption": "Evening atmosphere on the street side."
+    }
+   },
+   "/images/projects/kwartier14_05_keuken.jpg": {
+    "type": "render",
+    "caption": "Interieur van een woonunit.",
+    "en": {
+     "caption": "Interior of a residential unit."
+    }
+   },
+   "/images/projects/kwartier14_06_living.jpg": {
+    "type": "render",
+    "caption": "Leefruimte met zicht op de tuin.",
+    "en": {
+     "caption": "Living space overlooking the garden."
+    }
+   }
+  },
+  "blocks": [
+   {
+    "id": "b1",
+    "type": "heading",
+    "text": "Een voorstel in beeld",
+    "en": {
+     "text": "A proposal in images"
+    }
+   },
+   {
+    "id": "b2",
+    "type": "image",
+    "images": [
+     "/images/projects/kwartier14_01_straatbeeld.jpg"
+    ],
+    "caption": "Het straatbeeld van Hansbekedorp blijft herkenbaar.",
+    "en": {
+     "caption": "The Hansbekedorp streetscape remains recognisable."
+    }
+   },
+   {
+    "id": "b3",
+    "type": "images2",
+    "images": [
+     "/images/projects/kwartier14_02_nieuwbouw.jpg",
+     "/images/projects/kwartier14_03_tuin.jpg"
+    ]
+   },
+   {
+    "id": "b4",
+    "type": "quote",
+    "text": "Nieuwe architectuur die zich voegt naar wat er al staat.",
+    "en": {
+     "text": "New architecture that adapts to what is already there."
+    }
+   },
+   {
+    "id": "b5",
+    "type": "images3",
+    "images": [
+     "/images/projects/kwartier14_04_avond.jpg",
+     "/images/projects/kwartier14_05_keuken.jpg",
+     "/images/projects/kwartier14_06_living.jpg"
+    ]
+   }
+  ],
+  "timeline": [
+   {
+    "id": "d_kw1",
+    "phase": "Fase 1",
+    "title": "Plaatsbezoek & analyse",
+    "date": "2026",
+    "description": "Bestaande toestand, regelgeving en omgeving in kaart gebracht.",
+    "images": []
+   },
+   {
+    "id": "d_kw2",
+    "phase": "Fase 2",
+    "title": "Massastudie",
+    "date": "2026",
+    "description": "Verkenning van het aantal woonunits en de plaatsing op de site.",
+    "images": []
+   },
+   {
+    "id": "d_kw3",
+    "phase": "Fase 3",
+    "title": "Haalbaar voorstel",
+    "date": "2026",
+    "description": "Uitwerking van een samenhangend ruimtelijk voorstel voor 14 woonunits.",
+    "images": [
+     "/images/projects/kwartier14_01_straatbeeld.jpg"
+    ]
+   }
+  ],
+  "_entl": [
+   {
+    "phase": "Phase 1",
+    "title": "Site visit & analysis",
+    "date": "2026",
+    "description": "Existing situation, regulations and surroundings mapped out."
+   },
+   {
+    "phase": "Phase 2",
+    "title": "Massing study",
+    "date": "2026",
+    "description": "Exploration of the number of units and their placement on the site."
+   },
+   {
+    "phase": "Phase 3",
+    "title": "Feasible proposal",
+    "date": "2026",
+    "description": "Development of a coherent spatial proposal for 14 residential units."
+   }
+  ]
+ },
+ "proj_vandalis_watergroep": {
+  "phase": "opgeleverd",
+  "role": "collaborated",
+  "contributions": [
+   {
+    "nl": "Aanbestedingsdossier",
+    "en": "Tender documents"
+   },
+   {
+    "nl": "Uitvoeringsdossier",
+    "en": "Execution documents"
+   },
+   {
+    "nl": "Technische tekeningen",
+    "en": "Technical drawings"
+   },
+   {
+    "nl": "Verslaggeving",
+    "en": "Site reports"
+   },
+   {
+    "nl": "Opvolging van de werf",
+    "en": "Site supervision"
+   }
+  ],
+  "schemas": [
+   {
+    "image": "/images/demo/plan-c.png",
+    "caption": "Schema van de zones (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Zoning diagram (temporary example)"
+    }
+   },
+   {
+    "image": "/images/demo/axo-d.png",
+    "caption": "Axonometrie (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Axonometry (temporary example)"
+    }
+   }
+  ],
+  "imageInfo": {
+   "/images/projects/vandalis_interieur.jpg": {
+    "type": "render",
+    "caption": "Sfeerbeeld ter illustratie.",
+    "en": {
+     "caption": "Mood image for illustration."
+    }
+   }
+  },
+  "timeline": [
+   {
+    "id": "d_va1",
+    "phase": "Fase 1",
+    "title": "Aanbestedingsdossier",
+    "date": "2023",
+    "description": "Lastenboek en meetstaten opgemaakt.",
+    "images": []
+   },
+   {
+    "id": "d_va2",
+    "phase": "Fase 2",
+    "title": "Uitvoeringsdossier",
+    "date": "2023",
+    "description": "Detaillering en planning van de werken.",
+    "images": []
+   },
+   {
+    "id": "d_va3",
+    "phase": "Fase 3",
+    "title": "Opvolging op de werf",
+    "date": "2023",
+    "description": "Werfvergaderingen, werfverslagen en wekelijkse opvolging.",
+    "images": []
+   }
+  ],
+  "_entl": [
+   {
+    "phase": "Phase 1",
+    "title": "Tender documents",
+    "date": "2023",
+    "description": "Specifications and bills of quantities prepared."
+   },
+   {
+    "phase": "Phase 2",
+    "title": "Execution documents",
+    "date": "2023",
+    "description": "Detailing and scheduling of the works."
+   },
+   {
+    "phase": "Phase 3",
+    "title": "Site follow-up",
+    "date": "2023",
+    "description": "Site meetings, site reports and weekly follow-up."
+   }
+  ]
+ },
+ "proj_kalyssa": {
+  "phase": "ontwerp",
+  "role": "own",
+  "contributions": [
+   {
+    "nl": "Ontwerp",
+    "en": "Design"
+   },
+   {
+    "nl": "Haalbaarheidsstudie",
+    "en": "Feasibility study"
+   }
+  ],
+  "schemas": [
+   {
+    "image": "/images/demo/axo-a.png",
+    "caption": "Axonometrie (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Axonometry (temporary example)"
+    }
+   },
+   {
+    "image": "/images/demo/plan-c.png",
+    "caption": "Indelingsschema (tijdelijk voorbeeld)",
+    "en": {
+     "caption": "Layout diagram (temporary example)"
+    }
+   }
+  ],
+  "timeline": [
+   {
+    "id": "d_ka1",
+    "phase": "Fase 1",
+    "title": "Eerste studie",
+    "date": "2026",
+    "description": "Eerste verkenning in overleg met de opdrachtgever.",
+    "images": []
+   },
+   {
+    "id": "d_ka2",
+    "phase": "Fase 2",
+    "title": "Ontwerp",
+    "date": "2026",
+    "description": "Het ontwerp wordt momenteel uitgewerkt.",
+    "images": []
+   }
+  ],
+  "_entl": [
+   {
+    "phase": "Phase 1",
+    "title": "First study",
+    "date": "2026",
+    "description": "First exploration together with the client."
+   },
+   {
+    "phase": "Phase 2",
+    "title": "Design",
+    "date": "2026",
+    "description": "The design is currently being developed."
+   }
+  ]
+ }
+}

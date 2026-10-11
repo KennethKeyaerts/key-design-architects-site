@@ -1,6 +1,7 @@
 import siteSettingsRaw from '../data/site_settings.json';
 import projectsRaw from '../data/projects.json';
 import heroSlidesRaw from '../data/hero_slides.json';
+import demoOverlay from '../data/demo-overlay.json';
 
 export interface TimelineStep {
   id: string;
@@ -159,7 +160,25 @@ function applyHq(p: Project): Project {
   return { ...p, image: isUpload(p.image) ? p.image : hqPath(list[0]), images, imageInfo };
 }
 
+// Temporary example content (src/data/demo-overlay.json): fills ONLY what is still empty on a project,
+// so everything entered in /beheerder always wins. Delete that file's contents ({}) to remove all examples.
+const isEmpty = (v: any) => v == null || v === '' || (Array.isArray(v) && v.length === 0) || (typeof v === 'object' && !Array.isArray(v) && Object.keys(v).length === 0);
+function applyDemo(p: Project): Project {
+  const ov: any = (demoOverlay as any)[p.id];
+  if (!ov) return p;
+  const out: any = { ...p };
+  for (const [k, v] of Object.entries(ov)) {
+    if (k === '_entl') continue;
+    if (k === 'images') { if ((out.images?.length ?? 0) < (v as any[]).length) out.images = v; continue; }
+    if (isEmpty(out[k])) out[k] = v;
+  }
+  if (ov._entl && isEmpty(out.en?.timeline) && isEmpty(p.timeline)) out.en = { ...(out.en || {}), timeline: ov._entl };
+  delete out.statusNote; // the phase bar replaces the old status box
+  return out as Project;
+}
+
 export const projects: Project[] = (projectsRaw as Project[])
+  .map((p) => applyDemo(p))
   .map((p) => applyHq({ ...p, slug: p.slug || slugify(p.title) }))
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 

@@ -99,10 +99,6 @@ const buttonLabel = en ? 'View this project' : 'Bekijk dit project';
   <!-- Decorative sketch marks and scroll cue -->
   <svg class="absolute top-28 right-[8%] w-10 h-10 text-white/70 twinkle hidden sm:block" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M16 4 C16 11 21 16 28 16 C21 16 16 21 16 28 C16 21 11 16 4 16 C11 16 16 11 16 4 Z" /></svg>
   <svg class="absolute top-[38%] right-[18%] w-6 h-6 text-white/60 twinkle hidden md:block" style="animation-delay:1.4s" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M16 4 C16 11 21 16 28 16 C21 16 16 21 16 28 C16 21 11 16 4 16 C11 16 16 11 16 4 Z" /></svg>
-  <a href="#visie" aria-label={en ? 'Scroll down' : 'Scroll naar beneden'} class="scroll-cue absolute bottom-5 right-5 sm:right-10 z-10 flex flex-col items-center gap-1 text-white/85 hover:text-white">
-    <span class="hidden sm:block text-[10px] font-bold uppercase tracking-[0.25em] [writing-mode:vertical-rl]">{en ? 'Scroll' : 'Ontdek'}</span>
-    <svg class="w-6 h-9" viewBox="0 0 24 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="4" y="2" width="16" height="26" rx="8" /><path d="M12 8 V13" /><path d="M7 31 L12 35 L17 31" /></svg>
-  </a>
 
   <div class="container-page relative pb-12 sm:pb-16">
     <div class="hero-rise max-w-3xl">
@@ -126,7 +122,7 @@ const buttonLabel = en ? 'View this project' : 'Bekijk dit project';
         <div class="flex gap-1.5" id="hero-slide-dots">
           {localSlides.map((_, i) => (
             <button
-              class="hero-dot w-1.5 h-1.5 rounded-full bg-white/40 transition-all"
+              class="hero-dot relative w-2 h-2 rounded-full bg-white/40 transition-all before:content-[''] before:absolute before:-inset-3"
               data-goto={i}
               aria-label={en ? `Go to image ${i + 1}` : `Ga naar beeld ${i + 1}`}
             ></button>
@@ -165,7 +161,25 @@ const buttonLabel = en ? 'View this project' : 'Bekijk dit project';
       dot.addEventListener('click', () => show(Number(dot.dataset.goto)));
     });
 
-    setInterval(() => show((current + 1) % slideEls.length), 6000);
+    let timer = setInterval(() => show((current + 1) % slideEls.length), 6000);
+    const restart = () => { clearInterval(timer); timer = setInterval(() => show((current + 1) % slideEls.length), 6000); };
     show(0);
+
+    // Swipe left / right on the hero (phones and tablets); vertical scrolling stays untouched.
+    const hero = document.querySelector('.hero-slide')?.closest('section');
+    if (hero) {
+      let x0 = 0, y0 = 0, tracking = false;
+      hero.addEventListener('touchstart', (e) => { const t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; tracking = true; }, { passive: true });
+      hero.addEventListener('touchend', (e) => {
+        if (!tracking) return; tracking = false;
+        const t = e.changedTouches[0]; const dx = t.clientX - x0; const dy = t.clientY - y0;
+        if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+        const n = slideEls.length;
+        show((current + (dx < 0 ? 1 : n - 1)) % n); restart();
+      }, { passive: true });
+      hero.addEventListener('touchcancel', () => { tracking = false; }, { passive: true });
+      hero.style.touchAction = 'pan-y';
+    }
+    dots.forEach((dot) => dot.addEventListener('click', restart));
   </script>
 )}

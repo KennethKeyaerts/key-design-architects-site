@@ -101,12 +101,12 @@ const hasSpecs = t('specs') && Object.keys(t('specs')).length > 0;
         </dl>
       </div>
       {phaseIdx >= 0 && (
-        <div class="reveal mt-5 sm:mt-6 max-w-xl" role="group" aria-label={`${L.phase}: ${phaseLabel(project.phase, en)}`}>
+        <div class="reveal mt-5 sm:mt-6 max-w-2xl" role="group" aria-label={`${L.phase}: ${phaseLabel(project.phase, en)}`}>
           <ol class="grid grid-cols-6 gap-1">
             {PHASES.map((ph, i) => (
               <li class="min-w-0" aria-current={i === phaseIdx ? 'step' : undefined}>
                 <div class={`h-[3px] rounded-full ${i <= phaseIdx ? 'bg-terracotta' : 'bg-sand-dark/40'}`}></div>
-                <span class={`hidden sm:block mt-1.5 text-[9px] leading-tight uppercase tracking-wide truncate ${i === phaseIdx ? 'text-earth-dark font-bold' : 'text-earth-muted/70'}`}>{en ? ph.en : ph.nl}</span>
+                <span class={`hidden sm:block mt-1.5 text-[9px] leading-tight uppercase tracking-wide pr-1 ${i === phaseIdx ? 'text-earth-dark font-bold' : 'text-earth-muted/70'}`}>{en ? ph.en : ph.nl}</span>
               </li>
             ))}
           </ol>
@@ -297,7 +297,7 @@ const hasSpecs = t('specs') && Object.keys(t('specs')).length > 0;
   .schema-track { scroll-behavior: smooth; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
   :global(html.js-ready) .schema-slide { opacity: .5; transform: scale(.955); transition: opacity .5s ease, transform .55s cubic-bezier(.16,1,.3,1); }
   :global(html.js-ready) .schema-slide.is-active { opacity: 1; transform: none; }
-  .schema-img { transition: transform .6s cubic-bezier(.16,1,.3,1), filter .6s ease; will-change: transform; }
+  .schema-img { transition: transform .6s cubic-bezier(.16,1,.3,1), filter .6s ease; }
   .schema-arrow { transition: transform .25s ease, opacity .25s ease; }
   .schema-arrow:hover:not(:disabled) { transform: translateY(-50%) scale(1.15); }
   @media (hover: hover) {
