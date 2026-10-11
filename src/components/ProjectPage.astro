@@ -78,9 +78,9 @@ const hasSpecs = t('specs') && Object.keys(t('specs')).length > 0;
     <figure class="project-hero relative overflow-hidden bg-sand-medium">
       <Img eager priority parallax src={project.image} alt={project.title} class="absolute inset-0 w-full h-full object-cover" sizes="100vw" />
       <div class="pointer-events-none absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-black/50 via-black/15 to-transparent" aria-hidden="true"></div>
-      <div class="absolute inset-x-0 top-[4.75rem] sm:top-[6.5rem] z-10">
+      <div class="absolute inset-x-0 bottom-4 sm:bottom-6 z-10">
         <div class="container-page">
-          <a href={`${base}/portfolio`} class="btn-cartoon-secondary inline-flex items-center gap-2 py-2 px-4 text-[11px] sm:text-xs font-bold uppercase tracking-wider">
+          <a href={`${base}/portfolio`} class="btn-cartoon-secondary inline-flex items-center gap-1.5 py-1.5 px-3.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
             <span aria-hidden="true">←</span> {L.back}
           </a>
         </div>
@@ -101,16 +101,16 @@ const hasSpecs = t('specs') && Object.keys(t('specs')).length > 0;
         </dl>
       </div>
       {phaseIdx >= 0 && (
-        <div class="reveal mt-7" aria-label={L.phase}>
-          <p class="text-[11px] font-bold uppercase tracking-wider text-earth-muted mb-3">{L.phase}: <span class="text-terracotta">{phaseLabel(project.phase, en)}</span></p>
-          <ol class="grid grid-cols-6 gap-1 sm:gap-2 max-w-3xl">
+        <div class="reveal mt-5 sm:mt-6 max-w-xl" role="group" aria-label={`${L.phase}: ${phaseLabel(project.phase, en)}`}>
+          <ol class="grid grid-cols-6 gap-1">
             {PHASES.map((ph, i) => (
-              <li class="min-w-0">
-                <div class={`h-1.5 rounded-full ${i <= phaseIdx ? 'bg-terracotta' : 'bg-sand-dark/40'}`}></div>
-                <span class={`hidden sm:block mt-1.5 text-[10px] leading-tight uppercase tracking-wide ${i === phaseIdx ? 'text-earth-dark font-bold' : 'text-earth-muted'}`}>{en ? ph.en : ph.nl}</span>
+              <li class="min-w-0" aria-current={i === phaseIdx ? 'step' : undefined}>
+                <div class={`h-[3px] rounded-full ${i <= phaseIdx ? 'bg-terracotta' : 'bg-sand-dark/40'}`}></div>
+                <span class={`hidden sm:block mt-1.5 text-[9px] leading-tight uppercase tracking-wide truncate ${i === phaseIdx ? 'text-earth-dark font-bold' : 'text-earth-muted/70'}`}>{en ? ph.en : ph.nl}</span>
               </li>
             ))}
           </ol>
+          <p class="sm:hidden mt-2 text-[10px] font-bold uppercase tracking-wider text-earth-muted">{phaseLabel(project.phase, en)}</p>
         </div>
       )}
     </header>
@@ -125,18 +125,7 @@ const hasSpecs = t('specs') && Object.keys(t('specs')).length > 0;
           {t('quote') && (
             <blockquote class="border-l-4 border-terracotta pl-5 italic text-earth-muted">“{t('quote')}”</blockquote>
           )}
-          {note && (
-            <div class="p-5 mt-2 rounded-2xl bg-amber-50 border-2 border-amber-700/40">
-              <p class="text-[11px] font-bold uppercase tracking-wider text-amber-800 mb-1.5">{L.origin}</p>
-              <p class="text-sm text-amber-900 leading-relaxed">{note}</p>
-            </div>
-          )}
-          {t('statusNote') && (
-            <div class="p-5 rounded-2xl bg-sky-50 border-2 border-sky-700/40">
-              <p class="text-[11px] font-bold uppercase tracking-wider text-sky-800 mb-1.5">{L.status}</p>
-              <p class="text-sm text-sky-900 leading-relaxed">{t('statusNote')}</p>
-            </div>
-          )}
+          {note && <p class="pt-3 text-[11px] leading-snug text-earth-muted/80">{note}</p>}
         </div>
 
         {(contributions.length > 0 || hasMaterials || hasSpecs) && (

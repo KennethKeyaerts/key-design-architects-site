@@ -265,14 +265,14 @@ const canonical = new URL(path, siteUrl).toString();
       backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
     <script is:inline>
-      // Touch screens have no hover: the black-and-white photo near the middle of the screen turns to colour.
+      // Touch screens have no hover: the project card near the middle of the screen lights up in orange.
       (function () {
         if (!window.matchMedia('(hover: none)').matches || !('IntersectionObserver' in window)) return;
-        var els = document.querySelectorAll('.photo-bw');
+        var els = document.querySelectorAll('.portfolio-card');
         if (!els.length) return;
         var io = new IntersectionObserver(function (es) {
-          es.forEach(function (e) { e.target.classList.toggle('is-colour', e.isIntersecting); });
-        }, { rootMargin: '-32% 0px -32% 0px' });
+          es.forEach(function (e) { e.target.classList.toggle('is-lit', e.isIntersecting); });
+        }, { rootMargin: '-35% 0px -35% 0px' });
         els.forEach(function (el) { io.observe(el); });
       })();
     </script>

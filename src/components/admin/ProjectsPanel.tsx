@@ -196,26 +196,6 @@ function FeaturedEditor({ projects, list, onSave }: { projects: any[]; list: any
   );
 }
 
-function DisplayEditor({ value, onSave }: { value: 'on' | 'off'; onSave: (v: 'on' | 'off') => Promise<void> }) {
-  const [v, setV] = useState(value);
-  return (
-    <Panel title="Weergave van projectfoto's" hint="Geldt alleen op de pagina Projecten (het overzicht), niet binnen een project en niet bij de uitgelichte projecten op de homepage.">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {[
-          { k: 'on', t: 'Zwart-wit, kleur bij aanwijzen', d: 'Op computer: kleur als je erover gaat. Op gsm en tablet: de foto in het midden van het scherm krijgt kleur.' },
-          { k: 'off', t: 'Altijd in kleur', d: 'Zoals de site er voorheen uitzag.' },
-        ].map((o) => (
-          <button type="button" key={o.k} onClick={() => setV(o.k as 'on' | 'off')} className={`text-left p-3 rounded-xl border-2 ${v === o.k ? 'border-terracotta bg-sand-light' : 'border-sand-dark/40 bg-white'}`}>
-            <p className="text-sm font-bold text-earth-dark">{o.t}</p>
-            <p className="text-[11px] text-earth-muted mt-0.5">{o.d}</p>
-          </button>
-        ))}
-      </div>
-      <SaveRow onSave={() => onSave(v)} label="Weergave opslaan" />
-    </Panel>
-  );
-}
-
 export default function ProjectsPanel({ projects, onChanged, slides = [], onSlidesChanged, settings = {}, onSettingsSaved }: Props) {
   const [editing, setEditing] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
@@ -616,7 +596,6 @@ export default function ProjectsPanel({ projects, onChanged, slides = [], onSlid
       <div className="space-y-3 mb-8">
         <FiltersEditor cfg={filterCfg} projects={projects} onSave={(cfg) => saveSettingsPatch({ projectFilterConfig: cfg })} />
         <FeaturedEditor projects={sorted} list={featuredList} onSave={(list) => saveSettingsPatch({ featuredProjects: list })} />
-        <DisplayEditor value={settings.projectGrayscaleHover === 'off' ? 'off' : 'on'} onSave={(v) => saveSettingsPatch({ projectGrayscaleHover: v })} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {sorted.map((p, i) => {

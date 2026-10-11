@@ -271,7 +271,6 @@ export function categoryLabel(key: string | undefined, en = false): string {
 }
 
 /** Black-and-white project photos that turn to colour on hover (owner can switch it off). */
-export const grayscaleHover: boolean = siteSettings.projectGrayscaleHover !== 'off';
 
 export interface FeaturedEntry { projectId: string; label?: string; labelEn?: string; text?: string; textEn?: string; }
 export interface FeaturedItem { project: Project; label: string; labelEn: string; text: string; textEn: string; link: string; linkEn: string; }
